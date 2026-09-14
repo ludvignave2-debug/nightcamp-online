@@ -2549,7 +2549,7 @@ async function runSelectedBattle(selected,settings){
  const sideSummary=format.teams.map((team,i)=>`${team.length>1?'Team '+String.fromCharCode(65+i):battlePlayers[team[0]].name}: ${money(resolution.sideVals[i])}`).join(' · ');
  if($('#battleRoundStatus')) $('#battleRoundStatus').textContent='BATTLE COMPLETE';
  const battlePotEl=$('#battlePot'); if(battlePotEl) battlePotEl.textContent=money(pot);
- const battlePotHint=$('#battlePotHint'); if(battlePotHint) battlePotHint.textContent=teamMode?'Team pool':'Free-for-all pool';
+ const battlePotHint=$('#battlePotHint'); if(battlePotHint) battlePotHint.textContent=format.teams.some(t=>t.length>1)?'Team pool':'Free-for-all pool';
  $('#battleResult').innerHTML=`<div class="battle-result ${resultClass}"><h3>${text}</h3><span>${battleRules[settings.rule].label} · ${resolution.note}<br>${sideSummary}</span></div>`;
  state.games++;if(delta>state.biggest)state.biggest=delta;state.history.unshift({time:new Date().toLocaleTimeString('da-DK',{hour:'2-digit',minute:'2-digit'}),game:'Crate Battle',detail:`${settings.format} · ${battleRules[settings.rule].label} · ${selected.length} cases`,delta});update();
  btn.disabled=false;btn.textContent='REPLAY BATTLE';

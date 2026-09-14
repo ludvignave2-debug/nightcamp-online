@@ -1768,7 +1768,7 @@
         "name": "Big Grin",
         "base": "Wood Armor Helmet",
         "icon": "BG",
-        "value": 629.99,
+        "value": 1567.42,
         "rarity": "legendary",
         "w": 3
       },
@@ -1776,7 +1776,7 @@
         "name": "Arctic Wolf LR300",
         "base": "LR-300 Assault Rifle",
         "icon": "LR",
-        "value": 328.4,
+        "value": 728.98,
         "rarity": "legendary",
         "w": 4
       },
@@ -1784,7 +1784,7 @@
         "name": "Punishment Mask",
         "base": "Metal Facemask",
         "icon": "PM",
-        "value": 304.99,
+        "value": 3089.98,
         "rarity": "legendary",
         "w": 4
       },
@@ -1792,7 +1792,7 @@
         "name": "Void Facemask",
         "base": "Metal Facemask",
         "icon": "VF",
-        "value": 276.35,
+        "value": 500.98,
         "rarity": "legendary",
         "w": 4
       },
@@ -1800,7 +1800,7 @@
         "name": "Alien Red",
         "base": "Assault Rifle",
         "icon": "AR",
-        "value": 166.49,
+        "value": 300.98,
         "rarity": "legendary",
         "w": 5
       },
@@ -1808,7 +1808,7 @@
         "name": "Glory AK47 Ice",
         "base": "Assault Rifle",
         "icon": "GI",
-        "value": 191.64,
+        "value": 207.98,
         "rarity": "epic",
         "w": 5
       }

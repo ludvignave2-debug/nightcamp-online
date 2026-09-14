@@ -2809,5 +2809,59 @@ async function applySkinImageToElement(imgEl, skinName, fallback = '') {
 
   imgEl.alt = skinName;
 }
-</script></body>
+async function upgradeAllSkinImages() {
+  try {
+    const res = await fetch('/api/cases', { cache: 'no-store' });
+    const cases = await res.json();
+
+    const skinNames = new Set();
+
+    (cases || []).forEach(c => {
+      (c.items || c.skins || []).forEach(skin => {
+        if (skin.name) skinNames.add(skin.name);
+      });
+    });
+
+    for (const skinName of skinNames) {
+      const elements = [...document.querySelectorAll('*')].filter(el => {
+        if (el.children.length > 3) return false;
+        return el.textContent?.trim() === skinName;
+      });
+
+      for (const nameEl of elements) {
+        let card = nameEl;
+
+        for (let i = 0; i < 6 && card; i++) {
+          const img = card.querySelector?.('img');
+
+          if (img) {
+            await applySkinImageToElement(img, skinName, img.src);
+            break;
+          }
+
+          card = card.parentElement;
+        }
+      }
+    }
+  } catch (err) {
+    console.error('Kunne ikke opgradere skin billeder:', err);
+  }
+}
+
+const skinObserver = new MutationObserver(() => {
+  clearTimeout(window.__skinImageTimer);
+
+  window.__skinImageTimer = setTimeout(() => {
+    upgradeAllSkinImages();
+  }, 250);
+});
+
+skinObserver.observe(document.body, {
+  childList: true,
+  subtree: true
+});
+
+window.addEventListener('load', () => {
+  upgradeAllSkinImages();
+});</script></body>
 </html>

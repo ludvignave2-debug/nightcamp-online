@@ -875,7 +875,13 @@ body.nc-battle-focus .case-battle-ui .rl-card-atmosphere,body.nc-battle-focus .c
 const $=(s,e=document)=>e.querySelector(s), $$=(s,e=document)=>[...e.querySelectorAll(s)];
 const money=n=>Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 const rand=()=>{const a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]/4294967296};
-const state={balance:100,games:0,wins:0,biggest:0,battleWins:0,history:[]};
+const NC_BALANCE_KEY='nightcampScrapBalance';
+const ncStoredBalanceRaw=localStorage.getItem(NC_BALANCE_KEY);
+const ncStoredBalance=ncStoredBalanceRaw===null?NaN:Number(ncStoredBalanceRaw);
+const state={balance:(Number.isFinite(ncStoredBalance)&&ncStoredBalance>=0)?ncStoredBalance:100,games:0,wins:0,biggest:0,battleWins:0,history:[]};
+function persistScrapBalance(){
+  try{ if(Number.isFinite(Number(state.balance))&&Number(state.balance)>=0)localStorage.setItem(NC_BALANCE_KEY,String(Number(state.balance))); }catch{}
+}
 const overlay=$('#overlay'), body=$('#arenaBody');
 const REEL_CELL=130, REEL_GAP=8;
 const V_REEL_CELL=170, V_REEL_GAP=22;
@@ -1854,6 +1860,7 @@ function caseContentsHTML(caseKey){
 }
 
 function update(){
+ persistScrapBalance();
  $('#walletValue').textContent=money(state.balance); $('#arenaBalance').textContent=money(state.balance);
  $('#statGames').textContent=state.games; $('#statWins').textContent=state.wins; $('#statBiggest').textContent=money(state.biggest); $('#statBattles').textContent=state.battleWins;
  const rows=$('#historyRows');
@@ -2046,19 +2053,14 @@ function fireRarityParticles(cardEl,rarity){
 function fireRarityPullFX(cardEl,rarity){
  rarity=String(rarity||'').toLowerCase();
  if(rarity!=='epic'&&rarity!=='legendary') return;
- let x=window.innerWidth/2,y=window.innerHeight/2,size=120;
- if(cardEl){const r=cardEl.getBoundingClientRect();x=r.left+r.width/2;y=r.top+r.height/2;size=Math.max(90,Math.min(240,Math.max(r.width,r.height)*.88));}
+ let x=window.innerWidth/2,y=window.innerHeight/2;
+ if(cardEl){const r=cardEl.getBoundingClientRect();x=r.left+r.width/2;y=r.top+r.height/2;}
  fireRarityParticles(cardEl,rarity);
  const flash=document.createElement('div');
  flash.className='rarity-screen-flash '+rarity;
  flash.style.setProperty('--fx-x',`${x}px`);flash.style.setProperty('--fx-y',`${y}px`);
  document.body.appendChild(flash);
- const ring=document.createElement('div');
- ring.className='rarity-pull-ring '+rarity;
- ring.style.left=x+'px';ring.style.top=y+'px';ring.style.width=size+'px';ring.style.height=size+'px';
- document.body.appendChild(ring);
  setTimeout(()=>flash.remove(),rarity==='legendary'?900:700);
- setTimeout(()=>ring.remove(),rarity==='legendary'?1100:850);
 }
 
 function fireLegendaryConfetti(cardEl){fireRarityPullFX(cardEl,'legendary');}
@@ -2385,7 +2387,36 @@ async function adminChangeBalance(mode,amount){
   }catch{setAdminStatus('Serverfejl. Prøv igen.','bad');}
 }
 
-function applyOnlineAccount(account){if(!account)return;mpAccountToken=account.token||mpAccountToken;if(mpAccountToken)localStorage.setItem('nightcampAccountToken',mpAccountToken);state.balance=Number(account.balance||0);mpLastName=account.name||mpLastName;mpAccountReady=true;update();}
+function applyOnlineAccount(account){
+  if(!account)return;
+  mpAccountToken=account.token||mpAccountToken;
+  if(mpAccountToken)localStorage.setItem('nightcampAccountToken',mpAccountToken);
+  const localRaw=localStorage.getItem(NC_BALANCE_KEY);
+  const localBal=localRaw===null?NaN:Number(localRaw);
+  const serverBal=Number(account.balance||0);
+  const firstAccountLoad=!mpAccountReady;
+  mpLastName=account.name||mpLastName;
+  mpAccountReady=true;
+
+  // On the first connection after a refresh, the browser's last known Scrap
+  // wins over a stale/new 100-Scrap server balance, then gets synced server-side.
+  if(firstAccountLoad && Number.isFinite(localBal) && localBal>=0 && Math.abs(localBal-serverBal)>0.005){
+    state.balance=localBal;
+    update();
+    if(mpSocket?.connected && mpAccountToken){
+      mpSocket.emit('account:sync-balance',{token:mpAccountToken,balance:localBal},res=>{
+        if(res?.ok && res.account){
+          state.balance=Number(res.account.balance||localBal);
+          update();
+        }
+      });
+    }
+    return;
+  }
+
+  state.balance=serverBal;
+  update();
+}
 function mpCapacity(room=mpRoom){ return room ? (battleFormats[room.settings.format]?.players||2) : 2; }
 function syncMultiplayerRoom(){
  if(!mpSocket||!mpRoom||mpRoom.hostId!==mpSocket.id||mpRoom.phase!=='lobby')return;

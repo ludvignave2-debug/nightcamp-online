@@ -185,7 +185,7 @@ button,input,select{font:inherit}button{cursor:pointer}.noise{position:fixed;ins
 .drops-modal{position:absolute;inset:0;background:rgba(5,8,18,.7);display:grid;place-items:center;padding:24px;z-index:20}.drops-modal.hidden{display:none}.drops-sheet{width:min(980px,100%);max-height:84vh;overflow:auto;background:#0f1531;border:1px solid #3b4384;border-radius:18px;padding:18px}.drops-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.drops-top h3{margin:0;font-family:"Barlow Condensed",sans-serif;font-size:34px}.drops-top button{width:40px;height:40px;border-radius:10px;border:1px solid #374094;background:#1b2250;color:#dce4ff}
 
 /* New battle arena built from selected cases */
-.case-battle-ui{background:#080b15}.sequence-banner{min-width:640px}.banner-selections{display:flex;gap:8px;overflow:auto}.selection-thumb{width:74px;display:flex;flex-direction:column;align-items:center;gap:4px;opacity:.55}.selection-thumb.active{opacity:1;transform:translateY(-2px)}.selection-thumb img{width:74px;height:52px;border-radius:8px;object-fit:cover;border:1px solid rgba(255,255,255,.2)}.selection-thumb span{display:none}
+.case-battle-ui{background:#080b15}.sequence-banner{min-width:640px}.banner-selections{display:flex;gap:8px;overflow:auto}.selection-thumb{width:74px;display:flex;flex-direction:column;align-items:center;gap:4px;opacity:.55;cursor:context-menu}.case-battle-ui .drops-modal{position:fixed;z-index:700}.case-banner.sequence-banner{cursor:context-menu}.selection-thumb.active{opacity:1;transform:translateY(-2px)}.selection-thumb img{width:74px;height:52px;border-radius:8px;object-fit:cover;border:1px solid rgba(255,255,255,.2)}.selection-thumb span{display:none}
 .simple-vertical-stage .scene-lane{gap:8px}.simple-vertical-stage .mimic-reel{min-height:310px;max-height:310px;overflow:hidden}.simple-vertical-stage .mimic-reel .reel-track{padding:120px 0}.simple-vertical-stage .lane-total{margin-top:2px}.compact-histories .history-column{grid-template-columns:repeat(2,minmax(0,1fr))}.compact-histories .history-drop{min-height:170px}
 
 @media(max-width:1200px){.builder-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
@@ -1986,7 +1986,7 @@ function caseThumbHTML(c,compact=false){
 }
 function battleSelectionThumb(key,active=false){
  const c=cases[key];
- return `<div class="selection-thumb ${active?'active':''}">${caseThumbHTML(c,true)}<span>${c.name}</span></div>`;
+ return `<div class="selection-thumb ${active?'active':''}" data-key="${key}" title="Right-click to inspect ${c.name} drops">${caseThumbHTML(c,true)}<span>${c.name}</span></div>`;
 }
 function renderCaseCard(key,c,selectedCount){
  const risk=c.risk||'standard';
@@ -2509,7 +2509,7 @@ function showBattleArena(selected,settings){
    </div>
    <div class="battle-topmeta">
       <div class="battle-totalbox"><span>TOTAL POT</span><b id="battlePot" data-final-pot="${pot}">HIDDEN</b><small id="battlePotHint">Reveals after final roll</small></div>
-      <div class="case-banner sequence-banner">
+      <div class="case-banner sequence-banner" id="battleCaseBanner" data-current-key="${first}" title="Right-click to inspect case drops">
         <div><strong id="bannerName">${cases[first].name}</strong><span id="bannerPrice">${money(cases[first].price)}</span></div>
         <div class="banner-selections" id="bannerSelections">${selected.map((key,idx)=>battleSelectionThumb(key,idx===0)).join('')}</div>
         <b id="bannerCounter">1/${selected.length}</b>
@@ -2525,8 +2525,19 @@ function showBattleArena(selected,settings){
    ${teamMode?`<div class="team-scorebar" id="teamScorebar">${format.teams.map((team,i)=>`<div class="team-score"><span>TEAM ${String.fromCharCode(65+i)}</span><b id="teamTotal${i}">0.00</b></div>`).join('')}</div>`:''}
    <div class="history-grid-wrap compact-histories dynamic-history" style="--player-count:${format.players}">${Array.from({length:format.players},(_,i)=>`<div class="history-column" id="hist${i}"></div>`).join('')}</div>
    <div id="battleResult"></div>
+   <div class="drops-modal hidden" id="dropsModal"><div class="drops-sheet"><div class="drops-top"><h3 id="dropsTitle">Case Drops</h3><button id="closeDrops">✕</button></div><div id="dropsBody"></div></div></div>
  </div>`;
  $('#backToSelector').onclick=()=>{if(activeBattleRunning){closeArenaWithBattleReturn();return;}clearCompletedBattleReturnView();renderBattle();};
+ const battleCaseBanner=$('#battleCaseBanner');
+ if(battleCaseBanner){
+   battleCaseBanner.oncontextmenu=e=>{
+     const thumb=e.target.closest?.('.selection-thumb[data-key]');
+     const caseKey=thumb?.dataset?.key || battleCaseBanner.dataset.currentKey;
+     if(!caseKey || !cases[caseKey])return;
+     e.preventDefault();
+     openDropsModal(caseKey);
+   };
+ }
  $('#startBattle').onclick=()=>runSelectedBattle(selected,settings).catch(err=>{console.error(err);const s=$('#battleRoundStatus');if(s)s.textContent='BATTLE ERROR · '+(err?.message||err);const b=$('#startBattle');if(b){b.disabled=false;b.textContent='RETRY BATTLE';}toast('Battle-fejl: '+(err?.message||err));});
  for(let i=0;i<format.players;i++)previewSpinVertical($('#track'+i),first);
  for(let i=0;i<format.players;i++)$('#hist'+i).innerHTML=selected.map((_,r)=>battleHistoryPlaceholder(r)).join('');
@@ -2545,6 +2556,7 @@ async function runSelectedBattle(selected,settings){
    const caseKey=selected[round],c=cases[caseKey];
    if($('#battleRoundStatus')) $('#battleRoundStatus').textContent=`ROUND ${round+1}/${selected.length} · SPINNING ${c.name.toUpperCase()}...`;
    $('#bannerName').textContent=c.name;$('#bannerPrice').textContent=money(c.price);$('#bannerCounter').textContent=`${round+1}/${selected.length}`;
+   const battleCaseBanner=$('#battleCaseBanner');if(battleCaseBanner)battleCaseBanner.dataset.currentKey=caseKey;
    $('#bannerSelections').innerHTML=selected.map((key,idx)=>battleSelectionThumb(key,idx===round)).join('');
    const drops=Array.from({length:format.players},()=>drawLoot(caseKey));lastDrops=drops;
    const seqs=drops.map(drop=>buildSpinSequence(caseKey,drop,24,16));
@@ -2600,6 +2612,7 @@ async function runNetworkBattle(selected,settings,seed,localSeat,room,settlement
    const caseKey=selected[round],c=cases[caseKey];
    if($('#battleRoundStatus')) $('#battleRoundStatus').textContent=`ROUND ${round+1}/${selected.length} · SPINNING ${c.name.toUpperCase()}...`;
    $('#bannerName').textContent=c.name;$('#bannerPrice').textContent=money(c.price);$('#bannerCounter').textContent=`${round+1}/${selected.length}`;
+   const battleCaseBanner=$('#battleCaseBanner');if(battleCaseBanner)battleCaseBanner.dataset.currentKey=caseKey;
    $('#bannerSelections').innerHTML=selected.map((key,idx)=>battleSelectionThumb(key,idx===round)).join('');
    const drops=Array.from({length:format.players},()=>drawLootWithRng(caseKey,rng));lastDrops=drops;
    const seqs=drops.map(drop=>buildSpinSequenceWithRng(caseKey,drop,rng,24,16));

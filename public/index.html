@@ -2984,6 +2984,45 @@ checkAdminAccess().then(()=>{
 // The old whole-page MutationObserver was redundant and caused expensive DOM rescans during every battle roll.
 // It has intentionally been removed so battles stay smooth.
 
+</script><script>
+  function fireLegendaryConfetti(cardEl) {
+    if (typeof confetti !== 'function') return;
+
+    let x = 0.5;
+    let y = 0.5;
+
+    if (cardEl) {
+      const rect = cardEl.getBoundingClientRect();
+      x = (rect.left + rect.width / 2) / window.innerWidth;
+      y = (rect.top + rect.height / 2) / window.innerHeight;
+    }
+
+    confetti({
+      particleCount: 120,
+      spread: 80,
+      startVelocity: 45,
+      origin: { x, y },
+      scalar: 1.1
+    });
+
+    setTimeout(() => {
+      confetti({
+        particleCount: 80,
+        spread: 100,
+        startVelocity: 35,
+        origin: { x: Math.max(0, x - 0.08), y }
+      });
+    }, 150);
+
+    setTimeout(() => {
+      confetti({
+        particleCount: 80,
+        spread: 100,
+        startVelocity: 35,
+        origin: { x: Math.min(1, x + 0.08), y }
+      });
+    }, 300);
+  }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script></body>
 </html>

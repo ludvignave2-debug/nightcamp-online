@@ -109,61 +109,6 @@
       }
     ]
   },
-  "miniraid": {
-    "name": "Mini Raid",
-    "price": 2.99,
-    "accent": "rust",
-    "items": [
-      {
-        "name": "Training Bow",
-        "base": "Hunting Bow",
-        "icon": "TB",
-        "value": 1.89,
-        "rarity": "common",
-        "w": 24
-      },
-      {
-        "name": "Forest Raiders Hoodie",
-        "base": "Hoodie",
-        "icon": "HD",
-        "value": 12.46,
-        "rarity": "uncommon",
-        "w": 22
-      },
-      {
-        "name": "Road Romeo Kilt",
-        "base": "Road Sign Kilt",
-        "icon": "RS",
-        "value": 18.95,
-        "rarity": "uncommon",
-        "w": 18
-      },
-      {
-        "name": "Bombing Revolver",
-        "base": "Revolver",
-        "icon": "RV",
-        "value": 31.2,
-        "rarity": "rare",
-        "w": 14
-      },
-      {
-        "name": "Tempered MP5",
-        "base": "MP5A4",
-        "icon": "MP5",
-        "value": 34.78,
-        "rarity": "uncommon",
-        "w": 13
-      },
-      {
-        "name": "Urban Light SAR",
-        "base": "Semi-Automatic Rifle",
-        "icon": "SAR",
-        "value": 43.25,
-        "rarity": "uncommon",
-        "w": 11
-      }
-    ]
-  },
   "cheapthrills": {
     "name": "Cheap Thrills",
     "price": 5.99,
@@ -439,61 +384,6 @@
       }
     ]
   },
-  "arctic": {
-    "name": "Arctic Vault",
-    "price": 67.49,
-    "accent": "blue",
-    "items": [
-      {
-        "name": "Whiteout Hoodie",
-        "base": "Hoodie",
-        "icon": "WH",
-        "value": 21.38,
-        "rarity": "common",
-        "w": 17
-      },
-      {
-        "name": "Snow Camo Pants",
-        "base": "Pants",
-        "icon": "SP",
-        "value": 28.91,
-        "rarity": "common",
-        "w": 14
-      },
-      {
-        "name": "Frostbite Thompson",
-        "base": "Thompson",
-        "icon": "FT",
-        "value": 55.72,
-        "rarity": "uncommon",
-        "w": 10
-      },
-      {
-        "name": "Ice Metal Chestplate",
-        "base": "Metal Chest Plate",
-        "icon": "MC",
-        "value": 84.5,
-        "rarity": "rare",
-        "w": 8
-      },
-      {
-        "name": "Whiteout AK47",
-        "base": "Assault Rifle",
-        "icon": "WAK",
-        "value": 146.6,
-        "rarity": "epic",
-        "w": 6
-      },
-      {
-        "name": "Frozen Facemask",
-        "base": "Metal Facemask",
-        "icon": "FF",
-        "value": 228.95,
-        "rarity": "epic",
-        "w": 5
-      }
-    ]
-  },
   "blackout": {
     "name": "Blackout Case",
     "price": 94.99,
@@ -651,7 +541,7 @@
       },
       {
         "name": "Big Grin",
-        "base": "Metal Facemask",
+        "base": "Wood Armor Helmet",
         "icon": "BG",
         "value": 1509.54,
         "rarity": "legendary",
@@ -666,7 +556,7 @@
     "items": [
       {
         "name": "Big Grin",
-        "base": "Metal Facemask",
+        "base": "Wood Armor Helmet",
         "icon": "BG",
         "value": 1509.54,
         "rarity": "legendary",
@@ -721,7 +611,7 @@
     "items": [
       {
         "name": "Big Grin",
-        "base": "Metal Facemask",
+        "base": "Wood Armor Helmet",
         "icon": "BG",
         "value": 1509.54,
         "rarity": "legendary",
@@ -764,336 +654,6 @@
         "base": "Assault Rifle",
         "icon": "AR",
         "value": 300.98,
-        "rarity": "legendary",
-        "w": 4
-      }
-    ]
-  },
-  "frozenstart": {
-    "name": "Frozen Start",
-    "price": 4.49,
-    "accent": "blue",
-    "items": [
-      {
-        "name": "Training Bow",
-        "base": "Hunting Bow",
-        "icon": "TB",
-        "value": 1.89,
-        "rarity": "common",
-        "w": 28
-      },
-      {
-        "name": "Whiteout Hoodie",
-        "base": "Hoodie",
-        "icon": "WH",
-        "value": 21.38,
-        "rarity": "common",
-        "w": 23
-      },
-      {
-        "name": "Snow Camo Pants",
-        "base": "Pants",
-        "icon": "SP",
-        "value": 28.91,
-        "rarity": "common",
-        "w": 18
-      },
-      {
-        "name": "Frostbite Thompson",
-        "base": "Thompson",
-        "icon": "FT",
-        "value": 55.72,
-        "rarity": "uncommon",
-        "w": 13
-      },
-      {
-        "name": "Ice Metal Chestplate",
-        "base": "Metal Chest Plate",
-        "icon": "MC",
-        "value": 84.5,
-        "rarity": "rare",
-        "w": 8
-      },
-      {
-        "name": "Whiteout AK47",
-        "base": "Assault Rifle",
-        "icon": "WAK",
-        "value": 146.6,
-        "rarity": "epic",
-        "w": 4
-      }
-    ]
-  },
-  "smgparty": {
-    "name": "SMG Party",
-    "price": 17.49,
-    "accent": "purple",
-    "items": [
-      {
-        "name": "Tempered MP5",
-        "base": "MP5A4",
-        "icon": "MP5",
-        "value": 34.78,
-        "rarity": "uncommon",
-        "w": 28
-      },
-      {
-        "name": "Batteries Not Included",
-        "base": "MP5A4",
-        "icon": "BNI",
-        "value": 28.71,
-        "rarity": "rare",
-        "w": 23
-      },
-      {
-        "name": "Blackout Thompson",
-        "base": "Thompson",
-        "icon": "BT",
-        "value": 48.85,
-        "rarity": "uncommon",
-        "w": 18
-      },
-      {
-        "name": "Frostbite Thompson",
-        "base": "Thompson",
-        "icon": "FT",
-        "value": 55.72,
-        "rarity": "uncommon",
-        "w": 13
-      },
-      {
-        "name": "Urban Light SAR",
-        "base": "Semi-Automatic Rifle",
-        "icon": "SAR",
-        "value": 43.25,
-        "rarity": "uncommon",
-        "w": 8
-      },
-      {
-        "name": "Phantom LR300",
-        "base": "LR-300 Assault Rifle",
-        "icon": "PLR",
-        "value": 112.44,
-        "rarity": "rare",
-        "w": 4
-      }
-    ]
-  },
-  "frostfire": {
-    "name": "Frost & Fire",
-    "price": 33.99,
-    "accent": "blue",
-    "items": [
-      {
-        "name": "Frostbite Thompson",
-        "base": "Thompson",
-        "icon": "FT",
-        "value": 55.72,
-        "rarity": "uncommon",
-        "w": 28
-      },
-      {
-        "name": "Whiteout Hoodie",
-        "base": "Hoodie",
-        "icon": "WH",
-        "value": 21.38,
-        "rarity": "common",
-        "w": 23
-      },
-      {
-        "name": "Whiteout AK47",
-        "base": "Assault Rifle",
-        "icon": "WAK",
-        "value": 146.6,
-        "rarity": "epic",
-        "w": 18
-      },
-      {
-        "name": "Glory AK47 Ice",
-        "base": "Assault Rifle",
-        "icon": "GI",
-        "value": 191.64,
-        "rarity": "epic",
-        "w": 13
-      },
-      {
-        "name": "Frozen Facemask",
-        "base": "Metal Facemask",
-        "icon": "FF",
-        "value": 228.95,
-        "rarity": "epic",
-        "w": 8
-      },
-      {
-        "name": "Alien Red",
-        "base": "Assault Rifle",
-        "icon": "AR",
-        "value": 300.98,
-        "rarity": "legendary",
-        "w": 4
-      }
-    ]
-  },
-  "riflesonly": {
-    "name": "Rifles Only",
-    "price": 69.99,
-    "accent": "green",
-    "items": [
-      {
-        "name": "No Mercy",
-        "base": "Semi-Automatic Rifle",
-        "icon": "SAR",
-        "value": 6.74,
-        "rarity": "common",
-        "w": 28
-      },
-      {
-        "name": "Urban Light SAR",
-        "base": "Semi-Automatic Rifle",
-        "icon": "SAR",
-        "value": 43.25,
-        "rarity": "uncommon",
-        "w": 23
-      },
-      {
-        "name": "Obsidian SAR",
-        "base": "Semi-Automatic Rifle",
-        "icon": "OS",
-        "value": 145.8,
-        "rarity": "epic",
-        "w": 18
-      },
-      {
-        "name": "Tempered AK47",
-        "base": "Assault Rifle",
-        "icon": "AK",
-        "value": 30.16,
-        "rarity": "uncommon",
-        "w": 13
-      },
-      {
-        "name": "Glory AK47",
-        "base": "Assault Rifle",
-        "icon": "GAK",
-        "value": 74.68,
-        "rarity": "rare",
-        "w": 8
-      },
-      {
-        "name": "Alien Red",
-        "base": "Assault Rifle",
-        "icon": "AR",
-        "value": 300.98,
-        "rarity": "legendary",
-        "w": 4
-      }
-    ]
-  },
-  "facemaskelite": {
-    "name": "Facemask Elite",
-    "price": 174.99,
-    "accent": "purple",
-    "items": [
-      {
-        "name": "Tempered Mask",
-        "base": "Metal Facemask",
-        "icon": "TM",
-        "value": 228.45,
-        "rarity": "epic",
-        "w": 28
-      },
-      {
-        "name": "Black Gold Facemask",
-        "base": "Metal Facemask",
-        "icon": "BG",
-        "value": 148.9,
-        "rarity": "epic",
-        "w": 23
-      },
-      {
-        "name": "Frozen Facemask",
-        "base": "Metal Facemask",
-        "icon": "FF",
-        "value": 228.95,
-        "rarity": "epic",
-        "w": 18
-      },
-      {
-        "name": "Void Facemask",
-        "base": "Metal Facemask",
-        "icon": "VF",
-        "value": 276.35,
-        "rarity": "legendary",
-        "w": 13
-      },
-      {
-        "name": "Punishment Mask",
-        "base": "Metal Facemask",
-        "icon": "PM",
-        "value": 3305.98,
-        "rarity": "legendary",
-        "w": 8
-      },
-      {
-        "name": "Big Grin",
-        "base": "Metal Facemask",
-        "icon": "BG",
-        "value": 1509.54,
-        "rarity": "legendary",
-        "w": 4
-      }
-    ]
-  },
-  "redking": {
-    "name": "Red King",
-    "price": 249.99,
-    "accent": "rust",
-    "items": [
-      {
-        "name": "Glory AK47 Ice",
-        "base": "Assault Rifle",
-        "icon": "GI",
-        "value": 191.64,
-        "rarity": "epic",
-        "w": 28
-      },
-      {
-        "name": "Alien Red",
-        "base": "Assault Rifle",
-        "icon": "AR",
-        "value": 300.98,
-        "rarity": "legendary",
-        "w": 23
-      },
-      {
-        "name": "Punishment Mask",
-        "base": "Metal Facemask",
-        "icon": "PM",
-        "value": 3305.98,
-        "rarity": "legendary",
-        "w": 18
-      },
-      {
-        "name": "Void Facemask",
-        "base": "Metal Facemask",
-        "icon": "VF",
-        "value": 276.35,
-        "rarity": "legendary",
-        "w": 13
-      },
-      {
-        "name": "Arctic Wolf LR300",
-        "base": "LR-300 Assault Rifle",
-        "icon": "LR",
-        "value": 328.4,
-        "rarity": "legendary",
-        "w": 8
-      },
-      {
-        "name": "Big Grin",
-        "base": "Metal Facemask",
-        "icon": "BG",
-        "value": 1509.54,
         "rarity": "legendary",
         "w": 4
       }
@@ -1327,63 +887,6 @@
       }
     ]
   },
-  "vaulted_value": {
-    "name": "Vaulted Value",
-    "price": 319.99,
-    "accent": "blue",
-    "risk": "low",
-    "thumb": "data:image/png;base64,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",
-    "items": [
-      {
-        "name": "Frozen Facemask",
-        "base": "Metal Facemask",
-        "icon": "FF",
-        "value": 228.95,
-        "rarity": "epic",
-        "w": 18
-      },
-      {
-        "name": "Void Facemask",
-        "base": "Metal Facemask",
-        "icon": "VF",
-        "value": 276.35,
-        "rarity": "legendary",
-        "w": 22
-      },
-      {
-        "name": "Alien Red",
-        "base": "Assault Rifle",
-        "icon": "AR",
-        "value": 300.98,
-        "rarity": "legendary",
-        "w": 22
-      },
-      {
-        "name": "Arctic Wolf LR300",
-        "base": "LR-300 Assault Rifle",
-        "icon": "LR",
-        "value": 328.4,
-        "rarity": "legendary",
-        "w": 22
-      },
-      {
-        "name": "Big Grin",
-        "base": "Metal Facemask",
-        "icon": "BG",
-        "value": 1509.54,
-        "rarity": "legendary",
-        "w": 1.2
-      },
-      {
-        "name": "Punishment Mask",
-        "base": "Metal Facemask",
-        "icon": "PM",
-        "value": 3305.98,
-        "rarity": "legendary",
-        "w": 0.25
-      }
-    ]
-  },
   "moonshot": {
     "name": "Moonshot",
     "price": 8.99,
@@ -1425,7 +928,7 @@
       },
       {
         "name": "Big Grin",
-        "base": "Metal Facemask",
+        "base": "Wood Armor Helmet",
         "icon": "BG",
         "value": 1509.54,
         "rarity": "legendary",
@@ -1438,63 +941,6 @@
         "value": 3305.98,
         "rarity": "legendary",
         "w": 0.025
-      }
-    ]
-  },
-  "redline_risk": {
-    "name": "Redline Risk",
-    "price": 24.99,
-    "accent": "rust",
-    "risk": "high",
-    "thumb": "data:image/png;base64,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",
-    "items": [
-      {
-        "name": "No Mercy",
-        "base": "Semi-Automatic Rifle",
-        "icon": "SAR",
-        "value": 6.74,
-        "rarity": "common",
-        "w": 80
-      },
-      {
-        "name": "Road Romeo Kilt",
-        "base": "Road Sign Kilt",
-        "icon": "RS",
-        "value": 18.95,
-        "rarity": "uncommon",
-        "w": 50
-      },
-      {
-        "name": "Batteries Not Included",
-        "base": "MP5A4",
-        "icon": "BNI",
-        "value": 28.71,
-        "rarity": "rare",
-        "w": 32
-      },
-      {
-        "name": "Alien Red",
-        "base": "Assault Rifle",
-        "icon": "AR",
-        "value": 300.98,
-        "rarity": "legendary",
-        "w": 2.8
-      },
-      {
-        "name": "Big Grin",
-        "base": "Metal Facemask",
-        "icon": "BG",
-        "value": 1509.54,
-        "rarity": "legendary",
-        "w": 0.25
-      },
-      {
-        "name": "Punishment Mask",
-        "base": "Metal Facemask",
-        "icon": "PM",
-        "value": 3305.98,
-        "rarity": "legendary",
-        "w": 0.05
       }
     ]
   },
@@ -1539,7 +985,7 @@
       },
       {
         "name": "Big Grin",
-        "base": "Metal Facemask",
+        "base": "Wood Armor Helmet",
         "icon": "BG",
         "value": 1509.54,
         "rarity": "legendary",
@@ -1596,7 +1042,7 @@
       },
       {
         "name": "Big Grin",
-        "base": "Metal Facemask",
+        "base": "Wood Armor Helmet",
         "icon": "BG",
         "value": 1509.54,
         "rarity": "legendary",
@@ -1653,7 +1099,7 @@
       },
       {
         "name": "Big Grin",
-        "base": "Metal Facemask",
+        "base": "Wood Armor Helmet",
         "icon": "BG",
         "value": 1509.54,
         "rarity": "legendary",
@@ -1710,7 +1156,7 @@
       },
       {
         "name": "Big Grin",
-        "base": "Metal Facemask",
+        "base": "Wood Armor Helmet",
         "icon": "BG",
         "value": 1509.54,
         "rarity": "legendary",
@@ -1846,99 +1292,11 @@
       },
       {
         "name": "Big Grin",
-        "base": "Metal Facemask",
+        "base": "Wood Armor Helmet",
         "icon": "BG",
         "value": 1509.54,
         "rarity": "legendary",
         "w": 1
-      }
-    ]
-  },
-  "full_armory": {
-    "name": "Full Armory",
-    "price": 849.99,
-    "accent": "green",
-    "risk": "standard",
-    "items": [
-      {
-        "name": "Punishment Mask",
-        "base": "Metal Facemask",
-        "icon": "PM",
-        "value": 3305.98,
-        "rarity": "legendary",
-        "w": 8
-      },
-      {
-        "name": "Big Grin",
-        "base": "Metal Facemask",
-        "icon": "BG",
-        "value": 1509.54,
-        "rarity": "legendary",
-        "w": 12
-      },
-      {
-        "name": "Arctic Wolf LR300",
-        "base": "LR-300 Assault Rifle",
-        "icon": "LR",
-        "value": 328.4,
-        "rarity": "legendary",
-        "w": 15
-      },
-      {
-        "name": "Alien Red",
-        "base": "Assault Rifle",
-        "icon": "AR",
-        "value": 300.98,
-        "rarity": "legendary",
-        "w": 18
-      },
-      {
-        "name": "Void Facemask",
-        "base": "Metal Facemask",
-        "icon": "VF",
-        "value": 276.35,
-        "rarity": "legendary",
-        "w": 20
-      },
-      {
-        "name": "Frozen Facemask",
-        "base": "Metal Facemask",
-        "icon": "FF",
-        "value": 228.95,
-        "rarity": "epic",
-        "w": 22
-      },
-      {
-        "name": "Tempered Mask",
-        "base": "Metal Facemask",
-        "icon": "TM",
-        "value": 228.45,
-        "rarity": "epic",
-        "w": 24
-      },
-      {
-        "name": "Glory AK47 Ice",
-        "base": "Assault Rifle",
-        "icon": "GI",
-        "value": 191.64,
-        "rarity": "epic",
-        "w": 26
-      },
-      {
-        "name": "Black Gold Facemask",
-        "base": "Metal Facemask",
-        "icon": "BG",
-        "value": 148.9,
-        "rarity": "epic",
-        "w": 28
-      },
-      {
-        "name": "Whiteout AK47",
-        "base": "Assault Rifle",
-        "icon": "WAK",
-        "value": 146.6,
-        "rarity": "epic",
-        "w": 30
       }
     ]
   },
@@ -1958,7 +1316,7 @@
       },
       {
         "name": "Big Grin",
-        "base": "Metal Facemask",
+        "base": "Wood Armor Helmet",
         "icon": "BG",
         "value": 1509.54,
         "rarity": "legendary",
@@ -2086,7 +1444,7 @@
       },
       {
         "name": "Big Grin",
-        "base": "Metal Facemask",
+        "base": "Wood Armor Helmet",
         "icon": "BG",
         "value": 1509.54,
         "rarity": "legendary",
@@ -2214,7 +1572,7 @@
       },
       {
         "name": "Big Grin",
-        "base": "Metal Facemask",
+        "base": "Wood Armor Helmet",
         "icon": "BG",
         "value": 1509.54,
         "rarity": "legendary",
@@ -2326,366 +1684,6 @@
       }
     ]
   },
-  "black_card": {
-    "name": "Black Card",
-    "price": 2249.99,
-    "accent": "purple",
-    "risk": "standard",
-    "items": [
-      {
-        "name": "Punishment Mask",
-        "base": "Metal Facemask",
-        "icon": "PM",
-        "value": 3305.98,
-        "rarity": "legendary",
-        "w": 58
-      },
-      {
-        "name": "Big Grin",
-        "base": "Metal Facemask",
-        "icon": "BG",
-        "value": 1509.54,
-        "rarity": "legendary",
-        "w": 25
-      },
-      {
-        "name": "Arctic Wolf LR300",
-        "base": "LR-300 Assault Rifle",
-        "icon": "LR",
-        "value": 328.4,
-        "rarity": "legendary",
-        "w": 4
-      },
-      {
-        "name": "Alien Red",
-        "base": "Assault Rifle",
-        "icon": "AR",
-        "value": 300.98,
-        "rarity": "legendary",
-        "w": 3
-      },
-      {
-        "name": "Void Facemask",
-        "base": "Metal Facemask",
-        "icon": "VF",
-        "value": 276.35,
-        "rarity": "legendary",
-        "w": 2.5
-      },
-      {
-        "name": "Frozen Facemask",
-        "base": "Metal Facemask",
-        "icon": "FF",
-        "value": 228.95,
-        "rarity": "epic",
-        "w": 2
-      },
-      {
-        "name": "Tempered Mask",
-        "base": "Metal Facemask",
-        "icon": "TM",
-        "value": 228.45,
-        "rarity": "epic",
-        "w": 1.8
-      },
-      {
-        "name": "Glory AK47 Ice",
-        "base": "Assault Rifle",
-        "icon": "GI",
-        "value": 191.64,
-        "rarity": "epic",
-        "w": 1.5
-      },
-      {
-        "name": "Black Gold Facemask",
-        "base": "Metal Facemask",
-        "icon": "BG",
-        "value": 148.9,
-        "rarity": "epic",
-        "w": 1.2
-      },
-      {
-        "name": "Whiteout AK47",
-        "base": "Assault Rifle",
-        "icon": "WAK",
-        "value": 146.6,
-        "rarity": "epic",
-        "w": 1
-      },
-      {
-        "name": "Obsidian SAR",
-        "base": "Semi-Automatic Rifle",
-        "icon": "OS",
-        "value": 145.8,
-        "rarity": "epic",
-        "w": 0.8
-      },
-      {
-        "name": "Phantom LR300",
-        "base": "LR-300 Assault Rifle",
-        "icon": "PLR",
-        "value": 112.44,
-        "rarity": "rare",
-        "w": 0.6
-      }
-    ]
-  },
-  "punisher_deluxe": {
-    "name": "Punisher Deluxe",
-    "price": 2299.99,
-    "accent": "rust",
-    "risk": "low",
-    "items": [
-      {
-        "name": "Punishment Mask",
-        "base": "Metal Facemask",
-        "icon": "PM",
-        "value": 3305.98,
-        "rarity": "legendary",
-        "w": 72
-      },
-      {
-        "name": "Big Grin",
-        "base": "Metal Facemask",
-        "icon": "BG",
-        "value": 1509.54,
-        "rarity": "legendary",
-        "w": 16
-      },
-      {
-        "name": "Arctic Wolf LR300",
-        "base": "LR-300 Assault Rifle",
-        "icon": "LR",
-        "value": 328.4,
-        "rarity": "legendary",
-        "w": 3
-      },
-      {
-        "name": "Alien Red",
-        "base": "Assault Rifle",
-        "icon": "AR",
-        "value": 300.98,
-        "rarity": "legendary",
-        "w": 2
-      },
-      {
-        "name": "Void Facemask",
-        "base": "Metal Facemask",
-        "icon": "VF",
-        "value": 276.35,
-        "rarity": "legendary",
-        "w": 1.5
-      },
-      {
-        "name": "Frozen Facemask",
-        "base": "Metal Facemask",
-        "icon": "FF",
-        "value": 228.95,
-        "rarity": "epic",
-        "w": 1
-      },
-      {
-        "name": "Tempered Mask",
-        "base": "Metal Facemask",
-        "icon": "TM",
-        "value": 228.45,
-        "rarity": "epic",
-        "w": 0.8
-      },
-      {
-        "name": "Glory AK47 Ice",
-        "base": "Assault Rifle",
-        "icon": "GI",
-        "value": 191.64,
-        "rarity": "epic",
-        "w": 0.7
-      },
-      {
-        "name": "Black Gold Facemask",
-        "base": "Metal Facemask",
-        "icon": "BG",
-        "value": 148.9,
-        "rarity": "epic",
-        "w": 0.6
-      },
-      {
-        "name": "Whiteout AK47",
-        "base": "Assault Rifle",
-        "icon": "WAK",
-        "value": 146.6,
-        "rarity": "epic",
-        "w": 0.5
-      },
-      {
-        "name": "Obsidian SAR",
-        "base": "Semi-Automatic Rifle",
-        "icon": "OS",
-        "value": 145.8,
-        "rarity": "epic",
-        "w": 0.4
-      },
-      {
-        "name": "Phantom LR300",
-        "base": "LR-300 Assault Rifle",
-        "icon": "PLR",
-        "value": 112.44,
-        "rarity": "rare",
-        "w": 0.3
-      },
-      {
-        "name": "Army Armored Door",
-        "base": "Armored Door",
-        "icon": "AD",
-        "value": 97.55,
-        "rarity": "rare",
-        "w": 0.2
-      },
-      {
-        "name": "Ice Metal Chestplate",
-        "base": "Metal Chest Plate",
-        "icon": "MC",
-        "value": 84.5,
-        "rarity": "rare",
-        "w": 0.1
-      },
-      {
-        "name": "Glory AK47",
-        "base": "Assault Rifle",
-        "icon": "GAK",
-        "value": 74.68,
-        "rarity": "rare",
-        "w": 0.1
-      }
-    ]
-  },
-  "mask_monopoly": {
-    "name": "Mask Monopoly",
-    "price": 2399.99,
-    "accent": "purple",
-    "risk": "low",
-    "items": [
-      {
-        "name": "Tempered Mask",
-        "base": "Metal Facemask",
-        "icon": "TM",
-        "value": 228.45,
-        "rarity": "epic",
-        "w": 1
-      },
-      {
-        "name": "Frozen Facemask",
-        "base": "Metal Facemask",
-        "icon": "FF",
-        "value": 228.95,
-        "rarity": "epic",
-        "w": 1
-      },
-      {
-        "name": "Black Gold Facemask",
-        "base": "Metal Facemask",
-        "icon": "BG",
-        "value": 148.9,
-        "rarity": "epic",
-        "w": 1
-      },
-      {
-        "name": "Void Facemask",
-        "base": "Metal Facemask",
-        "icon": "VF",
-        "value": 276.35,
-        "rarity": "legendary",
-        "w": 1
-      },
-      {
-        "name": "Punishment Mask",
-        "base": "Metal Facemask",
-        "icon": "PM",
-        "value": 3305.98,
-        "rarity": "legendary",
-        "w": 82
-      },
-      {
-        "name": "Big Grin",
-        "base": "Metal Facemask",
-        "icon": "BG",
-        "value": 1509.54,
-        "rarity": "legendary",
-        "w": 7
-      },
-      {
-        "name": "Alien Red",
-        "base": "Assault Rifle",
-        "icon": "AR",
-        "value": 300.98,
-        "rarity": "legendary",
-        "w": 2
-      },
-      {
-        "name": "Arctic Wolf LR300",
-        "base": "LR-300 Assault Rifle",
-        "icon": "LR",
-        "value": 328.4,
-        "rarity": "legendary",
-        "w": 1
-      },
-      {
-        "name": "Glory AK47 Ice",
-        "base": "Assault Rifle",
-        "icon": "GI",
-        "value": 191.64,
-        "rarity": "epic",
-        "w": 1
-      },
-      {
-        "name": "Whiteout AK47",
-        "base": "Assault Rifle",
-        "icon": "WAK",
-        "value": 146.6,
-        "rarity": "epic",
-        "w": 0.8
-      },
-      {
-        "name": "Obsidian SAR",
-        "base": "Semi-Automatic Rifle",
-        "icon": "OS",
-        "value": 145.8,
-        "rarity": "epic",
-        "w": 0.6
-      },
-      {
-        "name": "Phantom LR300",
-        "base": "LR-300 Assault Rifle",
-        "icon": "PLR",
-        "value": 112.44,
-        "rarity": "rare",
-        "w": 0.5
-      },
-      {
-        "name": "Army Armored Door",
-        "base": "Armored Door",
-        "icon": "AD",
-        "value": 97.55,
-        "rarity": "rare",
-        "w": 0.4
-      },
-      {
-        "name": "Ice Metal Chestplate",
-        "base": "Metal Chest Plate",
-        "icon": "MC",
-        "value": 84.5,
-        "rarity": "rare",
-        "w": 0.3
-      },
-      {
-        "name": "Glory AK47",
-        "base": "Assault Rifle",
-        "icon": "GAK",
-        "value": 74.68,
-        "rarity": "rare",
-        "w": 0.2
-      }
-    ]
-  },
   "whale_2500": {
     "name": "2.5K Whale",
     "price": 2499.99,
@@ -2702,7 +1700,7 @@
       },
       {
         "name": "Big Grin",
-        "base": "Metal Facemask",
+        "base": "Wood Armor Helmet",
         "icon": "BG",
         "value": 1509.54,
         "rarity": "legendary",
@@ -2814,222 +1812,6 @@
       }
     ]
   },
-  "diamond_vault": {
-    "name": "Diamond Vault",
-    "price": 2699.99,
-    "accent": "blue",
-    "risk": "standard",
-    "items": [
-      {
-        "name": "Punishment Mask",
-        "base": "Metal Facemask",
-        "icon": "PM",
-        "value": 3305.98,
-        "rarity": "legendary",
-        "w": 77
-      },
-      {
-        "name": "Big Grin",
-        "base": "Metal Facemask",
-        "icon": "BG",
-        "value": 1509.54,
-        "rarity": "legendary",
-        "w": 10
-      },
-      {
-        "name": "Arctic Wolf LR300",
-        "base": "LR-300 Assault Rifle",
-        "icon": "LR",
-        "value": 328.4,
-        "rarity": "legendary",
-        "w": 3
-      },
-      {
-        "name": "Alien Red",
-        "base": "Assault Rifle",
-        "icon": "AR",
-        "value": 300.98,
-        "rarity": "legendary",
-        "w": 2.5
-      },
-      {
-        "name": "Void Facemask",
-        "base": "Metal Facemask",
-        "icon": "VF",
-        "value": 276.35,
-        "rarity": "legendary",
-        "w": 2
-      },
-      {
-        "name": "Frozen Facemask",
-        "base": "Metal Facemask",
-        "icon": "FF",
-        "value": 228.95,
-        "rarity": "epic",
-        "w": 1.5
-      },
-      {
-        "name": "Tempered Mask",
-        "base": "Metal Facemask",
-        "icon": "TM",
-        "value": 228.45,
-        "rarity": "epic",
-        "w": 1.2
-      },
-      {
-        "name": "Glory AK47 Ice",
-        "base": "Assault Rifle",
-        "icon": "GI",
-        "value": 191.64,
-        "rarity": "epic",
-        "w": 1
-      },
-      {
-        "name": "Black Gold Facemask",
-        "base": "Metal Facemask",
-        "icon": "BG",
-        "value": 148.9,
-        "rarity": "epic",
-        "w": 0.8
-      },
-      {
-        "name": "Whiteout AK47",
-        "base": "Assault Rifle",
-        "icon": "WAK",
-        "value": 146.6,
-        "rarity": "epic",
-        "w": 0.5
-      }
-    ]
-  },
-  "three_k_dream": {
-    "name": "3K Dream",
-    "price": 2999.99,
-    "accent": "purple",
-    "risk": "high",
-    "items": [
-      {
-        "name": "Punishment Mask",
-        "base": "Metal Facemask",
-        "icon": "PM",
-        "value": 3305.98,
-        "rarity": "legendary",
-        "w": 84
-      },
-      {
-        "name": "Big Grin",
-        "base": "Metal Facemask",
-        "icon": "BG",
-        "value": 1509.54,
-        "rarity": "legendary",
-        "w": 6
-      },
-      {
-        "name": "Arctic Wolf LR300",
-        "base": "LR-300 Assault Rifle",
-        "icon": "LR",
-        "value": 328.4,
-        "rarity": "legendary",
-        "w": 2
-      },
-      {
-        "name": "Alien Red",
-        "base": "Assault Rifle",
-        "icon": "AR",
-        "value": 300.98,
-        "rarity": "legendary",
-        "w": 1.5
-      },
-      {
-        "name": "Void Facemask",
-        "base": "Metal Facemask",
-        "icon": "VF",
-        "value": 276.35,
-        "rarity": "legendary",
-        "w": 1.2
-      },
-      {
-        "name": "Frozen Facemask",
-        "base": "Metal Facemask",
-        "icon": "FF",
-        "value": 228.95,
-        "rarity": "epic",
-        "w": 1
-      },
-      {
-        "name": "Tempered Mask",
-        "base": "Metal Facemask",
-        "icon": "TM",
-        "value": 228.45,
-        "rarity": "epic",
-        "w": 0.8
-      },
-      {
-        "name": "Glory AK47 Ice",
-        "base": "Assault Rifle",
-        "icon": "GI",
-        "value": 191.64,
-        "rarity": "epic",
-        "w": 0.7
-      },
-      {
-        "name": "Black Gold Facemask",
-        "base": "Metal Facemask",
-        "icon": "BG",
-        "value": 148.9,
-        "rarity": "epic",
-        "w": 0.6
-      },
-      {
-        "name": "Whiteout AK47",
-        "base": "Assault Rifle",
-        "icon": "WAK",
-        "value": 146.6,
-        "rarity": "epic",
-        "w": 0.5
-      },
-      {
-        "name": "Obsidian SAR",
-        "base": "Semi-Automatic Rifle",
-        "icon": "OS",
-        "value": 145.8,
-        "rarity": "epic",
-        "w": 0.4
-      },
-      {
-        "name": "Phantom LR300",
-        "base": "LR-300 Assault Rifle",
-        "icon": "PLR",
-        "value": 112.44,
-        "rarity": "rare",
-        "w": 0.3
-      },
-      {
-        "name": "Army Armored Door",
-        "base": "Armored Door",
-        "icon": "AD",
-        "value": 97.55,
-        "rarity": "rare",
-        "w": 0.2
-      },
-      {
-        "name": "Ice Metal Chestplate",
-        "base": "Metal Chest Plate",
-        "icon": "MC",
-        "value": 84.5,
-        "rarity": "rare",
-        "w": 0.15
-      },
-      {
-        "name": "Glory AK47",
-        "base": "Assault Rifle",
-        "icon": "GAK",
-        "value": 74.68,
-        "rarity": "rare",
-        "w": 0.1
-      }
-    ]
-  },
   "final_boss": {
     "name": "Final Boss",
     "price": 3199.99,
@@ -3046,7 +1828,7 @@
       },
       {
         "name": "Big Grin",
-        "base": "Metal Facemask",
+        "base": "Wood Armor Helmet",
         "icon": "BG",
         "value": 1509.54,
         "rarity": "legendary",
@@ -3174,7 +1956,7 @@
       },
       {
         "name": "Big Grin",
-        "base": "Metal Facemask",
+        "base": "Wood Armor Helmet",
         "icon": "BG",
         "value": 1509.54,
         "rarity": "legendary",

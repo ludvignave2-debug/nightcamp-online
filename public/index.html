@@ -468,7 +468,7 @@ button,input,select{font:inherit}button{cursor:pointer}.noise{position:fixed;ins
 .lane-total{width:92%!important;margin:0 auto!important;border-radius:3px 3px 8px 8px!important;background:linear-gradient(180deg,#12182b,#0d1121)!important;border:1px solid #242e55!important;padding:8px 12px!important}.lane-total span{font-size:8px!important;letter-spacing:.16em!important;color:#68749f!important}.lane-total b{font-size:27px!important;color:#f6f7ff!important}
 
 /* History */
-.history-grid-wrap{margin-top:12px!important;gap:8px!important}.history-column{gap:7px!important}.history-drop{min-height:164px!important;border-radius:10px!important;border:1px solid #252e59!important;background:linear-gradient(145deg,#141a35,#0d1226)!important;box-shadow:0 10px 22px rgba(0,0,0,.18)!important;overflow:hidden}.history-drop .slot-num{font-size:20px!important;color:#8c99c5!important}.history-drop .skin-art.battle{height:92px!important}.history-copy b{color:#eef1ff!important;font-size:11px!important}.history-copy small{color:#ffc55e!important;font-size:13px!important;font-weight:900!important}.history-drop.placeholder{background:linear-gradient(145deg,#12172d,#0d1122)!important;color:#59658e!important}.history-empty{font-size:18px!important}
+.history-grid-wrap{margin-top:12px!important;gap:8px!important}.history-column{gap:7px!important}.history-drop{min-height:164px!important;border-radius:10px!important;border:1px solid #252e59!important;background:linear-gradient(145deg,#141a35,#0d1226)!important;box-shadow:0 10px 22px rgba(0,0,0,.18)!important;overflow:hidden}.history-drop .slot-num{font-size:20px!important;color:#8c99c5!important}.history-drop .skin-art.battle{height:92px!important}.history-copy b{color:#eef1ff!important;font-size:11px!important}.history-copy small{color:#ffc55e!important;font-size:13px!important;font-weight:900!important}.history-drop-chance{display:block;margin-top:4px;font-size:8px!important;line-height:1.2;letter-spacing:.09em;color:#93a0cb!important;font-weight:900;text-transform:uppercase}.history-drop:hover .history-drop-chance{color:#dce3ff!important}.history-drop.placeholder{background:linear-gradient(145deg,#12172d,#0d1122)!important;color:#59658e!important}.history-empty{font-size:18px!important}
 
 /* Jackpot polish */
 .jackpot-panel{border-radius:13px!important;border:1px solid rgba(255,189,69,.35)!important;background:radial-gradient(circle at 15% 50%,rgba(255,179,57,.14),transparent 25%),linear-gradient(90deg,#111831,#17182d,#111831)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 10px 28px rgba(0,0,0,.18)!important}
@@ -1966,8 +1966,18 @@ function animateSpinVertical(trackEl,sequence,duration=3800){
 function battlePlaceholderHTML(i){
  return `<div class="battle-drop placeholder" id="drop-${i}"><div class="drop-art"><span>?</span></div><div class="drop-copy"><small>ROUND ${i+1}</small><b>WAITING FOR DROP</b></div><strong>—</strong></div>`;
 }
-function battleHistoryCardHTML(round,item){
- return `<div class="history-drop rarity-bg-${item.rarity}"><span class="slot-num">#${round+1}</span>${skinArtHTML(item,'battle')}<div class="history-copy"><b>${item.name}</b><small>${money(item.value)}</small></div></div>`;
+function battleDropChance(caseKey,item){
+ const c=cases[caseKey];
+ if(!c||!Array.isArray(c.items)||!c.items.length)return null;
+ const total=c.items.reduce((sum,x)=>sum+Math.max(0,Number(x.w)||0),0);
+ if(!(total>0))return null;
+ const weight=Math.max(0,Number(item?.w)||0);
+ return (weight/total)*100;
+}
+function battleHistoryCardHTML(round,item,caseKey){
+ const chance=battleDropChance(caseKey,item);
+ const chanceText=chance==null?'—':`${chance<0.01?chance.toFixed(4):chance<1?chance.toFixed(3):chance.toFixed(2)}%`;
+ return `<div class="history-drop rarity-bg-${item.rarity}"><span class="slot-num">#${round+1}</span>${skinArtHTML(item,'battle')}<div class="history-copy"><b>${item.name}</b><small>${money(item.value)}</small><span class="history-drop-chance">DROP CHANCE · ${chanceText}</span></div></div>`;
 }
 function battleHistoryPlaceholder(round){
  return `<div class="history-drop placeholder"><span class="slot-num">#${round+1}</span><div class="history-empty">ROUND<br>${String(round+1).padStart(2,'0')}</div></div>`;
@@ -2563,7 +2573,7 @@ async function runSelectedBattle(selected,settings){
    await Promise.allSettled(seqs.map((seq,i)=>Promise.resolve().then(()=>animateSpinVertical($('#track'+i),seq,3450+i*180))));
    drops.forEach((drop,idx)=>{
      totals[idx]+=drop.value;$('#total'+idx).textContent=money(totals[idx]);
-     $$('#hist'+idx+' .history-drop')[round].outerHTML=battleHistoryCardHTML(round,drop);
+     $$('#hist'+idx+' .history-drop')[round].outerHTML=battleHistoryCardHTML(round,drop,caseKey);
    });
    const teamVals=sideTotals(format,totals);
    teamVals.forEach((v,i)=>{const el=$('#teamTotal'+i);if(el)el.textContent=money(v);});
@@ -2617,7 +2627,7 @@ async function runNetworkBattle(selected,settings,seed,localSeat,room,settlement
    const drops=Array.from({length:format.players},()=>drawLootWithRng(caseKey,rng));lastDrops=drops;
    const seqs=drops.map(drop=>buildSpinSequenceWithRng(caseKey,drop,rng,24,16));
    await Promise.allSettled(seqs.map((seq,i)=>Promise.resolve().then(()=>animateSpinVertical($('#track'+i),seq,3450+i*150))));
-   drops.forEach((drop,idx)=>{totals[idx]+=drop.value;$('#total'+idx).textContent=money(totals[idx]);$$('#hist'+idx+' .history-drop')[round].outerHTML=battleHistoryCardHTML(round,drop);});
+   drops.forEach((drop,idx)=>{totals[idx]+=drop.value;$('#total'+idx).textContent=money(totals[idx]);$$('#hist'+idx+' .history-drop')[round].outerHTML=battleHistoryCardHTML(round,drop,caseKey);});
    sideTotals(format,totals).forEach((v,i)=>{const el=$('#teamTotal'+i);if(el)el.textContent=money(v);});
    await new Promise(r=>setTimeout(r,220));
  }

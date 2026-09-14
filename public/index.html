@@ -566,6 +566,15 @@ button,input,select{font:inherit}button{cursor:pointer}.noise{position:fixed;ins
 @media (prefers-reduced-motion:reduce){.catalog-case,.catalog-case *{transition-duration:.01ms!important;animation-duration:.01ms!important;}}
 </style>
 
+
+<style id="battle-rejoin-style">
+#battleRejoinBtn{position:fixed;right:22px;bottom:22px;z-index:9998;display:none;align-items:center;gap:10px;padding:13px 18px;border:1px solid #ff994c;border-radius:12px;background:linear-gradient(180deg,#ff8b40,#d95a2b);color:#fff;font:900 12px/1.1 Arial,sans-serif;letter-spacing:.06em;box-shadow:0 14px 38px rgba(0,0,0,.42),0 0 26px rgba(255,112,53,.24);cursor:pointer}
+#battleRejoinBtn.show{display:flex;animation:battleRejoinPop .22s ease}
+#battleRejoinBtn small{display:block;font-size:8px;opacity:.78;letter-spacing:.12em;margin-top:3px;text-align:left}
+#battleRejoinBtn .rejoin-icon{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:rgba(0,0,0,.18);font-size:17px}
+@keyframes battleRejoinPop{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
+@media(max-width:650px){#battleRejoinBtn{right:12px;bottom:12px;max-width:calc(100vw - 24px)}}
+</style>
 </head>
 <body data-build="battle-v2">
 <div class="noise"></div>
@@ -1684,16 +1693,109 @@ function record(game,detail,delta,won){
 function spend(amount){ amount=Number(amount); if(!Number.isFinite(amount)||amount<=0) return false; if(state.balance<amount){ toast('Ikke nok Scrap'); return false; } state.balance-=amount; update(); return true; }
 function toast(t){ const el=$('#toast'); el.textContent=t; el.classList.add('show'); clearTimeout(window.tt); window.tt=setTimeout(()=>el.classList.remove('show'),1800); }
 
+// Battle return / rejoin view. Closing the arena no longer destroys an active battle.
+let activeBattleView=false;
+let activeBattleRunning=false;
+let activeBattleSnapshot='';
+let activeBattleContext=null;
+const battleRejoinBtn=document.createElement('button');
+battleRejoinBtn.id='battleRejoinBtn';
+battleRejoinBtn.type='button';
+document.body.appendChild(battleRejoinBtn);
+
+function saveCompletedBattleSnapshot(){
+  if(!activeBattleSnapshot)return;
+  try{
+    sessionStorage.setItem('nightcampLastBattleView',JSON.stringify({
+      html:activeBattleSnapshot,
+      title:$('#arenaTitle')?.textContent||'CRATE BATTLES',
+      kicker:$('#arenaKicker')?.textContent||'PVP-STYLE',
+      savedAt:Date.now()
+    }));
+  }catch(err){console.warn('Could not save last battle view',err);}
+}
+function loadCompletedBattleSnapshot(){
+  try{
+    const raw=sessionStorage.getItem('nightcampLastBattleView');
+    if(!raw)return;
+    const saved=JSON.parse(raw);
+    if(!saved?.html)return;
+    activeBattleSnapshot=saved.html;
+    activeBattleView=true;
+    activeBattleRunning=false;
+    activeBattleContext={title:saved.title||'CRATE BATTLES',kicker:saved.kicker||'PVP-STYLE',completed:true};
+  }catch{}
+}
+function updateBattleRejoinButton(){
+  const hidden=!activeBattleView||overlay.classList.contains('open');
+  battleRejoinBtn.classList.toggle('show',!hidden);
+  if(hidden)return;
+  battleRejoinBtn.innerHTML=activeBattleRunning
+    ? '<span class="rejoin-icon">↩</span><span>RETURN TO BATTLE<small>BATTLE IS STILL RUNNING</small></span>'
+    : '<span class="rejoin-icon">↩</span><span>VIEW LAST BATTLE<small>OPEN THE RESULT AGAIN</small></span>';
+}
+function beginBattleReturnView(context={}){
+  activeBattleView=true;
+  activeBattleRunning=true;
+  activeBattleSnapshot='';
+  activeBattleContext={...context,completed:false};
+  try{sessionStorage.removeItem('nightcampLastBattleView');}catch{}
+  updateBattleRejoinButton();
+}
+function completeBattleReturnView(){
+  activeBattleView=true;
+  activeBattleRunning=false;
+  activeBattleSnapshot=body.innerHTML;
+  activeBattleContext={...(activeBattleContext||{}),completed:true,title:$('#arenaTitle')?.textContent,kicker:$('#arenaKicker')?.textContent};
+  saveCompletedBattleSnapshot();
+  updateBattleRejoinButton();
+}
+function restoreCompletedBattleView(){
+  if(!activeBattleSnapshot)return false;
+  body.innerHTML=activeBattleSnapshot;
+  $('#arenaKicker').textContent=activeBattleContext?.kicker||'PVP-STYLE';
+  $('#arenaTitle').textContent=activeBattleContext?.title||'CRATE BATTLES';
+  const back=$('#backToSelector');
+  if(back)back.onclick=()=>renderBattle();
+  const backOnline=$('#backOnlineCases');
+  if(backOnline)backOnline.onclick=()=>renderBattle();
+  const start=$('#startBattle');
+  if(start){start.disabled=true;start.textContent='BATTLE COMPLETE';}
+  return true;
+}
+function returnToBattleView(){
+  if(!activeBattleView)return;
+  if(!activeBattleRunning)restoreCompletedBattleView();
+  overlay.classList.add('open');
+  overlay.setAttribute('aria-hidden','false');
+  updateBattleRejoinButton();
+}
+function closeArenaWithBattleReturn(){
+  overlay.classList.remove('open');
+  overlay.setAttribute('aria-hidden','true');
+  updateBattleRejoinButton();
+}
+battleRejoinBtn.onclick=returnToBattleView;
+
 function openGame(type){
+ if(activeBattleRunning){
+   if(type==='battle'){returnToBattleView();return;}
+   toast('Du har en aktiv battle — brug RETURN TO BATTLE først');
+   updateBattleRejoinButton();
+   return;
+ }
  overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false');
  const titles={battle:['PVP-STYLE','CRATE BATTLES'],mines:['TACTICAL','MINE GRID'],wheel:['MULTIPLIER','SCRAP WHEEL'],upgrader:['RISK / REWARD','UPGRADER'],unbox:['LOOT TABLE','CASE OPENING']};
  $('#arenaKicker').textContent=titles[type][0]; $('#arenaTitle').textContent=titles[type][1]; update();
  ({battle:renderBattle,mines:renderMines,wheel:renderWheel,upgrader:renderUpgrader,unbox:renderUnbox})[type]();
+ updateBattleRejoinButton();
 }
 $$('[data-game]').forEach(b=>b.addEventListener('click',()=>openGame(b.dataset.game)));
-$('#closeArena').onclick=()=>overlay.classList.remove('open');
-overlay.onclick=e=>{ if(e.target===overlay) overlay.classList.remove('open'); };
-document.addEventListener('keydown',e=>{ if(e.key==='Escape') overlay.classList.remove('open'); });
+$('#closeArena').onclick=closeArenaWithBattleReturn;
+overlay.onclick=e=>{ if(e.target===overlay) closeArenaWithBattleReturn(); };
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&overlay.classList.contains('open')) closeArenaWithBattleReturn(); });
+loadCompletedBattleSnapshot();
+updateBattleRejoinButton();
 $('#resetBalance').onclick=()=>{ toast('Din online Scrap-balance gemmes på serveren og kan ikke resettes.'); };
 
 $('#adminAccess').onclick=()=>openAdminPanel();
@@ -2405,7 +2507,7 @@ function showBattleArena(selected,settings){
    <div class="history-grid-wrap compact-histories dynamic-history" style="--player-count:${format.players}">${Array.from({length:format.players},(_,i)=>`<div class="history-column" id="hist${i}"></div>`).join('')}</div>
    <div id="battleResult"></div>
  </div>`;
- $('#backToSelector').onclick=renderBattle;
+ $('#backToSelector').onclick=()=>{if(activeBattleRunning){closeArenaWithBattleReturn();return;}renderBattle();};
  $('#startBattle').onclick=()=>runSelectedBattle(selected,settings).catch(err=>{console.error(err);const s=$('#battleRoundStatus');if(s)s.textContent='BATTLE ERROR · '+(err?.message||err);const b=$('#startBattle');if(b){b.disabled=false;b.textContent='RETRY BATTLE';}toast('Battle-fejl: '+(err?.message||err));});
  for(let i=0;i<format.players;i++)previewSpinVertical($('#track'+i),first);
  for(let i=0;i<format.players;i++)$('#hist'+i).innerHTML=selected.map((_,r)=>battleHistoryPlaceholder(r)).join('');
@@ -2413,6 +2515,7 @@ function showBattleArena(selected,settings){
 async function runSelectedBattle(selected,settings){
  const format=battleFormats[settings.format],entry=selected.reduce((sum,key)=>sum+cases[key].price,0);
  if(!spend(entry))return;
+ beginBattleReturnView({kind:'local',selected:[...selected],settings:{...settings},title:$('#arenaTitle')?.textContent,kicker:$('#arenaKicker')?.textContent});
  const btn=$('#startBattle');btn.disabled=true;btn.textContent='SPINNING...';
  if((settings.rule==='jackpot'||settings.rule==='cursedjackpot')&&$('#jackpotPanel'))$('#jackpotPanel').innerHTML=jackpotWaitingHTML(settings);
  const totals=Array(format.players).fill(0);let lastDrops=Array(format.players).fill(null);
@@ -2450,6 +2553,7 @@ async function runSelectedBattle(selected,settings){
  $('#battleResult').innerHTML=`<div class="battle-result ${resultClass}"><h3>${text}</h3><span>${battleRules[settings.rule].label} · ${resolution.note}<br>${sideSummary}</span></div>`;
  state.games++;if(delta>state.biggest)state.biggest=delta;state.history.unshift({time:new Date().toLocaleTimeString('da-DK',{hour:'2-digit',minute:'2-digit'}),game:'Crate Battle',detail:`${settings.format} · ${battleRules[settings.rule].label} · ${selected.length} cases`,delta});update();
  btn.disabled=false;btn.textContent='REPLAY BATTLE';
+ completeBattleReturnView();
 }
 
 
@@ -2458,6 +2562,7 @@ async function startNetworkBattle(payload){
  if(!selected.length)return toast('Online room has no cases');
  room.players.forEach((pl,i)=>{if(battlePlayers[i]){battlePlayers[i].name=pl.name;battlePlayers[i].short=(pl.name||'?').slice(0,1).toUpperCase();}});
  showBattleArena(selected,settings);
+ beginBattleReturnView({kind:'online',roomCode:room.code,selected:[...selected],settings:{...settings},title:$('#arenaTitle')?.textContent,kicker:$('#arenaKicker')?.textContent});
  const btn=$('#startBattle');if(btn)btn.style.display='none';
  const back=$('#backToSelector');if(back)back.textContent=`← ONLINE ROOM ${room.code}`;
  const localSeat=room.players.findIndex(p=>p.id===mpSocket.id);
@@ -2500,6 +2605,7 @@ async function runNetworkBattle(selected,settings,seed,localSeat,room,settlement
  if(paid){state.games++;if(delta>state.biggest)state.biggest=delta;state.history.unshift({time:new Date().toLocaleTimeString('da-DK',{hour:'2-digit',minute:'2-digit'}),game:'Online Battle',detail:`${room.code} · ${settings.format} · ${battleRules[settings.rule].label}`,delta});update();}
  const ret=$('#returnOnlineLobby');if(ret)ret.onclick=()=>mpSocket.emit('battle:returnLobby');
  const back=$('#backOnlineCases');if(back)back.onclick=()=>renderBattle();
+ completeBattleReturnView();
 }
 
 let mineGame=null;

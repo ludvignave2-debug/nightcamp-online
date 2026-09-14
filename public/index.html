@@ -683,8 +683,32 @@ body{background:#06090b!important}
 .case-battle-ui .mimic-reel.reel-tick .reel-marker{animation:none!important}
 @media (prefers-reduced-motion:reduce){.case-battle-ui *{scroll-behavior:auto!important}}
 </style>
+
+<style id="nc-battle-turbo-v2">
+/* NIGHTCAMP Battle Turbo V2 — keep everything outside the active battle out of the paint/composite tree. */
+body.nc-battle-focus{overflow:hidden!important;background:#050812!important}
+body.nc-battle-focus>header,body.nc-battle-focus>main,body.nc-battle-focus>footer,body.nc-battle-focus>.noise{visibility:hidden!important;pointer-events:none!important}
+body.nc-battle-focus #overlay{background:#050812!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+body.nc-battle-focus #overlay .arena{box-shadow:none!important;contain:layout paint style;transform:translateZ(0);backface-visibility:hidden}
+body.nc-battle-focus .case-battle-ui .scene-room{background:linear-gradient(180deg,#090d1b,#050812)!important}
+body.nc-battle-focus .case-battle-ui .scene-room:before{box-shadow:none!important;opacity:.7!important}
+body.nc-battle-focus .case-battle-ui .mimic-reel{box-shadow:none!important;background:#080d1d!important;contain:layout paint style!important}
+body.nc-battle-focus .case-battle-ui .mimic-reel:before,body.nc-battle-focus .case-battle-ui .mimic-reel:after{box-shadow:none!important}
+body.nc-battle-focus .case-battle-ui .mimic-reel .reel-marker{box-shadow:none!important}
+body.nc-battle-focus .case-battle-ui .reel-track{filter:none!important;animation:none!important;will-change:transform!important;transform-style:flat!important}
+body.nc-battle-focus .case-battle-ui .reel-cell.nc-fast-cell{height:166px!important;flex:0 0 166px!important;width:88%!important;min-width:88%!important;padding:8px 8px 28px!important;border-radius:11px!important;background:#11172d!important;border:1px solid #29335d!important;box-shadow:none!important;overflow:hidden!important}
+body.nc-battle-focus .case-battle-ui .reel-cell.nc-fast-cell .skin-art.battle{height:112px!important;width:min(170px,94%)!important;margin:0 auto!important}
+body.nc-battle-focus .case-battle-ui .reel-cell.nc-fast-cell .skin-art img{filter:none!important;max-height:108px!important}
+body.nc-battle-focus .case-battle-ui .reel-cell.nc-fast-cell .skin-pattern{display:none!important}
+body.nc-battle-focus .case-battle-ui .reel-cell.nc-fast-cell .reel-price{bottom:5px!important;box-shadow:none!important}
+body.nc-battle-focus .case-battle-ui .nc-fast-name{position:absolute;left:7px;right:7px;bottom:27px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;font-size:9px;font-weight:900;color:#e7ebff;text-shadow:none}
+body.nc-battle-focus .case-battle-ui .history-drop{box-shadow:none!important;content-visibility:auto!important;contain:layout paint style!important;contain-intrinsic-size:164px!important}
+body.nc-battle-focus .case-battle-ui .participant-tag,body.nc-battle-focus .case-battle-ui .lane-total,body.nc-battle-focus .case-battle-ui .team-score{box-shadow:none!important}
+body.nc-battle-focus .case-battle-ui .rl-card-atmosphere,body.nc-battle-focus .case-battle-ui .rl-card-glow{display:none!important}
+@media(max-width:980px){body.nc-battle-focus .case-battle-ui .reel-cell.nc-fast-cell{height:154px!important;flex-basis:154px!important}}
+</style>
 </head>
-<body data-build="battle-v2">
+<body data-build="battle-turbo-v2">
 <div class="noise"></div>
 
 <header class="topbar">
@@ -821,6 +845,26 @@ const state={balance:100,games:0,wins:0,biggest:0,battleWins:0,history:[]};
 const overlay=$('#overlay'), body=$('#arenaBody');
 const REEL_CELL=130, REEL_GAP=8;
 const V_REEL_CELL=170, V_REEL_GAP=22;
+
+function setBattlePerformanceFocus(on){
+ document.body.classList.toggle('nc-battle-focus',!!on);
+ overlay.classList.toggle('nc-battle-focus-overlay',!!on);
+}
+function battleFastReelCellHTML(item,winner=false){
+ return `<div class="reel-cell nc-fast-cell rarity-${item.rarity||'common'} ${winner?'winner':''}">${skinArtHTML(item,'battle')}<div class="nc-fast-name">${item.name}</div><div class="reel-price"><small>⚙</small>${money(item.value)}</div></div>`;
+}
+function appendBattleHistoryLimited(playerIndex,round,drop,caseKey,limit=6){
+ const col=$('#hist'+playerIndex); if(!col)return;
+ col.insertAdjacentHTML('beforeend',battleHistoryCardHTML(round,drop,caseKey));
+ while(col.children.length>limit) col.firstElementChild?.remove();
+}
+window.__ncLastBattleHistory=null;
+function renderFullBattleHistoryFromCache(){
+ const cache=window.__ncLastBattleHistory; if(!cache?.players)return;
+ cache.players.forEach((rows,idx)=>{const col=$('#hist'+idx);if(col)col.innerHTML=rows.map(r=>battleHistoryCardHTML(r.round,r.drop,r.caseKey)).join('');});
+ const btn=$('#showAllBattleDrops');if(btn){btn.disabled=true;btn.textContent='ALL DROPS SHOWN';}
+}
+
 
 const ASSETS={
   'case-pocket':'data:image/webp;base64,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',
@@ -1867,6 +1911,7 @@ function restoreCompletedBattleView(){
 }
 function returnToBattleView(){
   if(!activeBattleView)return;
+  setBattlePerformanceFocus(true);
   const completed=!activeBattleRunning;
   if(completed)restoreCompletedBattleView();
   overlay.classList.add('open');
@@ -1875,6 +1920,7 @@ function returnToBattleView(){
   else updateBattleRejoinButton();
 }
 function closeArenaWithBattleReturn(){
+  setBattlePerformanceFocus(false);
   overlay.classList.remove('open');
   overlay.setAttribute('aria-hidden','true');
   updateBattleRejoinButton();
@@ -2054,10 +2100,8 @@ function verticalSpinDistance(trackEl,stopIndex){
 function mountSpinVertical(trackEl,sequence,center=false){
  if(!trackEl) return;
  trackEl.style.transition='none';
- trackEl.innerHTML=sequence.items.map((item,i)=>reelCellHTML(item,i===sequence.stopIndex)).join('');
+ trackEl.innerHTML=sequence.items.map((item,i)=>battleFastReelCellHTML(item,i===sequence.stopIndex)).join('');
  trackEl.style.transform='translateY(0px)';
- // Force layout so Safari has real cell positions before centering.
- void trackEl.offsetHeight;
  if(center){
    const distance=verticalSpinDistance(trackEl,sequence.stopIndex);
    trackEl.style.transform=`translateY(-${distance}px)`;
@@ -2111,9 +2155,9 @@ function animateSpinVertical(trackEl,sequence,duration=3800){
          if(landedRarity==='epic'||landedRarity==='legendary'){
            fireRarityPullFX(win,landedRarity);
          }
-         setTimeout(()=>win.classList.remove('winner-reveal'),1500);
+         setTimeout(()=>win.classList.remove('winner-reveal'),950);
        }
-       setTimeout(()=>viewport?.classList.remove('reel-landed'),1600);
+       setTimeout(()=>viewport?.classList.remove('reel-landed'),1050);
      }catch{}
      resolve();
    },duration+220);
@@ -2393,6 +2437,7 @@ function renderRuleButtons(){
  return Object.entries(battleRules).map(([key,r])=>`<button class="rule-pill ${battleSettings.rule===key?'active':''}" data-rule="${key}"><b>${r.label}</b><small>${r.desc}</small></button>`).join('');
 }
 function renderBattle(){
+ setBattlePerformanceFocus(false);
  battleSelection=[];
  body.innerHTML=`<div class="battle-builder">
    <div class="mp-panel"><input id="mpName" value="${mpLastName}" placeholder="Your name"><button class="mp-create" id="mpCreate">CREATE ONLINE BATTLE</button><input id="mpCode" maxlength="6" placeholder="ROOM CODE"><button id="mpJoin">JOIN BATTLE</button><div class="mp-status" id="mpStatus">Connecting account… New players start with 100 Scrap · winnings can take your balance above 100.</div><div class="mp-room-card hidden" id="mpRoomCard"></div></div>
@@ -2681,6 +2726,7 @@ async function animateJackpotDraw(format,resolution,settings){
  await new Promise(r=>setTimeout(r,1100));
 }
 function showBattleArena(selected,settings){
+ setBattlePerformanceFocus(true);
  const format=battleFormats[settings.format],first=selected[0],entry=selected.reduce((sum,key)=>sum+cases[key].price,0),pot=entry*format.players;
  const teamMode=format.teams.some(t=>t.length>1);
  body.innerHTML=`<div class="game-ui battle-ui mimic-ui case-battle-ui players-${format.players}">
@@ -2731,6 +2777,7 @@ async function runSelectedBattle(selected,settings){
  const btn=$('#startBattle');btn.disabled=true;btn.textContent='SPINNING...';
  if((settings.rule==='jackpot'||settings.rule==='cursedjackpot')&&$('#jackpotPanel'))$('#jackpotPanel').innerHTML=jackpotWaitingHTML(settings);
  const totals=Array(format.players).fill(0);let lastDrops=Array(format.players).fill(null);
+ const fullBattleHistory=Array.from({length:format.players},()=>[]);
  for(let i=0;i<format.players;i++)$('#total'+i).textContent='0.00';
  for(let i=0;i<format.players;i++)$('#hist'+i).innerHTML='';
  format.teams.forEach((_,i)=>{const el=$('#teamTotal'+i);if(el)el.textContent='0.00';});
@@ -2741,11 +2788,12 @@ async function runSelectedBattle(selected,settings){
    const battleCaseBanner=$('#battleCaseBanner');if(battleCaseBanner)battleCaseBanner.dataset.currentKey=caseKey;
    $('#bannerSelections').innerHTML=battleSelectionWindowHTML(selected,round);
    const drops=Array.from({length:format.players},()=>drawLoot(caseKey));lastDrops=drops;
-   const seqs=drops.map(drop=>buildSpinSequence(caseKey,drop,14,9));
-   await Promise.allSettled(seqs.map((seq,i)=>Promise.resolve().then(()=>animateSpinVertical($('#track'+i),seq,2650+i*70))));
+   const seqs=drops.map(drop=>buildSpinSequence(caseKey,drop,9,6));
+   await Promise.allSettled(seqs.map((seq,i)=>Promise.resolve().then(()=>animateSpinVertical($('#track'+i),seq,1900+i*35))));
    drops.forEach((drop,idx)=>{
      totals[idx]+=drop.value;$('#total'+idx).textContent=money(totals[idx]);
-     $('#hist'+idx).insertAdjacentHTML('beforeend',battleHistoryCardHTML(round,drop,caseKey));
+     fullBattleHistory[idx].push({round,drop,caseKey});
+     appendBattleHistoryLimited(idx,round,drop,caseKey,6);
    });
    const teamVals=sideTotals(format,totals);
    teamVals.forEach((v,i)=>{const el=$('#teamTotal'+i);if(el)el.textContent=money(v);});
@@ -2760,9 +2808,10 @@ async function runSelectedBattle(selected,settings){
  else{text=`${format.teams[resolution.winner].length>1?'TEAM '+String.fromCharCode(65+resolution.winner):battlePlayers[winningTeam[0]].name.toUpperCase()} WINS —${money(entry)} SCRAP`;}
  const sideSummary=format.teams.map((team,i)=>`${team.length>1?'Team '+String.fromCharCode(65+i):battlePlayers[team[0]].name}: ${money(resolution.sideVals[i])}`).join(' · ');
  if($('#battleRoundStatus')) $('#battleRoundStatus').textContent='BATTLE COMPLETE';
+ window.__ncLastBattleHistory={players:fullBattleHistory};
  const battlePotEl=$('#battlePot'); if(battlePotEl) battlePotEl.textContent=money(pot);
  const battlePotHint=$('#battlePotHint'); if(battlePotHint) battlePotHint.textContent=format.teams.some(t=>t.length>1)?'Team pool':'Free-for-all pool';
- $('#battleResult').innerHTML=`<div class="battle-result ${resultClass}"><h3>${text}</h3><span>${battleRules[settings.rule].label} · ${resolution.note}<br>${sideSummary}</span><div class="battle-finish-actions"><button id="battleFinishBack" type="button">← BACK TO CASES</button></div></div>`;
+ $('#battleResult').innerHTML=`<div class="battle-result ${resultClass}"><h3>${text}</h3><span>${battleRules[settings.rule].label} · ${resolution.note}<br>${sideSummary}</span><div class="battle-finish-actions"><button id="battleFinishBack" type="button">← BACK TO CASES</button>${selected.length>6?'<button id="showAllBattleDrops" type="button" onclick="renderFullBattleHistoryFromCache()">SHOW ALL DROPS</button>':''}</div></div>`;
  const finishBack=$('#battleFinishBack'); if(finishBack) finishBack.onclick=()=>{clearCompletedBattleReturnView();renderBattle(); if(body?.scrollTo) body.scrollTo({top:0,behavior:'smooth'});};
  setTimeout(()=>$('#battleResult')?.scrollIntoView({behavior:'smooth',block:'center'}),180);
  state.games++;if(delta>state.biggest)state.biggest=delta;state.history.unshift({time:new Date().toLocaleTimeString('da-DK',{hour:'2-digit',minute:'2-digit'}),game:'Crate Battle',detail:`${settings.format} · ${battleRules[settings.rule].label} · ${selected.length} cases`,delta});update();
@@ -2786,6 +2835,7 @@ async function runNetworkBattle(selected,settings,seed,localSeat,room,settlement
  const format=battleFormats[settings.format],entry=selected.reduce((sum,key)=>sum+cases[key].price,0),rng=mulberry32(seed>>>0);
  const paid=localSeat>=0;
  const totals=Array(format.players).fill(0);let lastDrops=Array(format.players).fill(null);
+ const fullBattleHistory=Array.from({length:format.players},()=>[]);
  for(let i=0;i<format.players;i++)$('#total'+i).textContent='0.00';
  for(let i=0;i<format.players;i++)$('#hist'+i).innerHTML='';
  format.teams.forEach((_,i)=>{const el=$('#teamTotal'+i);if(el)el.textContent='0.00';});
@@ -2796,9 +2846,9 @@ async function runNetworkBattle(selected,settings,seed,localSeat,room,settlement
    const battleCaseBanner=$('#battleCaseBanner');if(battleCaseBanner)battleCaseBanner.dataset.currentKey=caseKey;
    $('#bannerSelections').innerHTML=battleSelectionWindowHTML(selected,round);
    const drops=Array.from({length:format.players},()=>drawLootWithRng(caseKey,rng));lastDrops=drops;
-   const seqs=drops.map(drop=>buildSpinSequenceWithRng(caseKey,drop,rng,14,9));
-   await Promise.allSettled(seqs.map((seq,i)=>Promise.resolve().then(()=>animateSpinVertical($('#track'+i),seq,2650+i*70))));
-   drops.forEach((drop,idx)=>{totals[idx]+=drop.value;$('#total'+idx).textContent=money(totals[idx]);$('#hist'+idx).insertAdjacentHTML('beforeend',battleHistoryCardHTML(round,drop,caseKey));});
+   const seqs=drops.map(drop=>buildSpinSequenceWithRng(caseKey,drop,rng,9,6));
+   await Promise.allSettled(seqs.map((seq,i)=>Promise.resolve().then(()=>animateSpinVertical($('#track'+i),seq,1900+i*35))));
+   drops.forEach((drop,idx)=>{totals[idx]+=drop.value;$('#total'+idx).textContent=money(totals[idx]);fullBattleHistory[idx].push({round,drop,caseKey});appendBattleHistoryLimited(idx,round,drop,caseKey,6);});
    sideTotals(format,totals).forEach((v,i)=>{const el=$('#teamTotal'+i);if(el)el.textContent=money(v);});
    await new Promise(r=>setTimeout(r,90));
  }
@@ -2813,10 +2863,11 @@ async function runNetworkBattle(selected,settings,seed,localSeat,room,settlement
  const text=userWon?`YOU WIN ${delta>=0?'+':''}${money(delta)} SCRAP`:`${winnerName} WINS ${money(Math.abs(delta))} SCRAP`;
  const sideSummary=format.teams.map((team,i)=>`${team.length>1?'Team '+String.fromCharCode(65+i):battlePlayers[team[0]].name}: ${money(resolution.sideVals[i])}`).join(' · ');
  if($('#battleRoundStatus')) $('#battleRoundStatus').textContent='ONLINE BATTLE COMPLETE';
+ window.__ncLastBattleHistory={players:fullBattleHistory};
  const networkPot=entry*format.players;
  const battlePotEl=$('#battlePot'); if(battlePotEl) battlePotEl.textContent=money(networkPot);
  const battlePotHint=$('#battlePotHint'); if(battlePotHint) battlePotHint.textContent=format.teams.some(t=>t.length>1)?'Team pool':'Free-for-all pool';
- $('#battleResult').innerHTML=`<div class="battle-result ${resultClass}"><h3>${text}</h3><span>ONLINE ROOM ${room.code} · ${battleRules[settings.rule].label}<br>${sideSummary}</span></div><div class="online-room-result">${mpSocket.id===room.hostId?'<button id="returnOnlineLobby">RETURN EVERYONE TO LOBBY</button>':''}<button id="backOnlineCases">BACK TO ONLINE LOBBY</button></div>`;
+ $('#battleResult').innerHTML=`<div class="battle-result ${resultClass}"><h3>${text}</h3><span>ONLINE ROOM ${room.code} · ${battleRules[settings.rule].label}<br>${sideSummary}</span></div><div class="online-room-result">${selected.length>6?'<button id="showAllBattleDrops" type="button" onclick="renderFullBattleHistoryFromCache()">SHOW ALL DROPS</button>':''}${mpSocket.id===room.hostId?'<button id="returnOnlineLobby">RETURN EVERYONE TO LOBBY</button>':''}<button id="backOnlineCases">BACK TO ONLINE LOBBY</button></div>`;
  if(paid){state.games++;if(delta>state.biggest)state.biggest=delta;state.history.unshift({time:new Date().toLocaleTimeString('da-DK',{hour:'2-digit',minute:'2-digit'}),game:'Online Battle',detail:`${room.code} · ${settings.format} · ${battleRules[settings.rule].label}`,delta});update();}
  const ret=$('#returnOnlineLobby');if(ret)ret.onclick=()=>mpSocket.emit('battle:returnLobby');
  const back=$('#backOnlineCases');if(back)back.onclick=()=>{renderBattle(); if(body?.scrollTo) body.scrollTo({top:0,behavior:'smooth'});};

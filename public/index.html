@@ -2920,62 +2920,10 @@ checkAdminAccess().then(()=>{
 
 
 
-// NIGHTCAMP: upgrade visible skin art to the real Rust render when the server has one.
-const skinImageCache = new Map();
-async function getSkinImageUrl(skinName) {
-  if (!skinName) return '';
-  if (skinImageCache.has(skinName)) return skinImageCache.get(skinName);
-  try {
-    const res = await fetch('/api/skin-image-status?name=' + encodeURIComponent(skinName), {cache:'no-store'});
-    const data = await res.json();
-    const url = data && data.ok && data.image ? data.image : '';
-    skinImageCache.set(skinName, url);
-    return url;
-  } catch (err) {
-    console.error('Skin image fejl:', skinName, err);
-    skinImageCache.set(skinName, '');
-    return '';
-  }
-}
-async function applySkinImageToElement(imgEl, skinName, fallback = '') {
-  if (!imgEl || !skinName) return;
-  const url = await getSkinImageUrl(skinName);
-  if (url) imgEl.src = url;
-  else if (fallback) imgEl.src = fallback;
-  imgEl.alt = skinName;
-}
-async function upgradeAllSkinImages() {
-  try {
-    const res = await fetch('/api/cases', { cache: 'no-store' });
-    const caseData = await res.json();
-    const skinNames = new Set();
-    (caseData || []).forEach(c => {
-      (c.items || c.skins || []).forEach(skin => { if (skin.name) skinNames.add(skin.name); });
-    });
-    for (const skinName of skinNames) {
-      const elements = [...document.querySelectorAll('*')].filter(el => {
-        if (el.children.length > 3) return false;
-        return el.textContent?.trim() === skinName;
-      });
-      for (const nameEl of elements) {
-        let card = nameEl;
-        for (let i = 0; i < 6 && card; i++) {
-          const img = card.querySelector?.('img');
-          if (img) { await applySkinImageToElement(img, skinName, img.src); break; }
-          card = card.parentElement;
-        }
-      }
-    }
-  } catch (err) {
-    console.error('Kunne ikke opgradere skin billeder:', err);
-  }
-}
-const skinObserver = new MutationObserver(() => {
-  clearTimeout(window.__skinImageTimer);
-  window.__skinImageTimer = setTimeout(() => upgradeAllSkinImages(), 250);
-});
-skinObserver.observe(document.body, { childList: true, subtree: true });
-window.addEventListener('load', () => upgradeAllSkinImages());
+// NIGHTCAMP PERFORMANCE FIX:
+// Real Rust images are already rendered directly by exactSkinImgHTML() via /api/skin-image.
+// The old whole-page MutationObserver was redundant and caused expensive DOM rescans during every battle roll.
+// It has intentionally been removed so battles stay smooth.
 
 </script>
 </body>

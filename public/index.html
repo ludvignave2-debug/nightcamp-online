@@ -2764,5 +2764,50 @@ checkAdminAccess().then(()=>{
 
 
 </script>
-</body>
+<script>
+const skinImageCache = new Map();
+
+async function getSkinImageUrl(skinName) {
+  if (!skinName) return '';
+
+  if (skinImageCache.has(skinName)) {
+    return skinImageCache.get(skinName);
+  }
+
+  try {
+    const res = await fetch(
+      '/api/skin-image-status?name=' + encodeURIComponent(skinName)
+    );
+
+    const data = await res.json();
+
+    const url =
+      data && data.ok && data.image
+        ? data.image
+        : '';
+
+    skinImageCache.set(skinName, url);
+
+    return url;
+  } catch (err) {
+    console.error('Skin image fejl:', skinName, err);
+    skinImageCache.set(skinName, '');
+    return '';
+  }
+}
+
+async function applySkinImageToElement(imgEl, skinName, fallback = '') {
+  if (!imgEl || !skinName) return;
+
+  const url = await getSkinImageUrl(skinName);
+
+  if (url) {
+    imgEl.src = url;
+  } else if (fallback) {
+    imgEl.src = fallback;
+  }
+
+  imgEl.alt = skinName;
+}
+</script></body>
 </html>

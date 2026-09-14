@@ -614,6 +614,49 @@ footer{background:#05080a}
 @media(max-width:620px){.topbar{padding:0 14px;gap:12px}.topbar nav{display:none}.wallet{padding:6px 8px}.reset{display:none}.hero{height:670px}.hero-copy{padding-top:76px}.hero h1{font-size:66px}.hero p{font-size:13px;max-width:94%}.hero-actions{flex-wrap:wrap}.hero-meta{flex-direction:column;gap:5px}.hero-meta span{min-width:0}.games{grid-template-columns:1fr}.battle-card{grid-column:span 1}.heading{align-items:flex-start;flex-direction:column}.hero-cinematic-art{opacity:.32;background-position:68% center}}
 
 </style>
+
+<style id="nightcamp-home-v3-exact">
+/* NIGHTCAMP HOME V3 — close implementation of the cinematic reference */
+:root{--nc3-orange:#ff6b32;--nc3-orange2:#ff8b55;--nc3-bg:#070b0e;--nc3-panel:#0c1216;--nc3-line:rgba(153,181,194,.18)}
+body{background:#06090b!important}
+.topbar{height:72px!important;padding:0 40px!important;background:rgba(4,8,11,.965)!important;border-bottom:1px solid rgba(138,168,182,.16)!important;box-shadow:0 12px 38px rgba(0,0,0,.32)!important;backdrop-filter:blur(14px)}
+.brand{font-size:22px!important}.brand .mark{width:38px!important;height:38px!important;clip-path:polygon(50% 0,90% 20%,90% 80%,50% 100%,10% 80%,10% 20%);border-radius:0!important;background:linear-gradient(145deg,#ff8149,#d94c22)!important;color:#101113!important}.brand em{color:#ff8350!important}
+.topbar nav{gap:32px!important}.topbar nav a{font-size:11px!important;color:#aeb7bc!important}.topbar nav a:nth-child(1):before{content:'🎮';margin-right:8px}.topbar nav a:nth-child(2):before{content:'⚔';margin-right:8px}.topbar nav a:nth-child(3):before{content:'♜';margin-right:8px}
+.wallet{margin-left:auto!important;min-width:175px!important;border:1px solid rgba(255,111,49,.34)!important;border-radius:7px!important;background:linear-gradient(180deg,rgba(29,20,16,.9),rgba(10,13,15,.92))!important;box-shadow:inset 0 0 24px rgba(255,103,43,.06),0 0 22px rgba(255,88,24,.05)!important}.wallet span{font-size:7px!important}.wallet b{font-size:13px!important}.wallet b:before{content:'◉';color:#ff753c;margin-right:6px}.reset{width:38px!important;min-width:38px!important;padding:0!important;font-size:0!important;border:1px solid rgba(255,116,61,.38)!important;background:linear-gradient(180deg,#7b2b16,#4a180e)!important}.reset:after{content:'+';font-size:20px;color:#fff}.admin-access{height:44px!important;padding:0 24px!important;border:1px solid rgba(168,94,255,.65)!important;background:linear-gradient(180deg,rgba(74,37,112,.42),rgba(32,19,51,.72))!important;color:#fff!important;border-radius:5px!important}.admin-access:before{content:'♛';margin-right:8px}
+
+.hero{height:560px!important;max-height:none!important;overflow:hidden!important;background:#071016!important;border-bottom:1px solid rgba(137,166,178,.16)!important}
+.hero-cinematic-art{width:66%!important;height:100%!important;right:0!important;background-position:center 48%!important;background-size:cover!important;opacity:1!important;filter:saturate(1.07) contrast(1.06)!important;transform:none!important}
+.hero-cinematic-art:before{background:linear-gradient(90deg,#071016 0%,rgba(7,16,22,.9) 12%,rgba(7,12,16,.26) 39%,rgba(4,8,11,.03) 70%),linear-gradient(180deg,rgba(2,5,7,.06),rgba(4,7,9,.08) 58%,rgba(4,8,10,.66))!important}
+.hero-cinematic-art:after{background:radial-gradient(circle at 66% 52%,rgba(255,108,38,.12),transparent 30%),linear-gradient(180deg,transparent 70%,rgba(6,10,12,.72))!important;box-shadow:inset 130px 0 120px rgba(5,11,15,.38)!important}
+.hero:before{z-index:1!important;background:linear-gradient(90deg,rgba(4,10,14,.99) 0%,rgba(5,10,14,.97) 29%,rgba(5,9,12,.70) 44%,rgba(3,7,10,.06) 72%)!important}
+.hero:after{opacity:.25!important}
+.hero .grid{opacity:.13!important;mask-image:linear-gradient(90deg,#000 0 45%,transparent 78%)!important}
+.hero-copy{padding-top:50px!important;left:max(6vw,70px)!important;max-width:590px!important}
+.eyebrow{font-size:10px!important;letter-spacing:.24em!important;color:#ff7540!important}.eyebrow:after{width:52px!important}
+.hero h1{font-size:clamp(70px,7.2vw,104px)!important;line-height:.83!important;margin:14px 0 18px!important;letter-spacing:-.035em!important;text-transform:uppercase!important;font-weight:1000!important}.hero h1 strong{color:#ff7540!important;text-shadow:0 0 26px rgba(255,100,42,.10)!important}
+.hero p{font-size:13px!important;line-height:1.58!important;max-width:520px!important;color:#aeb9be!important}
+.hero-actions{margin-top:20px!important}.hero-actions .primary,.hero-actions .secondary{height:48px!important;display:inline-flex!important;align-items:center!important;font-size:10px!important;letter-spacing:.09em!important}.hero-actions .primary{padding:0 20px!important;border-radius:5px!important;box-shadow:0 0 24px rgba(255,87,25,.20),0 12px 30px rgba(0,0,0,.26)!important}.hero-actions .primary:before{content:'▣';font-size:16px;margin-right:12px}.hero-actions .secondary{padding:0 20px!important}
+.hero-meta{margin-top:23px!important;display:flex!important;gap:26px!important}.hero-meta span{min-width:0!important;padding:0!important;border:0!important;background:none!important;font-size:9px!important;color:#aab5ba!important}.hero-meta span:before{color:#ff7540;margin-right:8px}.hero-meta span:nth-child(1):before{content:'⬡'}.hero-meta span:nth-child(2):before{content:'◎'}.hero-meta span:nth-child(3):before{content:'♟'}
+.hero-art-badge{display:none!important}
+
+#games{padding:28px 0 24px!important;background:linear-gradient(180deg,#0a1115,#070b0e)!important;border-bottom:1px solid rgba(140,167,179,.12)!important}
+#games .heading{margin-bottom:16px!important;align-items:flex-end!important}.heading .kicker{font-size:9px!important;letter-spacing:.24em!important;color:#ff7341!important}.heading h2{font-size:44px!important;margin-top:2px!important}.heading p{font-size:10px!important;max-width:400px!important;line-height:1.55!important}
+.games{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:10px!important}
+.game{min-height:166px!important;height:166px!important;border-radius:5px!important;overflow:hidden!important;background:linear-gradient(180deg,#121a1f,#0a1014)!important;border:1px solid rgba(141,169,181,.18)!important;box-shadow:0 10px 24px rgba(0,0,0,.25)!important;display:flex!important;flex-direction:column!important}.game:hover{transform:translateY(-3px)!important;border-color:rgba(255,110,53,.42)!important;box-shadow:0 15px 32px rgba(0,0,0,.34),0 0 24px rgba(255,91,32,.07)!important}.battle-card{grid-column:auto!important;background:linear-gradient(180deg,#1a1715,#0a1014)!important}
+.game .tag{font-size:7px!important;padding:5px 8px!important;z-index:3!important;top:7px!important;left:auto!important;right:7px!important}
+.game .visual{height:96px!important;min-height:96px!important;border-bottom:1px solid rgba(137,166,179,.10)!important;background:radial-gradient(circle at 50% 70%,rgba(255,102,38,.15),transparent 58%),linear-gradient(180deg,#151e23,#0b1014)!important;overflow:hidden!important}.game .visual:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(4,8,10,.7))}
+.game .copy{padding:9px 12px 11px!important;position:relative!important;flex:1!important}.game .copy small{display:none!important}.game .copy h3{font-size:14px!important;margin:0 0 5px!important}.game .copy p{font-size:8px!important;line-height:1.28!important;margin:0 26px 0 0!important;color:#88959a!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.game .copy button{position:absolute!important;right:9px!important;bottom:9px!important;width:26px!important;height:26px!important;padding:0!important;border:1px solid rgba(185,205,214,.25)!important;border-radius:50%!important;background:#10181c!important;font-size:0!important}.game .copy button b{font-size:12px!important}.game .copy button:hover{border-color:#ff7440!important;color:#ff7440!important}
+.crate-visual .crate{transform:scale(.58)!important}.crate-visual .crate:first-child{margin-left:-26px!important}.crate-visual .crate.alt{margin-left:24px!important}.crate-visual .vs{font-size:12px!important}.mini-grid{transform:scale(.66)!important}.wheel{transform:scale(.66)!important}.up-visual span{font-size:56px!important}.unbox-visual .crate{transform:scale(.62)!important}
+
+/* Add a true fifth visual card style and home stats bar */
+#homeFeatureStrip{padding:14px 0 16px;background:linear-gradient(180deg,#080d10,#06090b);border-top:1px solid rgba(141,168,179,.10);border-bottom:1px solid rgba(141,168,179,.10)}
+.home-feature-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0}.home-feature{display:flex;gap:12px;align-items:center;min-height:48px;padding:5px 26px;border-right:1px solid rgba(150,176,187,.13)}.home-feature:last-child{border-right:0}.home-feature .ico{color:#ff7540;font-size:23px}.home-feature b{display:block;color:#eef3f4;font-size:16px;letter-spacing:.02em}.home-feature span{font-size:7px;color:#7e8b91;letter-spacing:.14em;text-transform:uppercase}
+#leaderboard{padding:42px 0 54px!important}.history{margin-top:18px!important}.stats{grid-template-columns:repeat(4,1fr)!important}.stats>div{min-height:82px!important}
+
+@media(max-width:1100px){.games{grid-template-columns:repeat(3,1fr)!important}.game{height:176px!important}.hero-cinematic-art{width:72%!important}.hero-copy{left:42px!important}.home-feature-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.topbar{padding:0 14px!important}.topbar nav{display:none!important}.admin-access{padding:0 12px!important}.hero{height:650px!important}.hero-cinematic-art{width:100%!important;opacity:.38!important}.hero:before{background:linear-gradient(90deg,rgba(4,10,14,.99),rgba(5,10,14,.9) 72%,rgba(3,7,10,.45))!important}.hero-copy{left:20px!important;right:20px!important;padding-top:70px!important}.hero h1{font-size:62px!important}.hero-meta{flex-direction:column!important;gap:7px!important}.games{grid-template-columns:repeat(2,1fr)!important}.heading{align-items:flex-start!important;flex-direction:column!important}.home-feature-grid{grid-template-columns:1fr 1fr}.home-feature{padding:8px 14px}.wallet{min-width:130px!important}.wallet span{display:none}}
+</style>
+
 </head>
 <body data-build="battle-v2">
 <div class="noise"></div>
@@ -645,13 +688,10 @@ footer{background:#05080a}
         <a class="secondary" href="#games">SE ALLE GAMES</a>
       </div>
       <div class="hero-meta">
-        <span>◆ Browser-baseret</span><span>◆ Virtuel balance</span><span>◆ Ingen login nødvendig</span>
+        <span>Browser-baseret</span><span>Virtuel balance</span><span>Ingen login nødvendig</span>
       </div>
     </div>
-    <div class="hero-cinematic-art" aria-hidden="true">
-      <div class="hero-art-glow"></div>
-      <div class="hero-art-badge">GOOD SKINS<br>BETTER NIGHTS</div>
-    </div>
+    <div class="hero-cinematic-art" aria-hidden="true"><div class="hero-art-glow"></div></div>
   </section>
 
   <section class="section shell" id="games">
@@ -659,53 +699,37 @@ footer{background:#05080a}
       <div><span class="kicker">PLAYGROUND</span><h2>SPILBARE MODES</h2></div>
       <p>Vælg cases, battle-type og rule. Online rooms bruger en serverstyret virtuel Scrap-balance.</p>
     </div>
-
     <div class="games">
-      <article class="game battle-card" id="battles">
+      <article class="game" id="cases-card">
         <span class="tag">FEATURED</span>
-        <div class="visual crate-visual"><div class="crate">NC</div><div class="vs">VS</div><div class="crate alt">NC</div></div>
-        <div class="copy">
-          <small>PVP-STYLE / VS BOT</small><h3>CRATE BATTLES</h3>
-          <p>Vælg mellem Rust-inspirerede cases. Begge sider åbner samme case-rækkefølge, og højeste samlede skin-værdi tager den virtuelle pulje.</p>
-          <button data-game="battle">PLAY BATTLE <b>→</b></button>
-        </div>
+        <div class="visual unbox-visual"><div class="crate gold">NC</div></div>
+        <div class="copy"><h3>CASES</h3><p>Åbn Rust-inspirerede cases og jagt sjældne pulls.</p><button data-game="unbox"><b>↗</b></button></div>
       </article>
-
+      <article class="game battle-card" id="battles">
+        <div class="visual crate-visual"><div class="crate">NC</div><div class="vs">VS</div><div class="crate alt">NC</div></div>
+        <div class="copy"><h3>CRATE BATTLES</h3><p>Duel mod andre eller bots i intense case battles.</p><button data-game="battle"><b>↗</b></button></div>
+      </article>
       <article class="game">
         <div class="visual mine-visual"><div class="mini-grid"></div></div>
-        <div class="copy">
-          <small>5 × 5 GRID</small><h3>MINE GRID</h3>
-          <p>Find sikre felter, øg din multiplier og cash out før du rammer en mine.</p>
-          <button data-game="mines">PLAY MINES <b>→</b></button>
-        </div>
+        <div class="copy"><h3>MINE GRID</h3><p>Åbn felter, øg multiplier og cash out før minen.</p><button data-game="mines"><b>↗</b></button></div>
       </article>
-
       <article class="game">
         <div class="visual wheel-visual"><div class="wheel"></div></div>
-        <div class="copy">
-          <small>MULTIPLIER WHEEL</small><h3>SCRAP WHEEL</h3>
-          <p>Vælg indsats og spin efter en tilfældig multiplier.</p>
-          <button data-game="wheel">SPIN WHEEL <b>→</b></button>
-        </div>
+        <div class="copy"><h3>SCRAP WHEEL</h3><p>Vælg din farve og spin efter en multiplier.</p><button data-game="wheel"><b>↗</b></button></div>
       </article>
-
       <article class="game">
         <div class="visual up-visual"><span>↑</span></div>
-        <div class="copy">
-          <small>RISK / REWARD</small><h3>UPGRADER</h3>
-          <p>Vælg target multiplier. Højere mål betyder lavere vinderchance.</p>
-          <button data-game="upgrader">TRY UPGRADE <b>→</b></button>
-        </div>
+        <div class="copy"><h3>UPGRADER</h3><p>Risk dit skin for chancen på en højere værdi.</p><button data-game="upgrader"><b>↗</b></button></div>
       </article>
+    </div>
+  </section>
 
-      <article class="game">
-        <div class="visual unbox-visual"><div class="crate gold">?</div></div>
-        <div class="copy">
-          <small>RUST-STYLE SKINS</small><h3>CASE OPENING</h3>
-          <p>Åbn Primitive, Military, Arctic eller Blackout cases og træk våben/gear-skins fra hver cases egen loot table.</p>
-          <button data-game="unbox">OPEN CASE <b>→</b></button>
-        </div>
-      </article>
+  <section id="homeFeatureStrip">
+    <div class="shell home-feature-grid">
+      <div class="home-feature"><div class="ico">◉</div><div><b>VIRTUAL SCRAP</b><span>Ingen rigtige penge</span></div></div>
+      <div class="home-feature"><div class="ico">⚔</div><div><b>ONLINE BATTLES</b><span>Serverstyrede rooms</span></div></div>
+      <div class="home-feature"><div class="ico">⬡</div><div><b>RUST SKINS</b><span>Cases & pulls</span></div></div>
+      <div class="home-feature"><div class="ico">◆</div><div><b>LIVE SESSION</b><span>Guest-balance gemmes</span></div></div>
     </div>
   </section>
 

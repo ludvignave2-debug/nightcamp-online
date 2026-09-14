@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const http = require('http');
+const https = require('https');
 const crypto = require('crypto');
 const express = require('express');
 const { Server } = require('socket.io');
@@ -72,6 +73,11 @@ function accountPayload(user) {
   return { token: user.token, name: user.name, balance: Number(user.balance.toFixed(2)), games: user.games || 0, wins: user.wins || 0 };
 }
 
+app.get('/api/admin/config', (req, res) => {
+  res.set('Cache-Control', 'no-store');
+  res.json({ ok: true, configured: Boolean(ADMIN_SECRET) });
+});
+
 app.post('/api/admin/login', (req, res) => {
   if (!ADMIN_SECRET) return res.status(503).json({ ok: false, error: 'ADMIN_SECRET mangler på Render.' });
   if (!safeSecretEqual(req.body?.secret)) return res.status(403).json({ ok: false, error: 'Forkert admin-kode.' });
@@ -105,14 +111,76 @@ app.post('/api/admin/scrap', requireAdmin, (req, res) => {
   res.json({ ok: true, account: accountPayload(user) });
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
+const PUBLIC_DIR = path.join(__dirname, 'public');
+const INDEX_FILE = path.join(PUBLIC_DIR, 'index.html');
+
 app.get('/api/cases', (_, res) => {
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   res.set('Pragma', 'no-cache');
   res.set('Expires', '0');
   res.json(cases);
 });
-app.get('/health', (_, res) => res.json({ ok: true, users: Object.keys(users).length, cases: Object.keys(cases).length }));
+
+// Exact Rust/Steam skin previews. Only names that exist in cases.json are accepted.
+const rustSkinNames = new Set(Object.values(cases).flatMap(c => (c.items || []).map(i => String(i.name || '').trim())).filter(Boolean));
+const steamSkinAliases = new Map([
+  ['No Mercy', 'No Mercy SAR'],
+  ['Tempered MP5', 'Tempered Mp5']
+]);
+const skinImageCache = new Map();
+function steamPage(url, depth = 0) {
+  return new Promise((resolve, reject) => {
+    const req = https.get(url, { headers: { 'User-Agent': 'Mozilla/5.0 NIGHTCAMP/1.0', 'Accept': 'text/html,application/xhtml+xml' }, timeout: 7000 }, resp => {
+      if (resp.statusCode >= 300 && resp.statusCode < 400 && resp.headers.location && depth < 2) {
+        resp.resume(); return resolve(steamPage(new URL(resp.headers.location, url).toString(), depth + 1));
+      }
+      if (resp.statusCode !== 200) { resp.resume(); return reject(new Error('Steam status ' + resp.statusCode)); }
+      let body = '';
+      resp.setEncoding('utf8');
+      resp.on('data', chunk => { body += chunk; if (body.length > 1_500_000) req.destroy(new Error('Steam response too large')); });
+      resp.on('end', () => resolve(body));
+    });
+    req.on('timeout', () => req.destroy(new Error('Steam timeout')));
+    req.on('error', reject);
+  });
+}
+app.get('/api/skin-image', async (req, res) => {
+  const requested = String(req.query?.name || '').trim().slice(0, 80);
+  if (!rustSkinNames.has(requested)) return res.status(404).end();
+  const marketName = steamSkinAliases.get(requested) || requested;
+  const cached = skinImageCache.get(marketName);
+  if (cached === false) return res.status(404).end();
+  if (cached) { res.set('Cache-Control', 'public, max-age=86400'); return res.redirect(302, cached); }
+  try {
+    const url = 'https://steamcommunity.com/market/listings/252490/' + encodeURIComponent(marketName) + '?l=english';
+    const page = await steamPage(url);
+    const tag = page.match(/<img[^>]*id=["']market_listing_item_img["'][^>]*>/i)?.[0] || '';
+    let image = tag.match(/\bsrc=["']([^"']+)["']/i)?.[1] || '';
+    image = image.replace(/&amp;/g, '&');
+    if (image.startsWith('//')) image = 'https:' + image;
+    if (!/^https:\/\/[^/]*steamstatic\.com\//i.test(image)) throw new Error('No exact Steam market image');
+    skinImageCache.set(marketName, image);
+    res.set('Cache-Control', 'public, max-age=86400');
+    return res.redirect(302, image);
+  } catch (err) {
+    skinImageCache.set(marketName, false);
+    return res.status(404).end();
+  }
+});
+
+app.get('/health', (_, res) => res.json({
+  ok: true,
+  users: Object.keys(users).length,
+  cases: Object.keys(cases).length,
+  adminConfigured: Boolean(ADMIN_SECRET),
+  frontend: fs.existsSync(INDEX_FILE)
+}));
+
+app.use(express.static(PUBLIC_DIR));
+app.get('/', (req, res) => {
+  if (!fs.existsSync(INDEX_FILE)) return res.status(500).type('text').send('NIGHTCAMP frontend missing: public/index.html');
+  res.sendFile(INDEX_FILE);
+});
 
 const rooms = new Map();
 const formats = {

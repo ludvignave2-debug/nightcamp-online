@@ -380,6 +380,23 @@ button,input,select{font:inherit}button{cursor:pointer}.noise{position:fixed;ins
 .fast-spin-toggle{min-width:112px;border:1px solid #34447a!important;background:#111a34!important;color:#9aa9d4!important;font-weight:900!important;letter-spacing:.08em!important;transition:.18s ease!important}
 .fast-spin-toggle.on{border-color:#ff8a3d!important;background:linear-gradient(180deg,#ff8b45,#e95b25)!important;color:#fff!important;box-shadow:0 0 20px rgba(255,111,45,.28)!important}
 .fast-spin-toggle:hover{transform:translateY(-1px)}
+
+/* === NIGHTCAMP: CASES FIRST -> MODE STEP === */
+.builder-stephead{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px 20px;margin-bottom:14px;background:linear-gradient(135deg,rgba(17,24,52,.96),rgba(10,14,31,.96));border:1px solid #303b72;border-radius:14px;box-shadow:0 16px 34px rgba(0,0,0,.25)}
+.builder-stephead span{font-size:9px;letter-spacing:.22em;color:#ff9658;font-weight:900}.builder-stephead h3{margin:3px 0 0;font-family:"Barlow Condensed",sans-serif;font-size:28px;text-transform:uppercase}.builder-stepbadge{min-width:86px;text-align:center;border:1px solid #48569b;background:#121a3b;color:#b7c3ff;border-radius:999px;padding:8px 12px;font-weight:900;font-size:10px;letter-spacing:.12em}
+.mode-step-page{padding:8px 4px 26px}.mode-step-summary{display:grid;grid-template-columns:minmax(220px,.8fr) 2fr;gap:14px;margin-bottom:14px}.mode-step-total,.mode-step-cases{border:1px solid #303b72;background:linear-gradient(145deg,#111936,#0b1026);border-radius:14px;padding:16px}.mode-step-total span,.mode-step-cases>span{display:block;font-size:8px;letter-spacing:.18em;color:#91a0d3;text-transform:uppercase}.mode-step-total b{display:block;font-family:"Barlow Condensed",sans-serif;font-size:34px;margin-top:5px;color:#fff}.mode-step-total small{color:#ffb260}.mode-step-casechips{display:flex;gap:8px;overflow:auto;padding-top:9px;scrollbar-width:thin}.mode-step-casechip{display:flex;align-items:center;gap:7px;min-width:132px;padding:7px 9px;background:#0d1430;border:1px solid #28345f;border-radius:9px}.mode-step-casechip img,.mode-step-casechip .generated-case-art{width:34px!important;height:34px!important;min-width:34px!important;object-fit:contain}.mode-step-casechip b{font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mode-step-actions{display:flex;justify-content:space-between;gap:12px;margin-top:16px}.mode-step-actions button{min-height:46px}.mode-step-actions .action{min-width:220px}.battle-mode-panel.mode-step-panel{margin:0 0 14px}.mode-step-page .mp-panel{margin-top:14px}
+@media(max-width:760px){.mode-step-summary{grid-template-columns:1fr}.mode-step-actions{flex-direction:column}.mode-step-actions .action{width:100%}}
+
+/* === NIGHTCAMP: RARE GOLD COIN REVEAL === */
+.nc-fast-cell.nc-coin-cell{overflow:visible;background:radial-gradient(circle at 50% 44%,rgba(255,224,99,.20),rgba(20,17,8,.96) 64%)!important;border-color:#e8b53a!important;box-shadow:inset 0 0 35px rgba(255,190,37,.12),0 0 28px rgba(255,183,29,.18)!important}
+.nc-gold-coin-wrap{height:102px;display:grid;place-items:center;perspective:520px}.nc-gold-coin{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;position:relative;background:radial-gradient(circle at 34% 28%,#fff3a2 0 8%,#ffd84c 19%,#e99a16 56%,#9d5600 78%,#f8ca39 100%);border:4px solid #ffe36f;box-shadow:inset -8px -8px 15px rgba(110,52,0,.45),inset 6px 6px 12px rgba(255,255,215,.38),0 0 22px rgba(255,191,30,.55);font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:28px;color:#7e4200;text-shadow:0 1px #ffe98d;animation:ncCoinFlip .72s linear infinite}
+.nc-gold-coin:before{content:"N";width:44px;height:44px;border-radius:50%;display:grid;place-items:center;border:2px solid rgba(120,65,0,.42);box-shadow:inset 0 0 0 3px rgba(255,235,126,.25)}
+.nc-coin-cell.winner .nc-gold-coin{animation:ncCoinLand .55s cubic-bezier(.15,.85,.22,1) both,ncCoinPulse 1s .55s ease-in-out infinite alternate}
+.nc-coin-label{font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:15px;letter-spacing:.08em;color:#ffe574;text-align:center}.nc-coin-sub{font-size:7px;letter-spacing:.16em;text-align:center;color:#c9a84c;margin-top:2px}
+@keyframes ncCoinFlip{0%{transform:rotateY(0deg) rotateZ(-4deg)}50%{transform:rotateY(180deg) rotateZ(4deg)}100%{transform:rotateY(360deg) rotateZ(-4deg)}}
+@keyframes ncCoinLand{0%{transform:scale(.45) rotateY(500deg);filter:brightness(2.2)}70%{transform:scale(1.18) rotateY(720deg)}100%{transform:scale(1) rotateY(720deg)}}
+@keyframes ncCoinPulse{from{box-shadow:inset -8px -8px 15px rgba(110,52,0,.45),inset 6px 6px 12px rgba(255,255,215,.38),0 0 18px rgba(255,191,30,.45)}to{box-shadow:inset -8px -8px 15px rgba(110,52,0,.45),inset 6px 6px 12px rgba(255,255,215,.38),0 0 36px rgba(255,208,67,.9)}}
+
 </style>
 
 <style id="nightcamp-risk-cases">
@@ -868,6 +885,9 @@ function setBattlePerformanceFocus(on){
  overlay.classList.toggle('nc-battle-focus-overlay',!!on);
 }
 function battleFastReelCellHTML(item,winner=false){
+ if(item?.__coinReveal){
+   return `<div class="reel-cell nc-fast-cell nc-coin-cell rarity-rare ${winner?'winner':''}"><div class="nc-gold-coin-wrap"><div class="nc-gold-coin"></div></div><div class="nc-coin-label">GOLD COIN</div><div class="nc-coin-sub">RARE DROP · REVEAL SPIN</div></div>`;
+ }
  return `<div class="reel-cell nc-fast-cell rarity-${item.rarity||'common'} ${winner?'winner':''}">${skinArtHTML(item,'battle')}<div class="nc-fast-name">${item.name}</div><div class="reel-price"><small>⚙</small>${money(item.value)}</div></div>`;
 }
 function appendBattleHistoryLimited(playerIndex,round,drop,caseKey,limit=6){
@@ -2453,17 +2473,11 @@ function renderModeButtons(){
 function renderRuleButtons(){
  return Object.entries(battleRules).map(([key,r])=>`<button class="rule-pill ${battleSettings.rule===key?'active':''}" data-rule="${key}"><b>${r.label}</b><small>${r.desc}</small></button>`).join('');
 }
-function renderBattle(){
+function renderBattle(resetSelection=true){
  setBattlePerformanceFocus(false);
- battleSelection=[];
+ if(resetSelection)battleSelection=[];
  body.innerHTML=`<div class="battle-builder">
-   <div class="mp-panel"><input id="mpName" value="${mpLastName}" placeholder="Your name"><button class="mp-create" id="mpCreate">CREATE ONLINE BATTLE</button><input id="mpCode" maxlength="6" placeholder="ROOM CODE"><button id="mpJoin">JOIN BATTLE</button><div class="mp-status" id="mpStatus">Connecting account… New players start with 100 Scrap · winnings can take your balance above 100.</div><div class="mp-room-card hidden" id="mpRoomCard"></div></div>
-   <div class="battle-mode-panel">
-     <div class="mode-panel-head"><div><span>BATTLE TYPE</span><h3>Choose players & teams</h3></div><div id="formatInfo"></div></div>
-     <div class="mode-pills" id="modePills">${renderModeButtons()}</div>
-     <div class="rule-panel-head"><span>SPECIAL RULE</span><strong id="ruleInfo">${battleRules[battleSettings.rule].desc}</strong></div>
-     <div class="rule-pills" id="rulePills">${renderRuleButtons()}</div>
-   </div>
+   <div class="builder-stephead"><div><span>STEP 1 OF 2</span><h3>CHOOSE YOUR CASES</h3></div><div class="builder-stepbadge">CASES FIRST</div></div>
    <div class="builder-filters">
      <div class="builder-search"><input id="caseSearch" placeholder="Search for cases..."></div>
      <div><label>Price</label><select id="caseSort"><option value="desc" selected>DESC</option><option value="asc">ASC</option></select></div>
@@ -2476,7 +2490,7 @@ function renderBattle(){
    <div class="builder-bottom">
       <div class="builder-summary"><b id="selectedCount">0</b> Cases <span>⚙ <strong id="selectedTotal">0.00</strong></span><em>Selection total</em></div>
       <div class="selected-strip" id="selectedStrip"></div>
-      <div class="builder-actions"><button class="muted-action" id="clearSelection">Clear Selection</button><button class="action" id="confirmSelection">Confirm Selection</button></div>
+      <div class="builder-actions"><button class="muted-action" id="clearSelection">Clear Selection</button><button class="action" id="confirmSelection">NEXT · CHOOSE GAME MODE →</button></div>
    </div>
    <div class="drops-modal hidden" id="dropsModal"><div class="drops-sheet"><div class="drops-top"><h3 id="dropsTitle">Case Drops</h3><button id="closeDrops">✕</button></div><div id="dropsBody"></div></div></div>
  </div>`;
@@ -2484,25 +2498,35 @@ function renderBattle(){
  $('#caseSearch').oninput=()=>{clearTimeout(casePickerSearchTimer);casePickerSearchTimer=setTimeout(rerender,120);};
  $('#caseSort').onchange=rerender; $('#caseTier').onchange=rerender; $('#caseAccent').onchange=rerender; $('#caseRisk').onchange=rerender;
  $('#clearSelection').onclick=()=>{const touched=[...new Set(battleSelection)];battleSelection=[];updateSelectedBar();touched.forEach(refreshCaseCardSelection);syncMultiplayerRoom();};
- $('#confirmSelection').onclick=()=>{if(!battleSelection.length)return toast('Vælg mindst én case');showBattleArena([...battleSelection],{...battleSettings});};
+ $('#confirmSelection').onclick=()=>{if(!battleSelection.length)return toast('Vælg mindst én case');renderBattleModeStep();};
  $('#closeSelectorX').onclick=()=>overlay.classList.remove('open');
- $$('.mode-pill').forEach(btn=>btn.onclick=()=>{
-   battleSettings.format=btn.dataset.format;
-   $('#modePills').innerHTML=renderModeButtons();
-   bindModeButtons();
-   updateFormatInfo();
- });
+ renderCaseCatalog();
+}
+function renderBattleModeStep(){
+ if(!battleSelection.length){renderBattle(false);return;}
+ const selectedTotal=battleSelection.reduce((sum,key)=>sum+(cases[key]?.price||0),0);
+ const preview=battleSelection.slice(0,10).map(key=>{const c=cases[key];return `<div class="mode-step-casechip">${caseThumbHTML(c,true)}<b>${c.name}</b></div>`;}).join('');
+ body.innerHTML=`<div class="mode-step-page">
+   <div class="builder-stephead"><div><span>STEP 2 OF 2</span><h3>CHOOSE GAME MODE</h3></div><div class="builder-stepbadge">${battleSelection.length} CASE${battleSelection.length===1?'':'S'}</div></div>
+   <div class="mode-step-summary">
+      <div class="mode-step-total"><span>YOUR BATTLE</span><b>${battleSelection.length} CASES</b><small>⚙ ${money(selectedTotal)} entry per player</small></div>
+      <div class="mode-step-cases"><span>SELECTED CASES</span><div class="mode-step-casechips">${preview}${battleSelection.length>10?`<div class="selected-more">+${battleSelection.length-10} MORE</div>`:''}</div></div>
+   </div>
+   <div class="battle-mode-panel mode-step-panel">
+     <div class="mode-panel-head"><div><span>BATTLE TYPE</span><h3>Choose players & teams</h3></div><div id="formatInfo"></div></div>
+     <div class="mode-pills" id="modePills">${renderModeButtons()}</div>
+     <div class="rule-panel-head"><span>SPECIAL RULE</span><strong id="ruleInfo">${battleRules[battleSettings.rule].desc}</strong></div>
+     <div class="rule-pills" id="rulePills">${renderRuleButtons()}</div>
+   </div>
+   <div class="mp-panel"><input id="mpName" value="${mpLastName}" placeholder="Your name"><button class="mp-create" id="mpCreate">CREATE ONLINE BATTLE</button><input id="mpCode" maxlength="6" placeholder="ROOM CODE"><button id="mpJoin">JOIN BATTLE</button><div class="mp-status" id="mpStatus">Online is optional · create or join a room after choosing your mode.</div><div class="mp-room-card hidden" id="mpRoomCard"></div></div>
+   <div class="mode-step-actions"><button class="muted-action" id="backToCaseStep">← BACK TO CASES</button><button class="action" id="startModeBattle">START ${battleFormats[battleSettings.format].label.toUpperCase()} BATTLE →</button></div>
+ </div>`;
  bindModeButtons();
- $$('.rule-pill').forEach(btn=>btn.onclick=()=>{
-   battleSettings.rule=btn.dataset.rule;
-   $('#rulePills').innerHTML=renderRuleButtons();
-   bindRuleButtons();
-   $('#ruleInfo').textContent=battleRules[battleSettings.rule].desc;
- });
  bindRuleButtons();
  updateFormatInfo();
  bindMultiplayerControls();
- renderCaseCatalog();
+ const back=$('#backToCaseStep');if(back)back.onclick=()=>renderBattle(false);
+ const start=$('#startModeBattle');if(start)start.onclick=()=>showBattleArena([...battleSelection],{...battleSettings});
 }
 function bindModeButtons(){
  $$('.mode-pill').forEach(btn=>btn.onclick=()=>{
@@ -2510,6 +2534,7 @@ function bindModeButtons(){
    $('#modePills').innerHTML=renderModeButtons();
    bindModeButtons();
    updateFormatInfo();
+   const startMode=$('#startModeBattle');if(startMode)startMode.textContent=`START ${battleFormats[battleSettings.format].label.toUpperCase()} BATTLE →`;
    syncMultiplayerRoom();
  });
 }
@@ -2795,6 +2820,25 @@ async function animateJackpotDraw(format,resolution,settings){
  await new Promise(r=>setTimeout(r,1100));
 }
 
+const GOLD_COIN_REVEAL_ITEM={name:'GOLD COIN',base:'RARE REVEAL',value:0,rarity:'rare',__coinReveal:true};
+function isRareCoinDrop(item){return String(item?.rarity||'').toLowerCase()==='rare';}
+function coinMaskSequence(sequence){
+ if(!sequence)return sequence;
+ const items=sequence.items.slice();items[sequence.stopIndex]=GOLD_COIN_REVEAL_ITEM;
+ return {items,stopIndex:sequence.stopIndex};
+}
+function rareRevealSpinDuration(){return isFastSpin()?2300:4200;}
+async function runRareCoinReveal(seqs,drops,statusText='RARE DROP · GOLD COIN REVEAL...'){
+ const rareIndexes=[];
+ const firstSeqs=seqs.map((seq,i)=>{if(isRareCoinDrop(drops[i])){rareIndexes.push(i);return coinMaskSequence(seq);}return seq;});
+ await Promise.allSettled(firstSeqs.map((seq,i)=>Promise.resolve().then(()=>animateSpinVertical($('#track'+i),seq,battleSpinDuration(i)))));
+ if(!rareIndexes.length)return;
+ const status=$('#battleRoundStatus');if(status)status.textContent=statusText;
+ await new Promise(r=>setTimeout(r,isFastSpin()?280:520));
+ await Promise.allSettled(rareIndexes.map(i=>Promise.resolve().then(()=>animateSpinVertical($('#track'+i),seqs[i],rareRevealSpinDuration()))));
+ await new Promise(r=>setTimeout(r,isFastSpin()?120:260));
+}
+
 const NC_FAST_SPIN_KEY='nightcamp_fast_spin';
 function isFastSpin(){
   try{return localStorage.getItem(NC_FAST_SPIN_KEY)==='1';}catch{return false;}
@@ -2883,7 +2927,7 @@ async function runSelectedBattle(selected,settings){
    $('#bannerSelections').innerHTML=battleSelectionWindowHTML(selected,round);
    const drops=Array.from({length:format.players},()=>drawLoot(caseKey));lastDrops=drops;
    const seqs=drops.map(drop=>buildSpinSequence(caseKey,drop,9,6));
-   await Promise.allSettled(seqs.map((seq,i)=>Promise.resolve().then(()=>animateSpinVertical($('#track'+i),seq,battleSpinDuration(i)))));
+   await runRareCoinReveal(seqs,drops,`RARE DROP · GOLD COIN · REVEALING ${c.name.toUpperCase()}...`);
    drops.forEach((drop,idx)=>{
      totals[idx]+=drop.value;$('#total'+idx).textContent=money(totals[idx]);
      fullBattleHistory[idx].push({round,drop,caseKey});
@@ -2941,7 +2985,7 @@ async function runNetworkBattle(selected,settings,seed,localSeat,room,settlement
    $('#bannerSelections').innerHTML=battleSelectionWindowHTML(selected,round);
    const drops=Array.from({length:format.players},()=>drawLootWithRng(caseKey,rng));lastDrops=drops;
    const seqs=drops.map(drop=>buildSpinSequenceWithRng(caseKey,drop,rng,9,6));
-   await Promise.allSettled(seqs.map((seq,i)=>Promise.resolve().then(()=>animateSpinVertical($('#track'+i),seq,battleSpinDuration(i)))));
+   await runRareCoinReveal(seqs,drops,`RARE DROP · GOLD COIN · REVEALING ${c.name.toUpperCase()}...`);
    drops.forEach((drop,idx)=>{totals[idx]+=drop.value;$('#total'+idx).textContent=money(totals[idx]);fullBattleHistory[idx].push({round,drop,caseKey});appendBattleHistoryLimited(idx,round,drop,caseKey,6);});
    sideTotals(format,totals).forEach((v,i)=>{const el=$('#teamTotal'+i);if(el)el.textContent=money(v);});
    await new Promise(r=>setTimeout(r,battleRoundPause()));

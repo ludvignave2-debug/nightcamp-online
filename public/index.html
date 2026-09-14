@@ -363,6 +363,18 @@ button,input,select{font:inherit}button{cursor:pointer}.noise{position:fixed;ins
 .mimic-reel .skin-art.has-real-skin>img.skin-real-img{inset:0!important;width:100%!important;height:100%!important;filter:drop-shadow(0 15px 20px rgba(0,0,0,.62))!important}
 .skin-art.real-skin-missing>img.skin-real-img{display:none!important}
 
+
+/* NIGHTCAMP EPIC + LEGENDARY PULL FX — lightweight */
+.rarity-pull-ring{position:fixed;z-index:999998;pointer-events:none;border-radius:50%;transform:translate(-50%,-50%) scale(.2);opacity:0}
+.rarity-pull-ring.epic{border:3px solid #a965ff;box-shadow:0 0 18px #a965ff,0 0 46px rgba(86,205,255,.72);animation:ncEpicRing .78s ease-out forwards}
+.rarity-pull-ring.legendary{border:4px solid #ffc84b;box-shadow:0 0 24px #ff9d24,0 0 65px rgba(255,100,30,.9);animation:ncLegendRing 1s ease-out forwards}
+.rarity-screen-flash{position:fixed;inset:0;z-index:999997;pointer-events:none;opacity:0}
+.rarity-screen-flash.epic{background:radial-gradient(circle at var(--fx-x) var(--fx-y),rgba(174,91,255,.23),rgba(74,172,255,.08) 22%,transparent 52%);animation:ncFxFlash .62s ease-out forwards}
+.rarity-screen-flash.legendary{background:radial-gradient(circle at var(--fx-x) var(--fx-y),rgba(255,203,74,.34),rgba(255,94,28,.12) 25%,transparent 58%);animation:ncFxFlash .82s ease-out forwards}
+@keyframes ncEpicRing{0%{opacity:.95;transform:translate(-50%,-50%) scale(.15)}65%{opacity:.65}100%{opacity:0;transform:translate(-50%,-50%) scale(2.45)}}
+@keyframes ncLegendRing{0%{opacity:1;transform:translate(-50%,-50%) scale(.1)}55%{opacity:.8}100%{opacity:0;transform:translate(-50%,-50%) scale(3.15)}}
+@keyframes ncFxFlash{0%{opacity:0}15%{opacity:1}100%{opacity:0}}
+
 </style>
 
 <style id="nightcamp-risk-cases">
@@ -1888,95 +1900,87 @@ document.addEventListener('keydown',e=>{if(e.shiftKey&&e.key.toLowerCase()==='a'
 $('#clearHistory').onclick=()=>{ state.history=[]; update(); };
 document.querySelector('.mini-grid').innerHTML='<i></i>'.repeat(25);
 
-// NIGHTCAMP LEGENDARY CONFETTI — lightweight, no external library
+// NIGHTCAMP EPIC + LEGENDARY PULL FX — lightweight, no external library
 let legendaryConfettiCanvas=null;
 let legendaryConfettiCtx=null;
 let legendaryConfettiParticles=[];
 let legendaryConfettiRaf=0;
 const LEGENDARY_CONFETTI_COLORS=['#ffb21f','#ff6a2a','#ffe16b','#b55cff','#46d9ff','#83ff5b','#ff4778'];
+const EPIC_CONFETTI_COLORS=['#a965ff','#d18cff','#6bc8ff','#7847ff','#f0a7ff'];
 
 function ensureLegendaryConfettiCanvas(){
  if(legendaryConfettiCanvas) return legendaryConfettiCanvas;
  const canvas=document.createElement('canvas');
  canvas.id='legendaryConfettiCanvas';
  canvas.setAttribute('aria-hidden','true');
- Object.assign(canvas.style,{
-  position:'fixed',inset:'0',width:'100vw',height:'100vh',
-  pointerEvents:'none',zIndex:'999999',display:'block'
- });
+ Object.assign(canvas.style,{position:'fixed',inset:'0',width:'100vw',height:'100vh',pointerEvents:'none',zIndex:'999999',display:'block'});
  document.body.appendChild(canvas);
  legendaryConfettiCanvas=canvas;
  legendaryConfettiCtx=canvas.getContext('2d');
- const resize=()=>{
-  // Keep it at CSS-pixel resolution on purpose: crisp enough and much lighter during battles.
-  canvas.width=Math.max(1,window.innerWidth);
-  canvas.height=Math.max(1,window.innerHeight);
- };
+ const resize=()=>{canvas.width=Math.max(1,window.innerWidth);canvas.height=Math.max(1,window.innerHeight);};
  resize();
  window.addEventListener('resize',resize,{passive:true});
  return canvas;
 }
 
-function fireLegendaryConfetti(cardEl){
+function fireRarityParticles(cardEl,rarity){
  const canvas=ensureLegendaryConfettiCanvas();
  if(!canvas||!legendaryConfettiCtx) return;
- let x=window.innerWidth/2, y=window.innerHeight/2;
- if(cardEl){
-  const r=cardEl.getBoundingClientRect();
-  x=r.left+r.width/2;
-  y=r.top+r.height/2;
- }
- const count=58; // deliberately modest so 4-player battles stay smooth
+ let x=window.innerWidth/2,y=window.innerHeight/2;
+ if(cardEl){const r=cardEl.getBoundingClientRect();x=r.left+r.width/2;y=r.top+r.height/2;}
+ const epic=rarity==='epic';
+ const colors=epic?EPIC_CONFETTI_COLORS:LEGENDARY_CONFETTI_COLORS;
+ const count=epic?26:58;
  for(let i=0;i<count;i++){
-  const angle=(-Math.PI/2)+((Math.random()-.5)*1.75);
-  const speed=4.8+Math.random()*7.2;
+  const angle=(-Math.PI/2)+((Math.random()-.5)*(epic?1.25:1.75));
+  const speed=(epic?3.6:4.8)+Math.random()*(epic?5.1:7.2);
   legendaryConfettiParticles.push({
-   x:x+(Math.random()-.5)*24,
-   y:y+(Math.random()-.5)*16,
-   vx:Math.cos(angle)*speed+(Math.random()-.5)*2.4,
-   vy:Math.sin(angle)*speed,
-   gravity:.12+Math.random()*.08,
-   drag:.986,
-   size:4+Math.random()*5,
-   rot:Math.random()*Math.PI,
-   spin:(Math.random()-.5)*.28,
-   life:72+Math.floor(Math.random()*44),
-   maxLife:116,
-   color:LEGENDARY_CONFETTI_COLORS[(Math.random()*LEGENDARY_CONFETTI_COLORS.length)|0],
-   shape:Math.random()>.28?'rect':'dot'
+   x:x+(Math.random()-.5)*22,y:y+(Math.random()-.5)*14,
+   vx:Math.cos(angle)*speed+(Math.random()-.5)*2.1,vy:Math.sin(angle)*speed,
+   gravity:.11+Math.random()*.07,drag:.986,size:(epic?3:4)+Math.random()*(epic?4:5),
+   rot:Math.random()*Math.PI,spin:(Math.random()-.5)*.28,
+   life:(epic?48:72)+Math.floor(Math.random()*(epic?28:44)),maxLife:116,
+   color:colors[(Math.random()*colors.length)|0],shape:Math.random()>.28?'rect':'dot'
   });
  }
  if(!legendaryConfettiRaf) legendaryConfettiLoop();
 }
 
+function fireRarityPullFX(cardEl,rarity){
+ rarity=String(rarity||'').toLowerCase();
+ if(rarity!=='epic'&&rarity!=='legendary') return;
+ let x=window.innerWidth/2,y=window.innerHeight/2,size=120;
+ if(cardEl){const r=cardEl.getBoundingClientRect();x=r.left+r.width/2;y=r.top+r.height/2;size=Math.max(90,Math.min(240,Math.max(r.width,r.height)*.88));}
+ fireRarityParticles(cardEl,rarity);
+ const flash=document.createElement('div');
+ flash.className='rarity-screen-flash '+rarity;
+ flash.style.setProperty('--fx-x',`${x}px`);flash.style.setProperty('--fx-y',`${y}px`);
+ document.body.appendChild(flash);
+ const ring=document.createElement('div');
+ ring.className='rarity-pull-ring '+rarity;
+ ring.style.left=x+'px';ring.style.top=y+'px';ring.style.width=size+'px';ring.style.height=size+'px';
+ document.body.appendChild(ring);
+ setTimeout(()=>flash.remove(),rarity==='legendary'?900:700);
+ setTimeout(()=>ring.remove(),rarity==='legendary'?1100:850);
+}
+
+function fireLegendaryConfetti(cardEl){fireRarityPullFX(cardEl,'legendary');}
+function fireEpicPullFX(cardEl){fireRarityPullFX(cardEl,'epic');}
+
 function legendaryConfettiLoop(){
- const ctx=legendaryConfettiCtx, canvas=legendaryConfettiCanvas;
- if(!ctx||!canvas){ legendaryConfettiRaf=0; return; }
+ const ctx=legendaryConfettiCtx,canvas=legendaryConfettiCanvas;
+ if(!ctx||!canvas){legendaryConfettiRaf=0;return;}
  ctx.clearRect(0,0,canvas.width,canvas.height);
  for(let i=legendaryConfettiParticles.length-1;i>=0;i--){
   const p=legendaryConfettiParticles[i];
-  p.vx*=p.drag; p.vy=p.vy*p.drag+p.gravity;
-  p.x+=p.vx; p.y+=p.vy; p.rot+=p.spin; p.life--;
-  if(p.life<=0||p.y>canvas.height+30){ legendaryConfettiParticles.splice(i,1); continue; }
+  p.vx*=p.drag;p.vy=p.vy*p.drag+p.gravity;p.x+=p.vx;p.y+=p.vy;p.rot+=p.spin;p.life--;
+  if(p.life<=0||p.y>canvas.height+30){legendaryConfettiParticles.splice(i,1);continue;}
   const alpha=Math.min(1,p.life/22);
-  ctx.save();
-  ctx.globalAlpha=alpha;
-  ctx.translate(p.x,p.y);
-  ctx.rotate(p.rot);
-  ctx.fillStyle=p.color;
-  if(p.shape==='dot'){
-   ctx.beginPath(); ctx.arc(0,0,p.size*.55,0,Math.PI*2); ctx.fill();
-  }else{
-   ctx.fillRect(-p.size/2,-p.size*.32,p.size,p.size*.64);
-  }
+  ctx.save();ctx.globalAlpha=alpha;ctx.translate(p.x,p.y);ctx.rotate(p.rot);ctx.fillStyle=p.color;
+  if(p.shape==='dot'){ctx.beginPath();ctx.arc(0,0,p.size*.55,0,Math.PI*2);ctx.fill();}else{ctx.fillRect(-p.size/2,-p.size*.32,p.size,p.size*.64);}
   ctx.restore();
  }
- if(legendaryConfettiParticles.length){
-  legendaryConfettiRaf=requestAnimationFrame(legendaryConfettiLoop);
- }else{
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  legendaryConfettiRaf=0;
- }
+ if(legendaryConfettiParticles.length){legendaryConfettiRaf=requestAnimationFrame(legendaryConfettiLoop);}else{ctx.clearRect(0,0,canvas.width,canvas.height);legendaryConfettiRaf=0;}
 }
 
 function buildSpinSequence(caseKey,winner,total=56,stopIndex=44){
@@ -2099,8 +2103,9 @@ function animateSpinVertical(trackEl,sequence,duration=3800){
        const landedItem=sequence.items?.[sequence.stopIndex];
        if(win){
          win.classList.add('winner-reveal');
-         if(String(landedItem?.rarity||'').toLowerCase()==='legendary'){
-           fireLegendaryConfetti(win);
+         const landedRarity=String(landedItem?.rarity||'').toLowerCase();
+         if(landedRarity==='epic'||landedRarity==='legendary'){
+           fireRarityPullFX(win,landedRarity);
          }
          setTimeout(()=>win.classList.remove('winner-reveal'),1500);
        }
@@ -3054,8 +3059,9 @@ function renderUnbox(){
   const btn=$('#openCrate'); btn.disabled=true; const drop=drawLoot(caseKey), seq=buildSpinSequence(caseKey,drop,56,44);
   $('#lootResult').innerHTML='<span>Spinning…</span>';
   await animateSpin($('#unboxTrack'),seq,4200);
-  if(String(drop?.rarity||'').toLowerCase()==='legendary'){
-    fireLegendaryConfetti($('#unboxTrack')?.children?.[seq.stopIndex]);
+  const pulledRarity=String(drop?.rarity||'').toLowerCase();
+  if(pulledRarity==='epic'||pulledRarity==='legendary'){
+    fireRarityPullFX($('#unboxTrack')?.children?.[seq.stopIndex],pulledRarity);
   }
   const value=drop.value; state.balance+=value; const delta=value-cost;
   $('#lootResult').innerHTML=`${skinArtHTML(drop,'drop')}<small class="rarity-${drop.rarity}">${drop.rarity.toUpperCase()} · ${drop.base}</small><h3>${drop.name}</h3><b>${money(value)} SCRAP</b><div class="message ${delta>=0?'win':'loss'}">${delta>=0?'+':''}${money(delta)} net</div>`;

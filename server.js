@@ -121,50 +121,91 @@ app.get('/api/cases', (_, res) => {
   res.json(cases);
 });
 
-// Exact Rust/Steam skin previews. Only names that exist in cases.json are accepted.
+// Exact Rust/Steam skin previews (C2).
+// Uses Steam Market search JSON first; this is more reliable on Render than parsing the listing HTML.
 const rustSkinNames = new Set(Object.values(cases).flatMap(c => (c.items || []).map(i => String(i.name || '').trim())).filter(Boolean));
 const steamSkinAliases = new Map([
   ['No Mercy', 'No Mercy SAR'],
   ['Tempered MP5', 'Tempered Mp5']
 ]);
 const skinImageCache = new Map();
-function steamPage(url, depth = 0) {
+function steamGetText(url, accept = 'application/json,text/plain,*/*', depth = 0) {
   return new Promise((resolve, reject) => {
-    const req = https.get(url, { headers: { 'User-Agent': 'Mozilla/5.0 NIGHTCAMP/1.0', 'Accept': 'text/html,application/xhtml+xml' }, timeout: 7000 }, resp => {
-      if (resp.statusCode >= 300 && resp.statusCode < 400 && resp.headers.location && depth < 2) {
-        resp.resume(); return resolve(steamPage(new URL(resp.headers.location, url).toString(), depth + 1));
+    const req = https.get(url, { headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124 Safari/537.36',
+      'Accept': accept,
+      'Accept-Language': 'en-US,en;q=0.9',
+      'Referer': 'https://steamcommunity.com/market/'
+    }, timeout: 9000 }, resp => {
+      if (resp.statusCode >= 300 && resp.statusCode < 400 && resp.headers.location && depth < 3) {
+        resp.resume(); return resolve(steamGetText(new URL(resp.headers.location, url).toString(), accept, depth + 1));
       }
       if (resp.statusCode !== 200) { resp.resume(); return reject(new Error('Steam status ' + resp.statusCode)); }
       let body = '';
       resp.setEncoding('utf8');
-      resp.on('data', chunk => { body += chunk; if (body.length > 1_500_000) req.destroy(new Error('Steam response too large')); });
+      resp.on('data', chunk => { body += chunk; if (body.length > 2_000_000) req.destroy(new Error('Steam response too large')); });
       resp.on('end', () => resolve(body));
     });
     req.on('timeout', () => req.destroy(new Error('Steam timeout')));
     req.on('error', reject);
   });
 }
+function normalizeSkinName(v){ return String(v || '').trim().toLowerCase().replace(/[^a-z0-9]+/g,' '); }
+async function resolveSteamSkinImage(marketName) {
+  const q = encodeURIComponent(marketName);
+  const searchURL = `https://steamcommunity.com/market/search/render/?query=${q}&start=0&count=20&search_descriptions=0&sort_column=popular&sort_dir=desc&appid=252490&norender=1&l=english`;
+  try {
+    const text = await steamGetText(searchURL);
+    const data = JSON.parse(text);
+    const wanted = normalizeSkinName(marketName);
+    const rows = Array.isArray(data.results) ? data.results : [];
+    let hit = rows.find(r => normalizeSkinName(r.hash_name || r.name) === wanted);
+    if (!hit) hit = rows.find(r => normalizeSkinName(r.name) === wanted);
+    if (!hit && rows.length === 1) hit = rows[0];
+    const icon = hit?.asset_description?.icon_url_large || hit?.asset_description?.icon_url;
+    if (icon) return `https://community.fastly.steamstatic.com/economy/image/${icon}/512fx512f`;
+  } catch (e) {}
+
+  // Fallback to the listing HTML in case Steam changes the search response.
+  const listingURL = 'https://steamcommunity.com/market/listings/252490/' + encodeURIComponent(marketName) + '?l=english';
+  const page = await steamGetText(listingURL, 'text/html,application/xhtml+xml');
+  const tag = page.match(/<img[^>]*id=["']market_listing_item_img["'][^>]*>/i)?.[0] || '';
+  let image = tag.match(/\bsrc=["']([^"']+)["']/i)?.[1] || '';
+  image = image.replace(/&amp;/g, '&');
+  if (image.startsWith('//')) image = 'https:' + image;
+  if (!/^https:\/\/[^/]*steamstatic\.com\//i.test(image)) throw new Error('No exact Steam market image');
+  return image;
+}
 app.get('/api/skin-image', async (req, res) => {
-  const requested = String(req.query?.name || '').trim().slice(0, 80);
+  const requested = String(req.query?.name || '').trim().slice(0, 100);
   if (!rustSkinNames.has(requested)) return res.status(404).end();
   const marketName = steamSkinAliases.get(requested) || requested;
-  const cached = skinImageCache.get(marketName);
-  if (cached === false) return res.status(404).end();
-  if (cached) { res.set('Cache-Control', 'public, max-age=86400'); return res.redirect(302, cached); }
+  const key = marketName.toLowerCase();
+  const cached = skinImageCache.get(key);
+  if (cached?.url) { res.set('Cache-Control', 'public, max-age=86400'); return res.redirect(302, cached.url); }
+  // Failed lookups only stay cached for 10 minutes, so a temporary Steam block self-recovers.
+  if (cached?.failedAt && Date.now() - cached.failedAt < 10 * 60 * 1000) return res.status(404).end();
   try {
-    const url = 'https://steamcommunity.com/market/listings/252490/' + encodeURIComponent(marketName) + '?l=english';
-    const page = await steamPage(url);
-    const tag = page.match(/<img[^>]*id=["']market_listing_item_img["'][^>]*>/i)?.[0] || '';
-    let image = tag.match(/\bsrc=["']([^"']+)["']/i)?.[1] || '';
-    image = image.replace(/&amp;/g, '&');
-    if (image.startsWith('//')) image = 'https:' + image;
-    if (!/^https:\/\/[^/]*steamstatic\.com\//i.test(image)) throw new Error('No exact Steam market image');
-    skinImageCache.set(marketName, image);
+    const image = await resolveSteamSkinImage(marketName);
+    skinImageCache.set(key, { url: image });
     res.set('Cache-Control', 'public, max-age=86400');
     return res.redirect(302, image);
   } catch (err) {
-    skinImageCache.set(marketName, false);
+    console.warn('[skin-image]', marketName, err.message);
+    skinImageCache.set(key, { failedAt: Date.now() });
     return res.status(404).end();
+  }
+});
+// Small diagnostic endpoint so Render can tell us if a named skin resolves.
+app.get('/api/skin-image-status', async (req, res) => {
+  const requested = String(req.query?.name || 'Punishment Mask').trim().slice(0, 100);
+  if (!rustSkinNames.has(requested)) return res.status(404).json({ok:false,error:'skin-not-in-cases'});
+  try {
+    const marketName = steamSkinAliases.get(requested) || requested;
+    const image = await resolveSteamSkinImage(marketName);
+    return res.json({ok:true,name:requested,marketName,image});
+  } catch (err) {
+    return res.status(502).json({ok:false,name:requested,error:err.message});
   }
 });
 

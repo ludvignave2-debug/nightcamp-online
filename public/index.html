@@ -1741,6 +1741,14 @@ function updateBattleRejoinButton(){
     ? '<span class="rejoin-icon">↩</span><span>RETURN TO BATTLE<small>BATTLE IS STILL RUNNING</small></span>'
     : '<span class="rejoin-icon">↩</span><span>VIEW LAST BATTLE<small>OPEN THE RESULT AGAIN</small></span>';
 }
+function clearCompletedBattleReturnView(){
+  if(activeBattleRunning)return;
+  activeBattleView=false;
+  activeBattleSnapshot='';
+  activeBattleContext=null;
+  try{sessionStorage.removeItem('nightcampLastBattleView');}catch{}
+  updateBattleRejoinButton();
+}
 function beginBattleReturnView(context={}){
   activeBattleView=true;
   activeBattleRunning=true;
@@ -1763,21 +1771,23 @@ function restoreCompletedBattleView(){
   $('#arenaKicker').textContent=activeBattleContext?.kicker||'PVP-STYLE';
   $('#arenaTitle').textContent=activeBattleContext?.title||'CRATE BATTLES';
   const back=$('#backToSelector');
-  if(back)back.onclick=()=>renderBattle();
+  if(back)back.onclick=()=>{clearCompletedBattleReturnView();renderBattle();};
   const backOnline=$('#backOnlineCases');
-  if(backOnline)backOnline.onclick=()=>{renderBattle(); if(body?.scrollTo) body.scrollTo({top:0,behavior:'smooth'});};
+  if(backOnline)backOnline.onclick=()=>{clearCompletedBattleReturnView();renderBattle(); if(body?.scrollTo) body.scrollTo({top:0,behavior:'smooth'});};
   const finishBack=$('#battleFinishBack');
-  if(finishBack)finishBack.onclick=()=>{renderBattle(); if(body?.scrollTo) body.scrollTo({top:0,behavior:'smooth'});};
+  if(finishBack)finishBack.onclick=()=>{clearCompletedBattleReturnView();renderBattle(); if(body?.scrollTo) body.scrollTo({top:0,behavior:'smooth'});};
   const start=$('#startBattle');
   if(start){start.disabled=true;start.textContent='BATTLE COMPLETE';}
   return true;
 }
 function returnToBattleView(){
   if(!activeBattleView)return;
-  if(!activeBattleRunning)restoreCompletedBattleView();
+  const completed=!activeBattleRunning;
+  if(completed)restoreCompletedBattleView();
   overlay.classList.add('open');
   overlay.setAttribute('aria-hidden','false');
-  updateBattleRejoinButton();
+  if(completed)clearCompletedBattleReturnView();
+  else updateBattleRejoinButton();
 }
 function closeArenaWithBattleReturn(){
   overlay.classList.remove('open');
@@ -2295,7 +2305,7 @@ function renderCaseCatalog(){
  });
  entries.sort((a,b)=>sort==='asc'?a[1].price-b[1].price:b[1].price-a[1].price);
  $('#builderGrid').innerHTML=entries.map(([key,c])=>renderCaseCard(key,c,battleSelection.filter(x=>x===key).length)).join('');
- $$('.add-case',$('#builderGrid')).forEach(btn=>btn.onclick=()=>{if(battleSelection.length>=10)return toast('Max 10 cases pr. battle');battleSelection.push(btn.dataset.key);updateSelectedBar();renderCaseCatalog();syncMultiplayerRoom();});
+ $$('.add-case',$('#builderGrid')).forEach(btn=>btn.onclick=()=>{battleSelection.push(btn.dataset.key);updateSelectedBar();renderCaseCatalog();syncMultiplayerRoom();});
  $$('.view-drops',$('#builderGrid')).forEach(btn=>btn.onclick=()=>openDropsModal(btn.dataset.key));
  updateSelectedBar();
 }
@@ -2516,7 +2526,7 @@ function showBattleArena(selected,settings){
    <div class="history-grid-wrap compact-histories dynamic-history" style="--player-count:${format.players}">${Array.from({length:format.players},(_,i)=>`<div class="history-column" id="hist${i}"></div>`).join('')}</div>
    <div id="battleResult"></div>
  </div>`;
- $('#backToSelector').onclick=()=>{if(activeBattleRunning){closeArenaWithBattleReturn();return;}renderBattle();};
+ $('#backToSelector').onclick=()=>{if(activeBattleRunning){closeArenaWithBattleReturn();return;}clearCompletedBattleReturnView();renderBattle();};
  $('#startBattle').onclick=()=>runSelectedBattle(selected,settings).catch(err=>{console.error(err);const s=$('#battleRoundStatus');if(s)s.textContent='BATTLE ERROR · '+(err?.message||err);const b=$('#startBattle');if(b){b.disabled=false;b.textContent='RETRY BATTLE';}toast('Battle-fejl: '+(err?.message||err));});
  for(let i=0;i<format.players;i++)previewSpinVertical($('#track'+i),first);
  for(let i=0;i<format.players;i++)$('#hist'+i).innerHTML=selected.map((_,r)=>battleHistoryPlaceholder(r)).join('');
@@ -2560,7 +2570,7 @@ async function runSelectedBattle(selected,settings){
  const battlePotEl=$('#battlePot'); if(battlePotEl) battlePotEl.textContent=money(pot);
  const battlePotHint=$('#battlePotHint'); if(battlePotHint) battlePotHint.textContent=format.teams.some(t=>t.length>1)?'Team pool':'Free-for-all pool';
  $('#battleResult').innerHTML=`<div class="battle-result ${resultClass}"><h3>${text}</h3><span>${battleRules[settings.rule].label} · ${resolution.note}<br>${sideSummary}</span><div class="battle-finish-actions"><button id="battleFinishBack" type="button">← BACK TO CASES</button></div></div>`;
- const finishBack=$('#battleFinishBack'); if(finishBack) finishBack.onclick=()=>{renderBattle(); if(body?.scrollTo) body.scrollTo({top:0,behavior:'smooth'});};
+ const finishBack=$('#battleFinishBack'); if(finishBack) finishBack.onclick=()=>{clearCompletedBattleReturnView();renderBattle(); if(body?.scrollTo) body.scrollTo({top:0,behavior:'smooth'});};
  setTimeout(()=>$('#battleResult')?.scrollIntoView({behavior:'smooth',block:'center'}),180);
  state.games++;if(delta>state.biggest)state.biggest=delta;state.history.unshift({time:new Date().toLocaleTimeString('da-DK',{hour:'2-digit',minute:'2-digit'}),game:'Crate Battle',detail:`${settings.format} · ${battleRules[settings.rule].label} · ${selected.length} cases`,delta});update();
  btn.disabled=false;btn.textContent='REPLAY BATTLE';

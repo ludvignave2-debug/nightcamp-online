@@ -2827,7 +2827,7 @@ function coinMaskSequence(sequence){
  const items=sequence.items.slice();items[sequence.stopIndex]=GOLD_COIN_REVEAL_ITEM;
  return {items,stopIndex:sequence.stopIndex};
 }
-function rareRevealSpinDuration(){return isFastSpin()?2300:4200;}
+function rareRevealSpinDuration(){return isFastSpin()?2000:3800;}
 async function runRareCoinReveal(seqs,drops,statusText='500+ SCRAP DROP · GOLD COIN REVEAL...'){
  const rareIndexes=[];
  const firstSeqs=seqs.map((seq,i)=>{if(isRareCoinDrop(drops[i])){rareIndexes.push(i);return coinMaskSequence(seq);}return seq;});
@@ -2853,7 +2853,7 @@ function setFastSpin(on){
   }
 }
 function battleSpinDuration(playerIndex=0){
-  return isFastSpin()?3500:5500;
+  return isFastSpin()?2000:3800;
 }
 function battleRoundPause(){return isFastSpin()?120:260;}
 

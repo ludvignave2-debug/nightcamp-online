@@ -575,6 +575,13 @@ button,input,select{font:inherit}button{cursor:pointer}.noise{position:fixed;ins
 @keyframes battleRejoinPop{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
 @media(max-width:650px){#battleRejoinBtn{right:12px;bottom:12px;max-width:calc(100vw - 24px)}}
 </style>
+
+<style id="battle-finish-fix-style">
+.battle-finish-actions{display:flex;justify-content:center;gap:10px;margin:14px 0 4px;padding:12px;border:1px solid rgba(239,128,85,.35);border-radius:12px;background:linear-gradient(180deg,rgba(29,32,58,.94),rgba(13,16,31,.96));box-shadow:0 14px 34px rgba(0,0,0,.28)}
+.battle-finish-actions button{min-width:180px;border:1px solid #ef8055;border-radius:10px;padding:12px 18px;background:linear-gradient(180deg,#ff965f,#e86835);color:#fff;font-weight:900;letter-spacing:.05em;cursor:pointer;box-shadow:0 8px 24px rgba(239,128,85,.22)}
+.battle-finish-actions button:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.battle-result{scroll-margin-block:90px}
+</style>
 </head>
 <body data-build="battle-v2">
 <div class="noise"></div>
@@ -1758,7 +1765,9 @@ function restoreCompletedBattleView(){
   const back=$('#backToSelector');
   if(back)back.onclick=()=>renderBattle();
   const backOnline=$('#backOnlineCases');
-  if(backOnline)backOnline.onclick=()=>renderBattle();
+  if(backOnline)backOnline.onclick=()=>{renderBattle(); if(body?.scrollTo) body.scrollTo({top:0,behavior:'smooth'});};
+  const finishBack=$('#battleFinishBack');
+  if(finishBack)finishBack.onclick=()=>{renderBattle(); if(body?.scrollTo) body.scrollTo({top:0,behavior:'smooth'});};
   const start=$('#startBattle');
   if(start){start.disabled=true;start.textContent='BATTLE COMPLETE';}
   return true;
@@ -2550,7 +2559,9 @@ async function runSelectedBattle(selected,settings){
  if($('#battleRoundStatus')) $('#battleRoundStatus').textContent='BATTLE COMPLETE';
  const battlePotEl=$('#battlePot'); if(battlePotEl) battlePotEl.textContent=money(pot);
  const battlePotHint=$('#battlePotHint'); if(battlePotHint) battlePotHint.textContent=format.teams.some(t=>t.length>1)?'Team pool':'Free-for-all pool';
- $('#battleResult').innerHTML=`<div class="battle-result ${resultClass}"><h3>${text}</h3><span>${battleRules[settings.rule].label} · ${resolution.note}<br>${sideSummary}</span></div>`;
+ $('#battleResult').innerHTML=`<div class="battle-result ${resultClass}"><h3>${text}</h3><span>${battleRules[settings.rule].label} · ${resolution.note}<br>${sideSummary}</span><div class="battle-finish-actions"><button id="battleFinishBack" type="button">← BACK TO CASES</button></div></div>`;
+ const finishBack=$('#battleFinishBack'); if(finishBack) finishBack.onclick=()=>{renderBattle(); if(body?.scrollTo) body.scrollTo({top:0,behavior:'smooth'});};
+ setTimeout(()=>$('#battleResult')?.scrollIntoView({behavior:'smooth',block:'center'}),180);
  state.games++;if(delta>state.biggest)state.biggest=delta;state.history.unshift({time:new Date().toLocaleTimeString('da-DK',{hour:'2-digit',minute:'2-digit'}),game:'Crate Battle',detail:`${settings.format} · ${battleRules[settings.rule].label} · ${selected.length} cases`,delta});update();
  btn.disabled=false;btn.textContent='REPLAY BATTLE';
  completeBattleReturnView();
@@ -2604,7 +2615,8 @@ async function runNetworkBattle(selected,settings,seed,localSeat,room,settlement
  $('#battleResult').innerHTML=`<div class="battle-result ${resultClass}"><h3>${text}</h3><span>ONLINE ROOM ${room.code} · ${battleRules[settings.rule].label}<br>${sideSummary}</span></div><div class="online-room-result">${mpSocket.id===room.hostId?'<button id="returnOnlineLobby">RETURN EVERYONE TO LOBBY</button>':''}<button id="backOnlineCases">BACK TO ONLINE LOBBY</button></div>`;
  if(paid){state.games++;if(delta>state.biggest)state.biggest=delta;state.history.unshift({time:new Date().toLocaleTimeString('da-DK',{hour:'2-digit',minute:'2-digit'}),game:'Online Battle',detail:`${room.code} · ${settings.format} · ${battleRules[settings.rule].label}`,delta});update();}
  const ret=$('#returnOnlineLobby');if(ret)ret.onclick=()=>mpSocket.emit('battle:returnLobby');
- const back=$('#backOnlineCases');if(back)back.onclick=()=>renderBattle();
+ const back=$('#backOnlineCases');if(back)back.onclick=()=>{renderBattle(); if(body?.scrollTo) body.scrollTo({top:0,behavior:'smooth'});};
+ setTimeout(()=>$('#battleResult')?.scrollIntoView({behavior:'smooth',block:'center'}),180);
  completeBattleReturnView();
 }
 

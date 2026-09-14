@@ -1238,6 +1238,17 @@ function buildSpinSequence(caseKey,winner,total=56,stopIndex=44){
  seq[stopIndex]=winner;
  return {items:seq,stopIndex};
 }
+function drawLoot(caseKey='military'){
+ const c=cases[caseKey];
+ if(!c||!Array.isArray(c.items)||!c.items.length) throw new Error('Unknown or empty case: '+caseKey);
+ const pool=c.items;
+ const weights=pool.map(x=>Math.max(0,Number(x.w)||0));
+ const total=weights.reduce((a,b)=>a+b,0);
+ if(!(total>0)) return pool[Math.floor(rand()*pool.length)]||pool[0];
+ let r=rand()*total;
+ for(let i=0;i<pool.length;i++){ r-=weights[i]; if(r<=0) return pool[i]; }
+ return pool[pool.length-1];
+}
 function reelCellHTML(item,winner=false){
  return `<div class="reel-cell rarity-bg-${item.rarity} ${winner?'winner':''}">${skinArtHTML(item,'battle')}<small>${item.base}</small><b>${item.name}</b><span>${money(item.value)}</span></div>`;
 }
@@ -1284,45 +1295,34 @@ function previewSpinVertical(trackEl,caseKey){
  mountSpinVertical(trackEl,sequence,true);
 }
 function animateSpinVertical(trackEl,sequence,duration=3800){
- return new Promise(async resolve=>{
+ return new Promise(resolve=>{
   if(!trackEl){resolve();return;}
   try{
    mountSpinVertical(trackEl,sequence,false);
-   // Give Safari one real layout pass before measuring the reel.
-   await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+   // Force Safari to calculate reel geometry immediately.
+   void trackEl.offsetHeight;
    const distance=verticalSpinDistance(trackEl,sequence.stopIndex);
    const finalTransform=`translateY(-${distance}px)`;
-   const finish=()=>{
-     trackEl.style.transition='none';
-     trackEl.style.transform=finalTransform;
-     resolve();
-   };
-   // Web Animations API is much more reliable in Safari than waiting for transitionend.
-   if(typeof trackEl.animate==='function'){
-     let anim;
+   trackEl.style.transition='none';
+   trackEl.style.transform='translateY(0px)';
+   void trackEl.offsetHeight;
+   // Start transition on a timer instead of relying on requestAnimationFrame/animation.finished.
+   setTimeout(()=>{
      try{
-       anim=trackEl.animate(
-         [{transform:'translateY(0px)'},{transform:finalTransform}],
-         {duration,easing:'cubic-bezier(.12,.74,.08,1)',fill:'forwards'}
-       );
-       await Promise.race([
-         anim.finished.catch(()=>{}),
-         new Promise(r=>setTimeout(r,duration+250))
-       ]);
-       try{anim.cancel();}catch{}
-       finish();
-       return;
-     }catch(err){
-       try{anim?.cancel();}catch{}
-     }
-   }
-   // Fallback for older browsers.
-   trackEl.style.transition=`transform ${duration}ms cubic-bezier(.12,.74,.08,1)`;
-   trackEl.style.transform=finalTransform;
-   await new Promise(r=>setTimeout(r,duration+180));
-   finish();
+       trackEl.style.transition=`transform ${duration}ms cubic-bezier(.12,.74,.08,1)`;
+       trackEl.style.transform=finalTransform;
+     }catch{}
+   },35);
+   // Battle progression NEVER waits on a browser animation event.
+   setTimeout(()=>{
+     try{
+       trackEl.style.transition='none';
+       trackEl.style.transform=finalTransform;
+     }catch{}
+     resolve();
+   },duration+180);
   }catch(err){
-   console.warn('[NIGHTCAMP] Reel animation fallback:',err);
+   console.error('[NIGHTCAMP] Reel failed:',err);
    try{mountSpinVertical(trackEl,sequence,true);}catch{}
    resolve();
   }
@@ -1517,7 +1517,7 @@ if(mpSocket){
    }
    updateMpRoomUI();
  });
- mpSocket.on('battle:go',payload=>startNetworkBattle(payload));
+ mpSocket.on('battle:go',payload=>startNetworkBattle(payload).catch(err=>{console.error(err);const s=$('#battleRoundStatus');if(s)s.textContent='ONLINE BATTLE ERROR · '+(err?.message||err);toast('Online battle-fejl: '+(err?.message||err));}));
 }
 
 
@@ -1833,7 +1833,7 @@ function showBattleArena(selected,settings){
    <div id="battleResult"></div>
  </div>`;
  $('#backToSelector').onclick=renderBattle;
- $('#startBattle').onclick=()=>runSelectedBattle(selected,settings);
+ $('#startBattle').onclick=()=>runSelectedBattle(selected,settings).catch(err=>{console.error(err);const s=$('#battleRoundStatus');if(s)s.textContent='BATTLE ERROR · '+(err?.message||err);const b=$('#startBattle');if(b){b.disabled=false;b.textContent='RETRY BATTLE';}toast('Battle-fejl: '+(err?.message||err));});
  for(let i=0;i<format.players;i++)previewSpinVertical($('#track'+i),first);
  for(let i=0;i<format.players;i++)$('#hist'+i).innerHTML=selected.map((_,r)=>battleHistoryPlaceholder(r)).join('');
 }

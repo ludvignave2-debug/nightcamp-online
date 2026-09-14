@@ -355,6 +355,14 @@ button,input,select{font:inherit}button{cursor:pointer}.noise{position:fixed;ins
 .skin-inspector-info{padding:34px 30px;display:flex;flex-direction:column;justify-content:center;border-left:1px solid #29345f}.skin-inspector-source{align-self:flex-start;padding:7px 10px;border:1px solid #3b4a7e;border-radius:999px;color:#93a5d9;background:#131b39;font-size:8px;font-weight:900;letter-spacing:.11em}.skin-inspector-info small{margin-top:24px;color:#6877a7;font-size:9px;letter-spacing:.13em;font-weight:900}.skin-inspector-info h2{margin:7px 0 5px;color:#f6f8ff;font-size:28px;line-height:1.02}.skin-inspector-info .skin-base{color:#9aa9d3;font-size:11px}.skin-inspector-price{margin-top:24px;padding:15px 16px;border-radius:14px;border:1px solid #524022;background:linear-gradient(180deg,rgba(244,167,59,.14),rgba(244,167,59,.06));display:flex;align-items:end;justify-content:space-between}.skin-inspector-price span{font-size:8px;letter-spacing:.13em;color:#9b8c70}.skin-inspector-price b{font-size:23px;color:#ffc75f}.skin-inspector-rarity{margin-top:11px;font-size:9px;letter-spacing:.14em;font-weight:900;color:#8fa0d3}
 @media(max-width:720px){.skin-inspector-body{grid-template-columns:1fr}.skin-inspector-info{border-left:0;border-top:1px solid #29345f;padding:24px}.skin-inspector-visual{padding:20px;min-height:300px}.skin-inspector-visual img{height:260px}.skin-inspector-info h2{font-size:23px}}
 
+
+/* C2: exact Rust inventory art wins over generated fallback */
+.skin-art.has-real-skin{background:radial-gradient(circle at 50% 44%,rgba(72,91,158,.18),transparent 60%),linear-gradient(145deg,#151c35,#0b1022)!important}
+.skin-art.has-real-skin .skin-pattern,.skin-art.has-real-skin>svg,.skin-art.has-real-skin>span{opacity:0!important;visibility:hidden!important}
+.skin-art.has-real-skin>img.skin-real-img{display:block!important;position:absolute!important;inset:5%!important;width:90%!important;height:90%!important;max-width:none!important;max-height:none!important;object-fit:contain!important;z-index:5!important;filter:drop-shadow(0 12px 18px rgba(0,0,0,.52))!important}
+.mimic-reel .skin-art.has-real-skin>img.skin-real-img{inset:0!important;width:100%!important;height:100%!important;filter:drop-shadow(0 15px 20px rgba(0,0,0,.62))!important}
+.skin-art.real-skin-missing>img.skin-real-img{display:none!important}
+
 </style>
 
 <style id="nightcamp-risk-cases">
@@ -1626,6 +1634,16 @@ document.addEventListener('click',e=>{
  e.preventDefault();e.stopPropagation();openSkinInspector(art.dataset.inspectSkin);
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#skinInspector')?.classList.contains('open'))closeSkinInspector()});
+
+document.addEventListener('load',e=>{
+ const img=e.target;if(!(img instanceof HTMLImageElement)||!img.classList.contains('skin-real-img'))return;
+ const art=img.closest('.skin-art');if(art){art.classList.add('has-real-skin');art.classList.remove('real-skin-missing')}
+},true);
+document.addEventListener('error',e=>{
+ const img=e.target;if(!(img instanceof HTMLImageElement)||!img.classList.contains('skin-real-img'))return;
+ const art=img.closest('.skin-art');if(art){art.classList.remove('has-real-skin');art.classList.add('real-skin-missing')}
+},true);
+
 
 function skinArtHTML(x,size='normal'){
  const kind=x.base.includes('Facemask')?'mask':x.base.includes('Bow')?'bow':x.base.includes('M249')?'lmg':x.base.includes('Bolt')?'bolt':x.base.includes('MP5')||x.base.includes('Thompson')?'smg':'rifle';

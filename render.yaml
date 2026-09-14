@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: nightcamp-online
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: DATA_DIR
+        value: /var/data
+    disk:
+      name: nightcamp-data
+      mountPath: /var/data
+      sizeGB: 1

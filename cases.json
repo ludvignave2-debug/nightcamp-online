@@ -1,0 +1,1982 @@
+{
+  "pocket": {
+    "name": "Pocket Change",
+    "price": 0.99,
+    "accent": "rust",
+    "items": [
+      {
+        "name": "Training Bow",
+        "base": "Hunting Bow",
+        "icon": "TB",
+        "value": 1.89,
+        "rarity": "common",
+        "w": 24
+      },
+      {
+        "name": "No Mercy",
+        "base": "Semi-Automatic Rifle",
+        "icon": "SAR",
+        "value": 6.74,
+        "rarity": "common",
+        "w": 24
+      },
+      {
+        "name": "Forest Raiders Hoodie",
+        "base": "Hoodie",
+        "icon": "HD",
+        "value": 12.46,
+        "rarity": "uncommon",
+        "w": 22
+      },
+      {
+        "name": "Road Romeo Kilt",
+        "base": "Road Sign Kilt",
+        "icon": "RS",
+        "value": 18.95,
+        "rarity": "uncommon",
+        "w": 18
+      },
+      {
+        "name": "Bombing Revolver",
+        "base": "Revolver",
+        "icon": "RV",
+        "value": 31.2,
+        "rarity": "rare",
+        "w": 14
+      },
+      {
+        "name": "Tempered AK47",
+        "base": "Assault Rifle",
+        "icon": "AK",
+        "value": 30.16,
+        "rarity": "uncommon",
+        "w": 14
+      }
+    ]
+  },
+  "scrapstarter": {
+    "name": "Scrap Starter",
+    "price": 1.99,
+    "accent": "green",
+    "items": [
+      {
+        "name": "Training Bow",
+        "base": "Hunting Bow",
+        "icon": "TB",
+        "value": 1.89,
+        "rarity": "common",
+        "w": 24
+      },
+      {
+        "name": "No Mercy",
+        "base": "Semi-Automatic Rifle",
+        "icon": "SAR",
+        "value": 6.74,
+        "rarity": "common",
+        "w": 24
+      },
+      {
+        "name": "Road Romeo Kilt",
+        "base": "Road Sign Kilt",
+        "icon": "RS",
+        "value": 18.95,
+        "rarity": "uncommon",
+        "w": 18
+      },
+      {
+        "name": "Whiteout Hoodie",
+        "base": "Hoodie",
+        "icon": "WH",
+        "value": 21.38,
+        "rarity": "common",
+        "w": 17
+      },
+      {
+        "name": "Snow Camo Pants",
+        "base": "Pants",
+        "icon": "SP",
+        "value": 28.91,
+        "rarity": "common",
+        "w": 14
+      },
+      {
+        "name": "Bombing Revolver",
+        "base": "Revolver",
+        "icon": "RV",
+        "value": 31.2,
+        "rarity": "rare",
+        "w": 14
+      }
+    ]
+  },
+  "miniraid": {
+    "name": "Mini Raid",
+    "price": 2.99,
+    "accent": "rust",
+    "items": [
+      {
+        "name": "Training Bow",
+        "base": "Hunting Bow",
+        "icon": "TB",
+        "value": 1.89,
+        "rarity": "common",
+        "w": 24
+      },
+      {
+        "name": "Forest Raiders Hoodie",
+        "base": "Hoodie",
+        "icon": "HD",
+        "value": 12.46,
+        "rarity": "uncommon",
+        "w": 22
+      },
+      {
+        "name": "Road Romeo Kilt",
+        "base": "Road Sign Kilt",
+        "icon": "RS",
+        "value": 18.95,
+        "rarity": "uncommon",
+        "w": 18
+      },
+      {
+        "name": "Bombing Revolver",
+        "base": "Revolver",
+        "icon": "RV",
+        "value": 31.2,
+        "rarity": "rare",
+        "w": 14
+      },
+      {
+        "name": "Tempered MP5",
+        "base": "MP5A4",
+        "icon": "MP5",
+        "value": 34.78,
+        "rarity": "uncommon",
+        "w": 13
+      },
+      {
+        "name": "Urban Light SAR",
+        "base": "Semi-Automatic Rifle",
+        "icon": "SAR",
+        "value": 43.25,
+        "rarity": "uncommon",
+        "w": 11
+      }
+    ]
+  },
+  "bowbox": {
+    "name": "Bow Box",
+    "price": 3.99,
+    "accent": "green",
+    "items": [
+      {
+        "name": "Training Bow",
+        "base": "Hunting Bow",
+        "icon": "TB",
+        "value": 1.89,
+        "rarity": "common",
+        "w": 24
+      },
+      {
+        "name": "No Mercy",
+        "base": "Semi-Automatic Rifle",
+        "icon": "SAR",
+        "value": 6.74,
+        "rarity": "common",
+        "w": 24
+      },
+      {
+        "name": "Forest Raiders Hoodie",
+        "base": "Hoodie",
+        "icon": "HD",
+        "value": 12.46,
+        "rarity": "uncommon",
+        "w": 22
+      },
+      {
+        "name": "Road Romeo Kilt",
+        "base": "Road Sign Kilt",
+        "icon": "RS",
+        "value": 18.95,
+        "rarity": "uncommon",
+        "w": 18
+      },
+      {
+        "name": "Bombing Revolver",
+        "base": "Revolver",
+        "icon": "RV",
+        "value": 31.2,
+        "rarity": "rare",
+        "w": 14
+      },
+      {
+        "name": "Tempered AK47",
+        "base": "Assault Rifle",
+        "icon": "AK",
+        "value": 30.16,
+        "rarity": "uncommon",
+        "w": 14
+      }
+    ]
+  },
+  "cheapthrills": {
+    "name": "Cheap Thrills",
+    "price": 5.99,
+    "accent": "purple",
+    "items": [
+      {
+        "name": "Training Bow",
+        "base": "Hunting Bow",
+        "icon": "TB",
+        "value": 1.89,
+        "rarity": "common",
+        "w": 24
+      },
+      {
+        "name": "No Mercy",
+        "base": "Semi-Automatic Rifle",
+        "icon": "SAR",
+        "value": 6.74,
+        "rarity": "common",
+        "w": 24
+      },
+      {
+        "name": "Forest Raiders Hoodie",
+        "base": "Hoodie",
+        "icon": "HD",
+        "value": 12.46,
+        "rarity": "uncommon",
+        "w": 22
+      },
+      {
+        "name": "Batteries Not Included",
+        "base": "MP5A4",
+        "icon": "BNI",
+        "value": 28.71,
+        "rarity": "rare",
+        "w": 14
+      },
+      {
+        "name": "Bombing Revolver",
+        "base": "Revolver",
+        "icon": "RV",
+        "value": 31.2,
+        "rarity": "rare",
+        "w": 14
+      },
+      {
+        "name": "Tempered MP5",
+        "base": "MP5A4",
+        "icon": "MP5",
+        "value": 34.78,
+        "rarity": "uncommon",
+        "w": 13
+      }
+    ]
+  },
+  "sidearm": {
+    "name": "Sidearm Shuffle",
+    "price": 7.99,
+    "accent": "rust",
+    "items": [
+      {
+        "name": "Bombing Revolver",
+        "base": "Revolver",
+        "icon": "RV",
+        "value": 31.2,
+        "rarity": "rare",
+        "w": 14
+      },
+      {
+        "name": "Training Bow",
+        "base": "Hunting Bow",
+        "icon": "TB",
+        "value": 1.89,
+        "rarity": "common",
+        "w": 24
+      },
+      {
+        "name": "No Mercy",
+        "base": "Semi-Automatic Rifle",
+        "icon": "SAR",
+        "value": 6.74,
+        "rarity": "common",
+        "w": 24
+      },
+      {
+        "name": "Tempered MP5",
+        "base": "MP5A4",
+        "icon": "MP5",
+        "value": 34.78,
+        "rarity": "uncommon",
+        "w": 13
+      },
+      {
+        "name": "Urban Light SAR",
+        "base": "Semi-Automatic Rifle",
+        "icon": "SAR",
+        "value": 43.25,
+        "rarity": "uncommon",
+        "w": 11
+      },
+      {
+        "name": "Road Romeo Kilt",
+        "base": "Road Sign Kilt",
+        "icon": "RS",
+        "value": 18.95,
+        "rarity": "uncommon",
+        "w": 18
+      }
+    ]
+  },
+  "roadside": {
+    "name": "Roadside",
+    "price": 9.99,
+    "accent": "green",
+    "items": [
+      {
+        "name": "Road Romeo Kilt",
+        "base": "Road Sign Kilt",
+        "icon": "RS",
+        "value": 18.95,
+        "rarity": "uncommon",
+        "w": 18
+      },
+      {
+        "name": "Forest Raiders Hoodie",
+        "base": "Hoodie",
+        "icon": "HD",
+        "value": 12.46,
+        "rarity": "uncommon",
+        "w": 22
+      },
+      {
+        "name": "Whiteout Hoodie",
+        "base": "Hoodie",
+        "icon": "WH",
+        "value": 21.38,
+        "rarity": "common",
+        "w": 17
+      },
+      {
+        "name": "Snow Camo Pants",
+        "base": "Pants",
+        "icon": "SP",
+        "value": 28.91,
+        "rarity": "common",
+        "w": 14
+      },
+      {
+        "name": "Bombing Revolver",
+        "base": "Revolver",
+        "icon": "RV",
+        "value": 31.2,
+        "rarity": "rare",
+        "w": 14
+      },
+      {
+        "name": "Tempered AK47",
+        "base": "Assault Rifle",
+        "icon": "AK",
+        "value": 30.16,
+        "rarity": "uncommon",
+        "w": 14
+      }
+    ]
+  },
+  "primitive": {
+    "name": "Primitive Cache",
+    "price": 13.99,
+    "accent": "rust",
+    "items": [
+      {
+        "name": "Training Bow",
+        "base": "Hunting Bow",
+        "icon": "TB",
+        "value": 1.89,
+        "rarity": "common",
+        "w": 24
+      },
+      {
+        "name": "No Mercy",
+        "base": "Semi-Automatic Rifle",
+        "icon": "SAR",
+        "value": 6.74,
+        "rarity": "common",
+        "w": 24
+      },
+      {
+        "name": "Forest Raiders Hoodie",
+        "base": "Hoodie",
+        "icon": "HD",
+        "value": 12.46,
+        "rarity": "uncommon",
+        "w": 22
+      },
+      {
+        "name": "Road Romeo Kilt",
+        "base": "Road Sign Kilt",
+        "icon": "RS",
+        "value": 18.95,
+        "rarity": "uncommon",
+        "w": 18
+      },
+      {
+        "name": "Bombing Revolver",
+        "base": "Revolver",
+        "icon": "RV",
+        "value": 31.2,
+        "rarity": "rare",
+        "w": 14
+      },
+      {
+        "name": "Tempered Mask",
+        "base": "Metal Facemask",
+        "icon": "TM",
+        "value": 228.45,
+        "rarity": "epic",
+        "w": 5
+      }
+    ]
+  },
+  "budgetraid": {
+    "name": "Budget Raid",
+    "price": 16.99,
+    "accent": "green",
+    "items": [
+      {
+        "name": "Tempered AK47",
+        "base": "Assault Rifle",
+        "icon": "AK",
+        "value": 30.16,
+        "rarity": "uncommon",
+        "w": 14
+      },
+      {
+        "name": "Tempered MP5",
+        "base": "MP5A4",
+        "icon": "MP5",
+        "value": 34.78,
+        "rarity": "uncommon",
+        "w": 13
+      },
+      {
+        "name": "Bombing Revolver",
+        "base": "Revolver",
+        "icon": "RV",
+        "value": 31.2,
+        "rarity": "rare",
+        "w": 14
+      },
+      {
+        "name": "Urban Light SAR",
+        "base": "Semi-Automatic Rifle",
+        "icon": "SAR",
+        "value": 43.25,
+        "rarity": "uncommon",
+        "w": 11
+      },
+      {
+        "name": "Road Romeo Kilt",
+        "base": "Road Sign Kilt",
+        "icon": "RS",
+        "value": 18.95,
+        "rarity": "uncommon",
+        "w": 18
+      },
+      {
+        "name": "Whiteout Hoodie",
+        "base": "Hoodie",
+        "icon": "WH",
+        "value": 21.38,
+        "rarity": "common",
+        "w": 17
+      }
+    ]
+  },
+  "raiders": {
+    "name": "Raider Set",
+    "price": 22.49,
+    "accent": "rust",
+    "items": [
+      {
+        "name": "Forest Raiders Hoodie",
+        "base": "Hoodie",
+        "icon": "HD",
+        "value": 12.46,
+        "rarity": "uncommon",
+        "w": 22
+      },
+      {
+        "name": "Road Romeo Kilt",
+        "base": "Road Sign Kilt",
+        "icon": "RS",
+        "value": 18.95,
+        "rarity": "uncommon",
+        "w": 18
+      },
+      {
+        "name": "Bombing Revolver",
+        "base": "Revolver",
+        "icon": "RV",
+        "value": 31.2,
+        "rarity": "rare",
+        "w": 14
+      },
+      {
+        "name": "No Mercy",
+        "base": "Semi-Automatic Rifle",
+        "icon": "SAR",
+        "value": 6.74,
+        "rarity": "common",
+        "w": 24
+      },
+      {
+        "name": "Tempered AK47",
+        "base": "Assault Rifle",
+        "icon": "AK",
+        "value": 30.16,
+        "rarity": "uncommon",
+        "w": 14
+      },
+      {
+        "name": "Punishment Mask",
+        "base": "Metal Facemask",
+        "icon": "PM",
+        "value": 304.99,
+        "rarity": "legendary",
+        "w": 4
+      }
+    ]
+  },
+  "outpost": {
+    "name": "Outpost Mix",
+    "price": 29.99,
+    "accent": "green",
+    "items": [
+      {
+        "name": "Training Bow",
+        "base": "Hunting Bow",
+        "icon": "TB",
+        "value": 1.89,
+        "rarity": "common",
+        "w": 24
+      },
+      {
+        "name": "Tempered MP5",
+        "base": "MP5A4",
+        "icon": "MP5",
+        "value": 34.78,
+        "rarity": "uncommon",
+        "w": 13
+      },
+      {
+        "name": "Urban Light SAR",
+        "base": "Semi-Automatic Rifle",
+        "icon": "SAR",
+        "value": 43.25,
+        "rarity": "uncommon",
+        "w": 11
+      },
+      {
+        "name": "Bombing Revolver",
+        "base": "Revolver",
+        "icon": "RV",
+        "value": 31.2,
+        "rarity": "rare",
+        "w": 14
+      },
+      {
+        "name": "Glory AK47",
+        "base": "Assault Rifle",
+        "icon": "GAK",
+        "value": 74.68,
+        "rarity": "rare",
+        "w": 8
+      },
+      {
+        "name": "Army Armored Door",
+        "base": "Armored Door",
+        "icon": "AD",
+        "value": 97.55,
+        "rarity": "rare",
+        "w": 7
+      }
+    ]
+  },
+  "mp5mix": {
+    "name": "MP5 Mix",
+    "price": 34.99,
+    "accent": "purple",
+    "items": [
+      {
+        "name": "Tempered MP5",
+        "base": "MP5A4",
+        "icon": "MP5",
+        "value": 34.78,
+        "rarity": "uncommon",
+        "w": 13
+      },
+      {
+        "name": "Batteries Not Included",
+        "base": "MP5A4",
+        "icon": "BNI",
+        "value": 28.71,
+        "rarity": "rare",
+        "w": 14
+      },
+      {
+        "name": "Blackout Thompson",
+        "base": "Thompson",
+        "icon": "BT",
+        "value": 48.85,
+        "rarity": "uncommon",
+        "w": 11
+      },
+      {
+        "name": "Urban Light SAR",
+        "base": "Semi-Automatic Rifle",
+        "icon": "SAR",
+        "value": 43.25,
+        "rarity": "uncommon",
+        "w": 11
+      },
+      {
+        "name": "Glory AK47",
+        "base": "Assault Rifle",
+        "icon": "GAK",
+        "value": 74.68,
+        "rarity": "rare",
+        "w": 8
+      },
+      {
+        "name": "Phantom LR300",
+        "base": "LR-300 Assault Rifle",
+        "icon": "PLR",
+        "value": 112.44,
+        "rarity": "rare",
+        "w": 7
+      }
+    ]
+  },
+  "military": {
+    "name": "Military Crate",
+    "price": 41.95,
+    "accent": "green",
+    "items": [
+      {
+        "name": "Tempered AK47",
+        "base": "Assault Rifle",
+        "icon": "AK",
+        "value": 30.16,
+        "rarity": "uncommon",
+        "w": 14
+      },
+      {
+        "name": "Tempered MP5",
+        "base": "MP5A4",
+        "icon": "MP5",
+        "value": 34.78,
+        "rarity": "uncommon",
+        "w": 13
+      },
+      {
+        "name": "Urban Light SAR",
+        "base": "Semi-Automatic Rifle",
+        "icon": "SAR",
+        "value": 43.25,
+        "rarity": "uncommon",
+        "w": 11
+      },
+      {
+        "name": "Glory AK47",
+        "base": "Assault Rifle",
+        "icon": "GAK",
+        "value": 74.68,
+        "rarity": "rare",
+        "w": 8
+      },
+      {
+        "name": "Army Armored Door",
+        "base": "Armored Door",
+        "icon": "AD",
+        "value": 97.55,
+        "rarity": "rare",
+        "w": 7
+      },
+      {
+        "name": "Black Gold Facemask",
+        "base": "Metal Facemask",
+        "icon": "BG",
+        "value": 148.9,
+        "rarity": "epic",
+        "w": 6
+      }
+    ]
+  },
+  "sarstation": {
+    "name": "SAR Station",
+    "price": 47.5,
+    "accent": "green",
+    "items": [
+      {
+        "name": "No Mercy",
+        "base": "Semi-Automatic Rifle",
+        "icon": "SAR",
+        "value": 6.74,
+        "rarity": "common",
+        "w": 24
+      },
+      {
+        "name": "Urban Light SAR",
+        "base": "Semi-Automatic Rifle",
+        "icon": "SAR",
+        "value": 43.25,
+        "rarity": "uncommon",
+        "w": 11
+      },
+      {
+        "name": "Obsidian SAR",
+        "base": "Semi-Automatic Rifle",
+        "icon": "OS",
+        "value": 145.8,
+        "rarity": "epic",
+        "w": 6
+      },
+      {
+        "name": "Phantom LR300",
+        "base": "LR-300 Assault Rifle",
+        "icon": "PLR",
+        "value": 112.44,
+        "rarity": "rare",
+        "w": 7
+      },
+      {
+        "name": "Tempered AK47",
+        "base": "Assault Rifle",
+        "icon": "AK",
+        "value": 30.16,
+        "rarity": "uncommon",
+        "w": 14
+      },
+      {
+        "name": "Glory AK47",
+        "base": "Assault Rifle",
+        "icon": "GAK",
+        "value": 74.68,
+        "rarity": "rare",
+        "w": 8
+      }
+    ]
+  },
+  "tempered": {
+    "name": "Tempered Dreams",
+    "price": 54.99,
+    "accent": "rust",
+    "items": [
+      {
+        "name": "Tempered AK47",
+        "base": "Assault Rifle",
+        "icon": "AK",
+        "value": 30.16,
+        "rarity": "uncommon",
+        "w": 14
+      },
+      {
+        "name": "Tempered MP5",
+        "base": "MP5A4",
+        "icon": "MP5",
+        "value": 34.78,
+        "rarity": "uncommon",
+        "w": 13
+      },
+      {
+        "name": "Tempered Mask",
+        "base": "Metal Facemask",
+        "icon": "TM",
+        "value": 228.45,
+        "rarity": "epic",
+        "w": 5
+      },
+      {
+        "name": "Glory AK47",
+        "base": "Assault Rifle",
+        "icon": "GAK",
+        "value": 74.68,
+        "rarity": "rare",
+        "w": 8
+      },
+      {
+        "name": "Black Gold Facemask",
+        "base": "Metal Facemask",
+        "icon": "BG",
+        "value": 148.9,
+        "rarity": "epic",
+        "w": 6
+      },
+      {
+        "name": "Alien Red",
+        "base": "Assault Rifle",
+        "icon": "AR",
+        "value": 166.49,
+        "rarity": "legendary",
+        "w": 5
+      }
+    ]
+  },
+  "arcticlite": {
+    "name": "Arctic Lite",
+    "price": 62.5,
+    "accent": "blue",
+    "items": [
+      {
+        "name": "Whiteout Hoodie",
+        "base": "Hoodie",
+        "icon": "WH",
+        "value": 21.38,
+        "rarity": "common",
+        "w": 17
+      },
+      {
+        "name": "Snow Camo Pants",
+        "base": "Pants",
+        "icon": "SP",
+        "value": 28.91,
+        "rarity": "common",
+        "w": 14
+      },
+      {
+        "name": "Frostbite Thompson",
+        "base": "Thompson",
+        "icon": "FT",
+        "value": 55.72,
+        "rarity": "uncommon",
+        "w": 10
+      },
+      {
+        "name": "Ice Metal Chestplate",
+        "base": "Metal Chest Plate",
+        "icon": "MC",
+        "value": 84.5,
+        "rarity": "rare",
+        "w": 8
+      },
+      {
+        "name": "Whiteout AK47",
+        "base": "Assault Rifle",
+        "icon": "WAK",
+        "value": 146.6,
+        "rarity": "epic",
+        "w": 6
+      },
+      {
+        "name": "Frozen Facemask",
+        "base": "Metal Facemask",
+        "icon": "FF",
+        "value": 228.95,
+        "rarity": "epic",
+        "w": 5
+      }
+    ]
+  },
+  "arctic": {
+    "name": "Arctic Vault",
+    "price": 67.49,
+    "accent": "blue",
+    "items": [
+      {
+        "name": "Whiteout Hoodie",
+        "base": "Hoodie",
+        "icon": "WH",
+        "value": 21.38,
+        "rarity": "common",
+        "w": 17
+      },
+      {
+        "name": "Snow Camo Pants",
+        "base": "Pants",
+        "icon": "SP",
+        "value": 28.91,
+        "rarity": "common",
+        "w": 14
+      },
+      {
+        "name": "Frostbite Thompson",
+        "base": "Thompson",
+        "icon": "FT",
+        "value": 55.72,
+        "rarity": "uncommon",
+        "w": 10
+      },
+      {
+        "name": "Ice Metal Chestplate",
+        "base": "Metal Chest Plate",
+        "icon": "MC",
+        "value": 84.5,
+        "rarity": "rare",
+        "w": 8
+      },
+      {
+        "name": "Whiteout AK47",
+        "base": "Assault Rifle",
+        "icon": "WAK",
+        "value": 146.6,
+        "rarity": "epic",
+        "w": 6
+      },
+      {
+        "name": "Frozen Facemask",
+        "base": "Metal Facemask",
+        "icon": "FF",
+        "value": 228.95,
+        "rarity": "epic",
+        "w": 5
+      }
+    ]
+  },
+  "doorways": {
+    "name": "Doorways & Steel",
+    "price": 77.3,
+    "accent": "green",
+    "items": [
+      {
+        "name": "Army Armored Door",
+        "base": "Armored Door",
+        "icon": "AD",
+        "value": 97.55,
+        "rarity": "rare",
+        "w": 7
+      },
+      {
+        "name": "Urban Light SAR",
+        "base": "Semi-Automatic Rifle",
+        "icon": "SAR",
+        "value": 43.25,
+        "rarity": "uncommon",
+        "w": 11
+      },
+      {
+        "name": "Ice Metal Chestplate",
+        "base": "Metal Chest Plate",
+        "icon": "MC",
+        "value": 84.5,
+        "rarity": "rare",
+        "w": 8
+      },
+      {
+        "name": "Obsidian SAR",
+        "base": "Semi-Automatic Rifle",
+        "icon": "OS",
+        "value": 145.8,
+        "rarity": "epic",
+        "w": 6
+      },
+      {
+        "name": "Black Gold Facemask",
+        "base": "Metal Facemask",
+        "icon": "BG",
+        "value": 148.9,
+        "rarity": "epic",
+        "w": 6
+      },
+      {
+        "name": "Phantom LR300",
+        "base": "LR-300 Assault Rifle",
+        "icon": "PLR",
+        "value": 112.44,
+        "rarity": "rare",
+        "w": 7
+      }
+    ]
+  },
+  "whiteout": {
+    "name": "Whiteout Pack",
+    "price": 82.9,
+    "accent": "blue",
+    "items": [
+      {
+        "name": "Whiteout Hoodie",
+        "base": "Hoodie",
+        "icon": "WH",
+        "value": 21.38,
+        "rarity": "common",
+        "w": 17
+      },
+      {
+        "name": "Snow Camo Pants",
+        "base": "Pants",
+        "icon": "SP",
+        "value": 28.91,
+        "rarity": "common",
+        "w": 14
+      },
+      {
+        "name": "Whiteout AK47",
+        "base": "Assault Rifle",
+        "icon": "WAK",
+        "value": 146.6,
+        "rarity": "epic",
+        "w": 6
+      },
+      {
+        "name": "Ice Metal Chestplate",
+        "base": "Metal Chest Plate",
+        "icon": "MC",
+        "value": 84.5,
+        "rarity": "rare",
+        "w": 8
+      },
+      {
+        "name": "Frozen Facemask",
+        "base": "Metal Facemask",
+        "icon": "FF",
+        "value": 228.95,
+        "rarity": "epic",
+        "w": 5
+      },
+      {
+        "name": "Arctic Wolf LR300",
+        "base": "LR-300 Assault Rifle",
+        "icon": "LR",
+        "value": 328.4,
+        "rarity": "legendary",
+        "w": 4
+      }
+    ]
+  },
+  "snowswept": {
+    "name": "Snow Swept",
+    "price": 89.6,
+    "accent": "blue",
+    "items": [
+      {
+        "name": "Snow Camo Pants",
+        "base": "Pants",
+        "icon": "SP",
+        "value": 28.91,
+        "rarity": "common",
+        "w": 14
+      },
+      {
+        "name": "Whiteout Hoodie",
+        "base": "Hoodie",
+        "icon": "WH",
+        "value": 21.38,
+        "rarity": "common",
+        "w": 17
+      },
+      {
+        "name": "Frostbite Thompson",
+        "base": "Thompson",
+        "icon": "FT",
+        "value": 55.72,
+        "rarity": "uncommon",
+        "w": 10
+      },
+      {
+        "name": "Whiteout AK47",
+        "base": "Assault Rifle",
+        "icon": "WAK",
+        "value": 146.6,
+        "rarity": "epic",
+        "w": 6
+      },
+      {
+        "name": "Frozen Facemask",
+        "base": "Metal Facemask",
+        "icon": "FF",
+        "value": 228.95,
+        "rarity": "epic",
+        "w": 5
+      },
+      {
+        "name": "Punishment Mask",
+        "base": "Metal Facemask",
+        "icon": "PM",
+        "value": 304.99,
+        "rarity": "legendary",
+        "w": 4
+      }
+    ]
+  },
+  "blackout": {
+    "name": "Blackout Case",
+    "price": 94.99,
+    "accent": "purple",
+    "items": [
+      {
+        "name": "Batteries Not Included",
+        "base": "MP5A4",
+        "icon": "BNI",
+        "value": 28.71,
+        "rarity": "rare",
+        "w": 14
+      },
+      {
+        "name": "Blackout Thompson",
+        "base": "Thompson",
+        "icon": "BT",
+        "value": 48.85,
+        "rarity": "uncommon",
+        "w": 11
+      },
+      {
+        "name": "Phantom LR300",
+        "base": "LR-300 Assault Rifle",
+        "icon": "PLR",
+        "value": 112.44,
+        "rarity": "rare",
+        "w": 7
+      },
+      {
+        "name": "Obsidian SAR",
+        "base": "Semi-Automatic Rifle",
+        "icon": "OS",
+        "value": 145.8,
+        "rarity": "epic",
+        "w": 6
+      },
+      {
+        "name": "Glory AK47 Ice",
+        "base": "Assault Rifle",
+        "icon": "GI",
+        "value": 191.64,
+        "rarity": "epic",
+        "w": 5
+      },
+      {
+        "name": "Void Facemask",
+        "base": "Metal Facemask",
+        "icon": "VF",
+        "value": 276.35,
+        "rarity": "legendary",
+        "w": 4
+      }
+    ]
+  },
+  "mixed": {
+    "name": "Mixed Madness",
+    "price": 101.2,
+    "accent": "rust",
+    "items": [
+      {
+        "name": "Bombing Revolver",
+        "base": "Revolver",
+        "icon": "RV",
+        "value": 31.2,
+        "rarity": "rare",
+        "w": 14
+      },
+      {
+        "name": "Tempered AK47",
+        "base": "Assault Rifle",
+        "icon": "AK",
+        "value": 30.16,
+        "rarity": "uncommon",
+        "w": 14
+      },
+      {
+        "name": "Whiteout Hoodie",
+        "base": "Hoodie",
+        "icon": "WH",
+        "value": 21.38,
+        "rarity": "common",
+        "w": 17
+      },
+      {
+        "name": "Batteries Not Included",
+        "base": "MP5A4",
+        "icon": "BNI",
+        "value": 28.71,
+        "rarity": "rare",
+        "w": 14
+      },
+      {
+        "name": "Void Facemask",
+        "base": "Metal Facemask",
+        "icon": "VF",
+        "value": 276.35,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Big Grin",
+        "base": "Wood Armor Helmet",
+        "icon": "BG",
+        "value": 629.99,
+        "rarity": "legendary",
+        "w": 3
+      }
+    ]
+  },
+  "neon": {
+    "name": "Neon Roulette",
+    "price": 108.75,
+    "accent": "purple",
+    "items": [
+      {
+        "name": "Batteries Not Included",
+        "base": "MP5A4",
+        "icon": "BNI",
+        "value": 28.71,
+        "rarity": "rare",
+        "w": 14
+      },
+      {
+        "name": "Blackout Thompson",
+        "base": "Thompson",
+        "icon": "BT",
+        "value": 48.85,
+        "rarity": "uncommon",
+        "w": 11
+      },
+      {
+        "name": "Obsidian SAR",
+        "base": "Semi-Automatic Rifle",
+        "icon": "OS",
+        "value": 145.8,
+        "rarity": "epic",
+        "w": 6
+      },
+      {
+        "name": "Glory AK47 Ice",
+        "base": "Assault Rifle",
+        "icon": "GI",
+        "value": 191.64,
+        "rarity": "epic",
+        "w": 5
+      },
+      {
+        "name": "Void Facemask",
+        "base": "Metal Facemask",
+        "icon": "VF",
+        "value": 276.35,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Big Grin",
+        "base": "Wood Armor Helmet",
+        "icon": "BG",
+        "value": 629.99,
+        "rarity": "legendary",
+        "w": 3
+      }
+    ]
+  },
+  "masks": {
+    "name": "Mask Mayhem",
+    "price": 119.95,
+    "accent": "purple",
+    "items": [
+      {
+        "name": "Tempered Mask",
+        "base": "Metal Facemask",
+        "icon": "TM",
+        "value": 228.45,
+        "rarity": "epic",
+        "w": 5
+      },
+      {
+        "name": "Punishment Mask",
+        "base": "Metal Facemask",
+        "icon": "PM",
+        "value": 304.99,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Black Gold Facemask",
+        "base": "Metal Facemask",
+        "icon": "BG",
+        "value": 148.9,
+        "rarity": "epic",
+        "w": 6
+      },
+      {
+        "name": "Frozen Facemask",
+        "base": "Metal Facemask",
+        "icon": "FF",
+        "value": 228.95,
+        "rarity": "epic",
+        "w": 5
+      },
+      {
+        "name": "Void Facemask",
+        "base": "Metal Facemask",
+        "icon": "VF",
+        "value": 276.35,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Big Grin",
+        "base": "Wood Armor Helmet",
+        "icon": "BG",
+        "value": 629.99,
+        "rarity": "legendary",
+        "w": 3
+      }
+    ]
+  },
+  "akfever": {
+    "name": "AK Fever",
+    "price": 132.4,
+    "accent": "green",
+    "items": [
+      {
+        "name": "Tempered AK47",
+        "base": "Assault Rifle",
+        "icon": "AK",
+        "value": 30.16,
+        "rarity": "uncommon",
+        "w": 14
+      },
+      {
+        "name": "Glory AK47",
+        "base": "Assault Rifle",
+        "icon": "GAK",
+        "value": 74.68,
+        "rarity": "rare",
+        "w": 8
+      },
+      {
+        "name": "Whiteout AK47",
+        "base": "Assault Rifle",
+        "icon": "WAK",
+        "value": 146.6,
+        "rarity": "epic",
+        "w": 6
+      },
+      {
+        "name": "Alien Red",
+        "base": "Assault Rifle",
+        "icon": "AR",
+        "value": 166.49,
+        "rarity": "legendary",
+        "w": 5
+      },
+      {
+        "name": "Glory AK47 Ice",
+        "base": "Assault Rifle",
+        "icon": "GI",
+        "value": 191.64,
+        "rarity": "epic",
+        "w": 5
+      },
+      {
+        "name": "Punishment Mask",
+        "base": "Metal Facemask",
+        "icon": "PM",
+        "value": 304.99,
+        "rarity": "legendary",
+        "w": 4
+      }
+    ]
+  },
+  "elite": {
+    "name": "Elite Armory",
+    "price": 144.8,
+    "accent": "green",
+    "items": [
+      {
+        "name": "Urban Light SAR",
+        "base": "Semi-Automatic Rifle",
+        "icon": "SAR",
+        "value": 43.25,
+        "rarity": "uncommon",
+        "w": 11
+      },
+      {
+        "name": "Glory AK47",
+        "base": "Assault Rifle",
+        "icon": "GAK",
+        "value": 74.68,
+        "rarity": "rare",
+        "w": 8
+      },
+      {
+        "name": "Army Armored Door",
+        "base": "Armored Door",
+        "icon": "AD",
+        "value": 97.55,
+        "rarity": "rare",
+        "w": 7
+      },
+      {
+        "name": "Alien Red",
+        "base": "Assault Rifle",
+        "icon": "AR",
+        "value": 166.49,
+        "rarity": "legendary",
+        "w": 5
+      },
+      {
+        "name": "Arctic Wolf LR300",
+        "base": "LR-300 Assault Rifle",
+        "icon": "LR",
+        "value": 328.4,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Big Grin",
+        "base": "Wood Armor Helmet",
+        "icon": "BG",
+        "value": 629.99,
+        "rarity": "legendary",
+        "w": 3
+      }
+    ]
+  },
+  "highroll": {
+    "name": "High Roller",
+    "price": 159.99,
+    "accent": "blue",
+    "items": [
+      {
+        "name": "Black Gold Facemask",
+        "base": "Metal Facemask",
+        "icon": "BG",
+        "value": 148.9,
+        "rarity": "epic",
+        "w": 6
+      },
+      {
+        "name": "Alien Red",
+        "base": "Assault Rifle",
+        "icon": "AR",
+        "value": 166.49,
+        "rarity": "legendary",
+        "w": 5
+      },
+      {
+        "name": "Whiteout AK47",
+        "base": "Assault Rifle",
+        "icon": "WAK",
+        "value": 146.6,
+        "rarity": "epic",
+        "w": 6
+      },
+      {
+        "name": "Frozen Facemask",
+        "base": "Metal Facemask",
+        "icon": "FF",
+        "value": 228.95,
+        "rarity": "epic",
+        "w": 5
+      },
+      {
+        "name": "Arctic Wolf LR300",
+        "base": "LR-300 Assault Rifle",
+        "icon": "LR",
+        "value": 328.4,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Big Grin",
+        "base": "Wood Armor Helmet",
+        "icon": "BG",
+        "value": 629.99,
+        "rarity": "legendary",
+        "w": 3
+      }
+    ]
+  },
+  "punish": {
+    "name": "Punishment Addict",
+    "price": 189.99,
+    "accent": "rust",
+    "items": [
+      {
+        "name": "Punishment Mask",
+        "base": "Metal Facemask",
+        "icon": "PM",
+        "value": 304.99,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Tempered Mask",
+        "base": "Metal Facemask",
+        "icon": "TM",
+        "value": 228.45,
+        "rarity": "epic",
+        "w": 5
+      },
+      {
+        "name": "Black Gold Facemask",
+        "base": "Metal Facemask",
+        "icon": "BG",
+        "value": 148.9,
+        "rarity": "epic",
+        "w": 6
+      },
+      {
+        "name": "Void Facemask",
+        "base": "Metal Facemask",
+        "icon": "VF",
+        "value": 276.35,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Alien Red",
+        "base": "Assault Rifle",
+        "icon": "AR",
+        "value": 166.49,
+        "rarity": "legendary",
+        "w": 5
+      },
+      {
+        "name": "Big Grin",
+        "base": "Wood Armor Helmet",
+        "icon": "BG",
+        "value": 629.99,
+        "rarity": "legendary",
+        "w": 3
+      }
+    ]
+  },
+  "alienhunt": {
+    "name": "Alien Hunt",
+    "price": 229.99,
+    "accent": "green",
+    "items": [
+      {
+        "name": "Alien Red",
+        "base": "Assault Rifle",
+        "icon": "AR",
+        "value": 166.49,
+        "rarity": "legendary",
+        "w": 5
+      },
+      {
+        "name": "Glory AK47",
+        "base": "Assault Rifle",
+        "icon": "GAK",
+        "value": 74.68,
+        "rarity": "rare",
+        "w": 8
+      },
+      {
+        "name": "Whiteout AK47",
+        "base": "Assault Rifle",
+        "icon": "WAK",
+        "value": 146.6,
+        "rarity": "epic",
+        "w": 6
+      },
+      {
+        "name": "Glory AK47 Ice",
+        "base": "Assault Rifle",
+        "icon": "GI",
+        "value": 191.64,
+        "rarity": "epic",
+        "w": 5
+      },
+      {
+        "name": "Punishment Mask",
+        "base": "Metal Facemask",
+        "icon": "PM",
+        "value": 304.99,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Arctic Wolf LR300",
+        "base": "LR-300 Assault Rifle",
+        "icon": "LR",
+        "value": 328.4,
+        "rarity": "legendary",
+        "w": 4
+      }
+    ]
+  },
+  "bigsmile": {
+    "name": "Big Smile",
+    "price": 279.99,
+    "accent": "purple",
+    "items": [
+      {
+        "name": "Big Grin",
+        "base": "Wood Armor Helmet",
+        "icon": "BG",
+        "value": 629.99,
+        "rarity": "legendary",
+        "w": 3
+      },
+      {
+        "name": "Punishment Mask",
+        "base": "Metal Facemask",
+        "icon": "PM",
+        "value": 304.99,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Void Facemask",
+        "base": "Metal Facemask",
+        "icon": "VF",
+        "value": 276.35,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Frozen Facemask",
+        "base": "Metal Facemask",
+        "icon": "FF",
+        "value": 228.95,
+        "rarity": "epic",
+        "w": 5
+      },
+      {
+        "name": "Black Gold Facemask",
+        "base": "Metal Facemask",
+        "icon": "BG",
+        "value": 148.9,
+        "rarity": "epic",
+        "w": 6
+      },
+      {
+        "name": "Alien Red",
+        "base": "Assault Rifle",
+        "icon": "AR",
+        "value": 166.49,
+        "rarity": "legendary",
+        "w": 5
+      }
+    ]
+  },
+  "glacierelite": {
+    "name": "Glacier Elite",
+    "price": 329.99,
+    "accent": "blue",
+    "items": [
+      {
+        "name": "Arctic Wolf LR300",
+        "base": "LR-300 Assault Rifle",
+        "icon": "LR",
+        "value": 328.4,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Frozen Facemask",
+        "base": "Metal Facemask",
+        "icon": "FF",
+        "value": 228.95,
+        "rarity": "epic",
+        "w": 5
+      },
+      {
+        "name": "Whiteout AK47",
+        "base": "Assault Rifle",
+        "icon": "WAK",
+        "value": 146.6,
+        "rarity": "epic",
+        "w": 6
+      },
+      {
+        "name": "Glory AK47 Ice",
+        "base": "Assault Rifle",
+        "icon": "GI",
+        "value": 191.64,
+        "rarity": "epic",
+        "w": 5
+      },
+      {
+        "name": "Punishment Mask",
+        "base": "Metal Facemask",
+        "icon": "PM",
+        "value": 304.99,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Big Grin",
+        "base": "Wood Armor Helmet",
+        "icon": "BG",
+        "value": 629.99,
+        "rarity": "legendary",
+        "w": 3
+      }
+    ]
+  },
+  "legendaryraid": {
+    "name": "Legendary Raid",
+    "price": 379.99,
+    "accent": "rust",
+    "items": [
+      {
+        "name": "Big Grin",
+        "base": "Wood Armor Helmet",
+        "icon": "BG",
+        "value": 629.99,
+        "rarity": "legendary",
+        "w": 3
+      },
+      {
+        "name": "Arctic Wolf LR300",
+        "base": "LR-300 Assault Rifle",
+        "icon": "LR",
+        "value": 328.4,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Punishment Mask",
+        "base": "Metal Facemask",
+        "icon": "PM",
+        "value": 304.99,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Void Facemask",
+        "base": "Metal Facemask",
+        "icon": "VF",
+        "value": 276.35,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Alien Red",
+        "base": "Assault Rifle",
+        "icon": "AR",
+        "value": 166.49,
+        "rarity": "legendary",
+        "w": 5
+      },
+      {
+        "name": "Frozen Facemask",
+        "base": "Metal Facemask",
+        "icon": "FF",
+        "value": 228.95,
+        "rarity": "epic",
+        "w": 5
+      }
+    ]
+  },
+  "whalebox": {
+    "name": "Whale Box",
+    "price": 429.99,
+    "accent": "purple",
+    "items": [
+      {
+        "name": "Big Grin",
+        "base": "Wood Armor Helmet",
+        "icon": "BG",
+        "value": 629.99,
+        "rarity": "legendary",
+        "w": 3
+      },
+      {
+        "name": "Arctic Wolf LR300",
+        "base": "LR-300 Assault Rifle",
+        "icon": "LR",
+        "value": 328.4,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Punishment Mask",
+        "base": "Metal Facemask",
+        "icon": "PM",
+        "value": 304.99,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Void Facemask",
+        "base": "Metal Facemask",
+        "icon": "VF",
+        "value": 276.35,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Alien Red",
+        "base": "Assault Rifle",
+        "icon": "AR",
+        "value": 166.49,
+        "rarity": "legendary",
+        "w": 5
+      },
+      {
+        "name": "Glory AK47 Ice",
+        "base": "Assault Rifle",
+        "icon": "GI",
+        "value": 191.64,
+        "rarity": "epic",
+        "w": 5
+      }
+    ]
+  },
+  "godtier": {
+    "name": "God Tier",
+    "price": 449.99,
+    "accent": "green",
+    "items": [
+      {
+        "name": "Big Grin",
+        "base": "Wood Armor Helmet",
+        "icon": "BG",
+        "value": 629.99,
+        "rarity": "legendary",
+        "w": 3
+      },
+      {
+        "name": "Arctic Wolf LR300",
+        "base": "LR-300 Assault Rifle",
+        "icon": "LR",
+        "value": 328.4,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Punishment Mask",
+        "base": "Metal Facemask",
+        "icon": "PM",
+        "value": 304.99,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Void Facemask",
+        "base": "Metal Facemask",
+        "icon": "VF",
+        "value": 276.35,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Alien Red",
+        "base": "Assault Rifle",
+        "icon": "AR",
+        "value": 166.49,
+        "rarity": "legendary",
+        "w": 5
+      },
+      {
+        "name": "Frozen Facemask",
+        "base": "Metal Facemask",
+        "icon": "FF",
+        "value": 228.95,
+        "rarity": "epic",
+        "w": 5
+      }
+    ]
+  },
+  "jackpot": {
+    "name": "Jackpot Vault",
+    "price": 474.99,
+    "accent": "blue",
+    "items": [
+      {
+        "name": "Big Grin",
+        "base": "Wood Armor Helmet",
+        "icon": "BG",
+        "value": 629.99,
+        "rarity": "legendary",
+        "w": 3
+      },
+      {
+        "name": "Arctic Wolf LR300",
+        "base": "LR-300 Assault Rifle",
+        "icon": "LR",
+        "value": 328.4,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Punishment Mask",
+        "base": "Metal Facemask",
+        "icon": "PM",
+        "value": 304.99,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Void Facemask",
+        "base": "Metal Facemask",
+        "icon": "VF",
+        "value": 276.35,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Alien Red",
+        "base": "Assault Rifle",
+        "icon": "AR",
+        "value": 166.49,
+        "rarity": "legendary",
+        "w": 5
+      },
+      {
+        "name": "Frozen Facemask",
+        "base": "Metal Facemask",
+        "icon": "FF",
+        "value": 228.95,
+        "rarity": "epic",
+        "w": 5
+      }
+    ]
+  },
+  "apex": {
+    "name": "Apex Case",
+    "price": 499.99,
+    "accent": "purple",
+    "items": [
+      {
+        "name": "Big Grin",
+        "base": "Wood Armor Helmet",
+        "icon": "BG",
+        "value": 629.99,
+        "rarity": "legendary",
+        "w": 3
+      },
+      {
+        "name": "Arctic Wolf LR300",
+        "base": "LR-300 Assault Rifle",
+        "icon": "LR",
+        "value": 328.4,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Punishment Mask",
+        "base": "Metal Facemask",
+        "icon": "PM",
+        "value": 304.99,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Void Facemask",
+        "base": "Metal Facemask",
+        "icon": "VF",
+        "value": 276.35,
+        "rarity": "legendary",
+        "w": 4
+      },
+      {
+        "name": "Alien Red",
+        "base": "Assault Rifle",
+        "icon": "AR",
+        "value": 166.49,
+        "rarity": "legendary",
+        "w": 5
+      },
+      {
+        "name": "Frozen Facemask",
+        "base": "Metal Facemask",
+        "icon": "FF",
+        "value": 228.95,
+        "rarity": "epic",
+        "w": 5
+      }
+    ]
+  }
+}

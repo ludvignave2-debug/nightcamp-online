@@ -581,6 +581,38 @@ button,input,select{font:inherit}button{cursor:pointer}.noise{position:fixed;ins
 .battle-finish-actions button{min-width:180px;border:1px solid #ef8055;border-radius:10px;padding:12px 18px;background:linear-gradient(180deg,#ff965f,#e86835);color:#fff;font-weight:900;letter-spacing:.05em;cursor:pointer;box-shadow:0 8px 24px rgba(239,128,85,.22)}
 .battle-finish-actions button:hover{filter:brightness(1.08);transform:translateY(-1px)}
 .battle-result{scroll-margin-block:90px}
+
+/* NIGHTCAMP HOME V2 — cinematic landing page */
+:root{--nc-orange:#ff6f36;--nc-orange2:#ff8b55;--nc-ink:#070b0e;--nc-panel:#0c1216;--nc-line:rgba(145,174,190,.18)}
+body{background:#070b0d}
+.topbar{height:76px;padding:0 34px;background:linear-gradient(180deg,rgba(5,9,12,.97),rgba(7,11,14,.91));border-bottom:1px solid rgba(122,151,165,.18);box-shadow:0 12px 34px rgba(0,0,0,.32)}
+.brand{gap:12px;font-size:23px;letter-spacing:.01em}.brand .mark{width:38px;height:38px;background:linear-gradient(145deg,#ff8149,#da4e22);color:#101113;filter:drop-shadow(0 0 12px rgba(255,107,52,.22))}.brand em{color:#ff8652}
+.topbar nav{gap:30px}.topbar nav a{position:relative;color:#a0aab0;font-size:10px}.topbar nav a:after{content:"";position:absolute;left:0;right:100%;bottom:-9px;height:2px;background:#ff7641;transition:.22s}.topbar nav a:hover:after{right:0}.topbar nav a:hover{color:#fff}
+.wallet{padding:8px 14px;border:1px solid rgba(255,116,60,.24);background:linear-gradient(180deg,rgba(255,115,55,.08),rgba(0,0,0,.05));box-shadow:inset 0 0 22px rgba(255,104,44,.04)}
+.wallet b{font-size:13px}.reset{border-color:rgba(255,255,255,.12);background:#11171a}.admin-access{box-shadow:0 0 20px rgba(159,77,255,.11)}
+.hero{height:630px;background:linear-gradient(90deg,#071016 0%,#0a1116 46%,#101215 100%);border-bottom:1px solid rgba(150,180,190,.18);isolation:isolate}
+.hero:before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(4,10,14,.98) 0%,rgba(5,10,14,.94) 34%,rgba(5,9,12,.52) 57%,rgba(3,7,10,.16) 78%),radial-gradient(circle at 76% 48%,rgba(255,98,32,.16),transparent 28%);pointer-events:none}
+.hero:after{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(180deg,rgba(0,0,0,0) 68%,rgba(5,9,11,.78) 100%),repeating-linear-gradient(0deg,rgba(255,255,255,.012) 0 1px,transparent 1px 4px);pointer-events:none;mix-blend-mode:screen;opacity:.55}
+.hero .grid{z-index:2;opacity:.35;mask-image:linear-gradient(90deg,#000 0 52%,transparent 84%)}
+.hero-copy{z-index:5;padding-top:92px;pointer-events:none}.hero-copy>*{pointer-events:auto}.eyebrow{display:inline-flex;align-items:center;gap:12px;color:#ff7a42;text-shadow:0 0 18px rgba(255,111,54,.18)}.eyebrow:after{content:"";width:48px;height:1px;background:linear-gradient(90deg,#ff7b42,transparent)}
+.hero h1{font-size:clamp(68px,8.4vw,112px);line-height:.79;margin:20px 0 24px;letter-spacing:-.025em;text-shadow:0 5px 22px rgba(0,0,0,.45)}.hero h1 strong{display:inline-block;color:#ff7540;text-shadow:0 0 30px rgba(255,94,32,.12)}
+.hero p{max-width:555px;color:#a8b4b8;font-size:14px;line-height:1.75;text-shadow:0 2px 12px rgba(0,0,0,.65)}
+.hero-actions{gap:14px;margin-top:28px}.hero-actions .primary{position:relative;padding:16px 23px;border:1px solid #ff9c6d;border-radius:4px;background:linear-gradient(180deg,#ff8149,#e95b28);box-shadow:0 0 0 1px rgba(255,94,30,.12),0 10px 32px rgba(255,82,26,.22);overflow:hidden}.hero-actions .primary:after{content:"→";margin-left:17px;font-size:15px}.hero-actions .primary:hover{transform:translateY(-2px);filter:brightness(1.08);box-shadow:0 13px 36px rgba(255,82,26,.32)}.hero-actions .secondary{padding:16px 20px;border-radius:4px;background:rgba(14,21,25,.72);border:1px solid rgba(178,199,210,.22);backdrop-filter:blur(8px)}
+.hero-meta{gap:12px;margin-top:28px}.hero-meta span{min-width:145px;padding:10px 12px;border-left:2px solid rgba(255,110,55,.5);background:linear-gradient(90deg,rgba(15,24,28,.64),transparent);color:#91a0a4}
+.hero-cinematic-art{position:absolute;z-index:0;right:0;top:0;width:59%;height:100%;background-image:url('nightcamp-hero-art.jpg');background-size:cover;background-position:center 48%;filter:saturate(1.08) contrast(1.06);transform:scale(1.01)}
+.hero-cinematic-art:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#071016 0%,rgba(7,16,22,.78) 16%,rgba(7,12,16,.08) 45%,rgba(4,8,11,.06) 75%),linear-gradient(180deg,rgba(2,5,7,.16),rgba(4,7,9,.18) 58%,rgba(4,8,10,.74));pointer-events:none}
+.hero-cinematic-art:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 66% 52%,rgba(255,108,38,.14),transparent 30%);box-shadow:inset 70px 0 80px rgba(5,11,15,.42);pointer-events:none}
+.hero-art-glow{position:absolute;left:45%;top:43%;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(255,103,37,.14),transparent 66%);filter:blur(12px)}
+.hero-art-badge{position:absolute;right:5.5%;top:22%;z-index:2;padding:10px 12px;border-left:2px solid #ff7038;color:#ff8a55;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:15px;line-height:1.05;letter-spacing:.08em;transform:rotate(-2deg);text-shadow:0 0 15px rgba(255,92,30,.38);background:linear-gradient(90deg,rgba(5,8,9,.55),transparent)}
+.section{padding:70px 0}.heading{margin-bottom:24px}.heading h2{font-size:48px;letter-spacing:-.02em}.heading p{color:#91a0a4}
+#games{position:relative;padding-top:66px}.games{gap:14px}.game{min-height:390px;border:1px solid rgba(118,151,166,.21);background:linear-gradient(180deg,rgba(18,27,32,.96),rgba(9,15,18,.98));border-radius:6px;box-shadow:0 18px 40px rgba(0,0,0,.24);transition:transform .22s,border-color .22s,box-shadow .22s}.game:hover{transform:translateY(-4px);border-color:rgba(255,116,58,.38);box-shadow:0 22px 48px rgba(0,0,0,.34),0 0 24px rgba(255,92,30,.06)}.battle-card{background:linear-gradient(145deg,rgba(41,24,17,.98),rgba(10,18,21,.98))}.tag{top:14px;left:14px;border-radius:3px;background:linear-gradient(180deg,#ff8150,#e65a2d);box-shadow:0 7px 18px rgba(255,91,34,.2)}
+.visual{height:210px;background:radial-gradient(circle at 50% 60%,rgba(255,102,38,.18),transparent 58%),linear-gradient(180deg,rgba(17,26,30,.2),rgba(5,10,12,.36));border-bottom:1px solid rgba(130,157,166,.08)}.visual:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:26px 26px;opacity:.35}.crate{box-shadow:0 16px 0 #241a15,0 28px 45px rgba(0,0,0,.5),0 0 28px rgba(255,96,34,.08)}
+.copy{padding:11px 20px 20px}.copy h3{font-size:29px}.copy p{color:#879398}.copy button{border-top-color:rgba(137,165,176,.14)}
+.dark-section{background:linear-gradient(180deg,#0a1013,#070b0d);border-top:1px solid rgba(134,160,171,.15)}
+footer{background:#05080a}
+@media(max-width:900px){.hero{height:650px}.hero-cinematic-art{width:100%;opacity:.42;background-position:62% center}.hero:before{background:linear-gradient(90deg,rgba(4,10,14,.98),rgba(5,10,14,.84) 65%,rgba(5,10,14,.44))}.hero-copy{padding-top:82px}.hero-copy p{max-width:520px}.hero-art-badge{display:none}.games{grid-template-columns:1fr 1fr}.battle-card{grid-column:span 2}}
+@media(max-width:620px){.topbar{padding:0 14px;gap:12px}.topbar nav{display:none}.wallet{padding:6px 8px}.reset{display:none}.hero{height:670px}.hero-copy{padding-top:76px}.hero h1{font-size:66px}.hero p{font-size:13px;max-width:94%}.hero-actions{flex-wrap:wrap}.hero-meta{flex-direction:column;gap:5px}.hero-meta span{min-width:0}.games{grid-template-columns:1fr}.battle-card{grid-column:span 1}.heading{align-items:flex-start;flex-direction:column}.hero-cinematic-art{opacity:.32;background-position:68% center}}
+
 </style>
 </head>
 <body data-build="battle-v2">
@@ -616,7 +648,10 @@ button,input,select{font:inherit}button{cursor:pointer}.noise{position:fixed;ins
         <span>◆ Browser-baseret</span><span>◆ Virtuel balance</span><span>◆ Ingen login nødvendig</span>
       </div>
     </div>
-    <div class="tower-art"><div class="sun"></div><div class="mountain m1"></div><div class="mountain m2"></div><div class="tower"></div></div>
+    <div class="hero-cinematic-art" aria-hidden="true">
+      <div class="hero-art-glow"></div>
+      <div class="hero-art-badge">GOOD SKINS<br>BETTER NIGHTS</div>
+    </div>
   </section>
 
   <section class="section shell" id="games">

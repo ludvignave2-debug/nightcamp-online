@@ -121,13 +121,29 @@ app.get('/api/cases', (_, res) => {
   res.json(cases);
 });
 
-// Exact Rust skin previews (C3).
+// Exact Rust skin previews (C4).
 // Steam's market search can return no image from some Render IPs, so use an exact
 // Rust skin wiki render first, then fall back to Steam. This changes images only.
 const rustSkinNames = new Set(Object.values(cases).flatMap(c => (c.items || []).map(i => String(i.name || '').trim())).filter(Boolean));
 const steamSkinAliases = new Map([
   ['No Mercy', 'No Mercy SAR'],
-  ['Tempered MP5', 'Tempered Mp5']
+  ['Tempered MP5', 'Tempered Mp5'],
+
+  // NIGHTCAMP legacy/custom names mapped to real Rust skins of the same item type.
+  // This lets every current case show an actual Rust skin render instead of a fake placeholder.
+  ['Training Bow', 'Tempered Bow'],
+  ['Road Romeo Kilt', 'Whiteout Kilt'],
+  ['Bombing Revolver', 'Toxic Flame Revolver'],
+  ['Army Armored Door', 'No Mercy Armored Door'],
+  ['Frostbite Thompson', 'Cold Hunter Thompson'],
+  ['Ice Metal Chestplate', 'Whiteout Chestplate'],
+  ['Whiteout AK47', 'Frosty AR'],
+  ['Frozen Facemask', 'Whiteout Facemask'],
+  ['Phantom LR300', 'Winter Ops LR'],
+  ['Obsidian SAR', 'Black Gold SAR'],
+  ['Glory AK47 Ice', 'Glory AK47'],
+  ['Void Facemask', 'Blackout Facemask'],
+  ['Arctic Wolf LR300', 'Winter Ops LR']
 ]);
 const rustClashSlugAliases = new Map([
   ['No Mercy SAR', 'no-mercy-sar'],
@@ -136,7 +152,32 @@ const rustClashSlugAliases = new Map([
 // Known exact renders. These also make the three most important NIGHTCAMP skins
 // work even if the wiki page itself is temporarily rate-limited.
 const exactRustRenderFallbacks = new Map([
-  ['Punishment Mask', 'https://wiki.rustclash.com/img/skins/324/20044.png']
+  ['Tempered Bow', 'https://wiki.rustclash.com/img/skins/324/42808.png'],
+  ['No Mercy SAR', 'https://wiki.rustclash.com/img/skins/324/33201.png'],
+  ['Forest Raiders Hoodie', 'https://wiki.rustclash.com/img/skins/324/44102.png'],
+  ['Whiteout Kilt', 'https://wiki.rustclash.com/img/skins/324/42704.png'],
+  ['Toxic Flame Revolver', 'https://wiki.rustclash.com/img/skins/324/44105.png'],
+  ['Tempered AK47', 'https://wiki.rustclash.com/img/skins/324/10138.png'],
+  ['Whiteout Hoodie', 'https://wiki.rustclash.com/img/skins/324/42007.png'],
+  ['Snow Camo Pants', 'https://wiki.rustclash.com/img/skins/324/10021.png'],
+  ['Tempered Mp5', 'https://wiki.rustclash.com/img/skins/324/20083.png'],
+  ['Urban Light SAR', 'https://wiki.rustclash.com/img/skins/324/26109.png'],
+  ['Batteries Not Included', 'https://wiki.rustclash.com/img/skins/324/30611.png'],
+  ['Glory AK47', 'https://wiki.rustclash.com/img/skins/324/22003.png'],
+  ['No Mercy Armored Door', 'https://wiki.rustclash.com/img/skins/324/50802.png'],
+  ['Black Gold Facemask', 'https://wiki.rustclash.com/img/skins/324/49201.png'],
+  ['Tempered Mask', 'https://wiki.rustclash.com/img/skins/324/20082.png'],
+  ['Alien Red', 'https://wiki.rustclash.com/img/skins/324/21008.png'],
+  ['Cold Hunter Thompson', 'https://wiki.rustclash.com/img/skins/324/43005.png'],
+  ['Whiteout Chestplate', 'https://wiki.rustclash.com/img/skins/324/42304.png'],
+  ['Frosty AR', 'https://wiki.rustclash.com/img/skins/324/44209.png'],
+  ['Whiteout Facemask', 'https://wiki.rustclash.com/img/skins/324/42305.png'],
+  ['Blackout Thompson', 'https://wiki.rustclash.com/img/skins/324/41604.png'],
+  ['Winter Ops LR', 'https://wiki.rustclash.com/img/skins/324/39400.png'],
+  ['Black Gold SAR', 'https://wiki.rustclash.com/img/skins/324/47702.png'],
+  ['Blackout Facemask', 'https://wiki.rustclash.com/img/skins/324/37804.png'],
+  ['Punishment Mask', 'https://wiki.rustclash.com/img/skins/324/20044.png'],
+  ['Big Grin', 'https://wiki.rustclash.com/img/skins/324/20001.png']
 ]);
 const skinImageCache = new Map();
 
@@ -250,7 +291,7 @@ app.get('/api/skin-image', async (req, res) => {
     res.set('Cache-Control', 'public, max-age=86400');
     return res.redirect(302, found.url);
   } catch (err) {
-    console.warn('[skin-image-c3]', marketName, err.message);
+    console.warn('[skin-image-c4]', marketName, err.message);
     skinImageCache.set(key, { failedAt: Date.now() });
     return res.status(404).end();
   }
@@ -262,7 +303,7 @@ app.get('/api/skin-image-status', async (req, res) => {
   try {
     const marketName = steamSkinAliases.get(requested) || requested;
     const found = await resolveExactSkinImage(marketName);
-    return res.json({ok:true,name:requested,marketName,source:found.source,image:found.url});
+    return res.json({ok:true,name:requested,marketName,mapped:requested!==marketName,source:found.source,image:found.url});
   } catch (err) {
     return res.status(502).json({ok:false,name:requested,error:err.message});
   }

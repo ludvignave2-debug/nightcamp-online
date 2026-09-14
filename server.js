@@ -58,9 +58,25 @@ function saveUsers() {
   fs.renameSync(tmp, USERS_FILE);
 }
 function newToken() { return crypto.randomBytes(24).toString('hex'); }
-function newUser(name='Player') {
+function cleanDeviceId(value) {
+  return String(value || '').trim().replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 96);
+}
+function accountFromDevice(deviceId) {
+  const id = cleanDeviceId(deviceId);
+  if (!id) return null;
+  return Object.values(users).find(user => cleanDeviceId(user.deviceId) === id) || null;
+}
+function newUser(name='Player', deviceId='') {
   const token = newToken();
-  users[token] = { token, name: cleanName(name), balance: STARTING_BALANCE, createdAt: Date.now(), games: 0, wins: 0 };
+  users[token] = {
+    token,
+    deviceId: cleanDeviceId(deviceId),
+    name: cleanName(name),
+    balance: STARTING_BALANCE,
+    createdAt: Date.now(),
+    games: 0,
+    wins: 0
+  };
   saveUsers();
   return users[token];
 }
@@ -422,11 +438,26 @@ function simulateBattle(room, seed) {
 
 io.on('connection', socket => {
   socket.on('account:init', (payload = {}, ack = () => {}) => {
+    const deviceId = cleanDeviceId(payload.deviceId);
     let user = accountFromToken(String(payload.token || ''));
-    if (!user) user = newUser(payload.name);
-    if (payload.name) { user.name = cleanName(payload.name); saveUsers(); }
+
+    // If the browser token is missing/stale, recover the same account from the
+    // persistent browser/device ID instead of creating another 100-Scrap account.
+    if (!user && deviceId) user = accountFromDevice(deviceId);
+    if (!user) user = newUser(payload.name, deviceId);
+
+    // Bind old accounts to this device the first time they reconnect.
+    if (deviceId && !user.deviceId) user.deviceId = deviceId;
+    if (payload.name) user.name = cleanName(payload.name);
+    saveUsers();
+
     socket.data.accountToken = user.token;
-    ack({ ok: true, account: accountPayload(user), startingBalance: STARTING_BALANCE });
+    ack({
+      ok: true,
+      account: accountPayload(user),
+      startingBalance: STARTING_BALANCE,
+      reused: Boolean(payload.token || deviceId)
+    });
   });
 
   socket.on('room:create', (payload = {}, ack = () => {}) => {
@@ -435,7 +466,7 @@ io.on('connection', socket => {
     leaveCurrent(socket);
     const code = roomCode();
     const settings = payload.settings || { format: '1v1', rule: 'normal' };
-    const caseKeys = Array.isArray(payload.cases) ? payload.cases.filter(k=>cases[k]).slice(0,10) : [];
+    const caseKeys = Array.isArray(payload.cases) ? payload.cases.filter(k=>cases[k]) : [];
     const formatKey = formats[settings.format] ? settings.format : '1v1';
     const rule = rules.has(String(settings.rule)) ? String(settings.rule) : 'normal';
     user.name = cleanName(payload.name || user.name); saveUsers();
@@ -471,7 +502,7 @@ io.on('connection', socket => {
       if (formats[payload.settings.format]) room.settings.format = payload.settings.format;
       if (rules.has(String(payload.settings.rule))) room.settings.rule = String(payload.settings.rule);
     }
-    if (Array.isArray(payload.cases)) room.cases = payload.cases.filter(k=>cases[k]).slice(0,10);
+    if (Array.isArray(payload.cases)) room.cases = payload.cases.filter(k=>cases[k]);
     const capacity = formats[room.settings.format].players;
     if (room.players.length > capacity) room.players = room.players.slice(0,capacity);
     broadcast(room);

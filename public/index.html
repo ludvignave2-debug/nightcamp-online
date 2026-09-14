@@ -669,6 +669,20 @@ body{background:#06090b!important}
 @media(max-width:760px){.topbar{padding:0 14px!important}.topbar nav{display:none!important}.admin-access{padding:0 12px!important}.hero{height:650px!important}.hero-cinematic-art{width:100%!important;opacity:.38!important}.hero:before{background:linear-gradient(90deg,rgba(4,10,14,.99),rgba(5,10,14,.9) 72%,rgba(3,7,10,.45))!important}.hero-copy{left:20px!important;right:20px!important;padding-top:70px!important}.hero h1{font-size:62px!important}.hero-meta{flex-direction:column!important;gap:7px!important}.games{grid-template-columns:repeat(2,1fr)!important}.heading{align-items:flex-start!important;flex-direction:column!important}.home-feature-grid{grid-template-columns:1fr 1fr}.home-feature{padding:8px 14px}.wallet{min-width:130px!important}.wallet span{display:none}}
 </style>
 
+
+<style id="battle-ultra-performance">
+/* NIGHTCAMP battle-only performance pass */
+.case-battle-ui .mimic-reel .reel-track{will-change:transform!important;filter:none!important;animation:none!important}
+.case-battle-ui .mimic-reel.reel-spinning .reel-track{filter:none!important;animation:none!important}
+.case-battle-ui .mimic-reel.reel-spinning .rl-card{filter:none!important}
+.case-battle-ui .rl-card-glow,.case-battle-ui .rl-card-atmosphere,.case-battle-ui .rl-card-shine{display:none!important}
+.case-battle-ui .mimic-reel .rl-card .skin-art img{filter:none!important}
+.case-battle-ui .history-drop{box-shadow:none!important;content-visibility:auto;contain-intrinsic-size:164px}
+.case-battle-ui .selection-thumb{content-visibility:auto;contain-intrinsic-size:78px 58px}
+.case-battle-ui .mimic-reel .reel-marker:before,.case-battle-ui .mimic-reel .reel-marker:after{filter:none!important}
+.case-battle-ui .mimic-reel.reel-tick .reel-marker{animation:none!important}
+@media (prefers-reduced-motion:reduce){.case-battle-ui *{scroll-behavior:auto!important}}
+</style>
 </head>
 <body data-build="battle-v2">
 <div class="noise"></div>
@@ -2053,7 +2067,8 @@ function previewSpinVertical(trackEl,caseKey){
  if(!trackEl||!cases[caseKey]) return;
  const pool=cases[caseKey].items;
  const winner=pool[Math.floor(rand()*pool.length)] || pool[0];
- const sequence=buildSpinSequence(caseKey,winner,9,4);
+ // Keep idle reels extremely light: only four cards are mounted.
+ const sequence=buildSpinSequence(caseKey,winner,4,2);
  mountSpinVertical(trackEl,sequence,true);
 }
 function animateSpinVertical(trackEl,sequence,duration=3800){
@@ -2072,17 +2087,6 @@ function animateSpinVertical(trackEl,sequence,duration=3800){
    viewport?.classList.remove('reel-landed');
    viewport?.classList.add('reel-spinning');
    void trackEl.offsetHeight;
-
-   // Visual tick pulse while cards pass the center marker.
-   let tick=0;
-   tickTimer=setInterval(()=>{
-     tick++;
-     if(viewport){
-       viewport.classList.remove('reel-tick');
-       void viewport.offsetWidth;
-       viewport.classList.add('reel-tick');
-     }
-   }, Math.max(90, Math.min(185, duration/24)));
 
    setTimeout(()=>{
      try{
@@ -2156,6 +2160,15 @@ function caseThumbHTML(c,compact=false){
 function battleSelectionThumb(key,active=false){
  const c=cases[key];
  return `<div class="selection-thumb ${active?'active':''}" data-key="${key}" title="Right-click to inspect ${c.name} drops">${caseThumbHTML(c,true)}<span>${c.name}</span></div>`;
+}
+function battleSelectionWindowHTML(selected,current=0,maxVisible=9){
+ const total=selected.length;
+ if(total<=maxVisible)return selected.map((key,idx)=>battleSelectionThumb(key,idx===current)).join('');
+ const half=Math.floor(maxVisible/2);
+ let start=Math.max(0,current-half);
+ let end=Math.min(total,start+maxVisible);
+ start=Math.max(0,end-maxVisible);
+ return selected.slice(start,end).map((key,offset)=>battleSelectionThumb(key,(start+offset)===current)).join('');
 }
 function renderCaseCard(key,c,selectedCount){
  const risk=c.risk||'standard';
@@ -2680,7 +2693,7 @@ function showBattleArena(selected,settings){
       <div class="battle-totalbox"><span>TOTAL POT</span><b id="battlePot" data-final-pot="${pot}">HIDDEN</b><small id="battlePotHint">Reveals after final roll</small></div>
       <div class="case-banner sequence-banner" id="battleCaseBanner" data-current-key="${first}" title="Right-click to inspect case drops">
         <div><strong id="bannerName">${cases[first].name}</strong><span id="bannerPrice">${money(cases[first].price)}</span></div>
-        <div class="banner-selections" id="bannerSelections">${selected.map((key,idx)=>battleSelectionThumb(key,idx===0)).join('')}</div>
+        <div class="banner-selections" id="bannerSelections">${battleSelectionWindowHTML(selected,0)}</div>
         <b id="bannerCounter">1/${selected.length}</b>
       </div>
       <div class="fair-box"><button class="action battle-start" id="startBattle">START BATTLE</button></div>
@@ -2709,7 +2722,7 @@ function showBattleArena(selected,settings){
  }
  $('#startBattle').onclick=()=>runSelectedBattle(selected,settings).catch(err=>{console.error(err);const s=$('#battleRoundStatus');if(s)s.textContent='BATTLE ERROR · '+(err?.message||err);const b=$('#startBattle');if(b){b.disabled=false;b.textContent='RETRY BATTLE';}toast('Battle-fejl: '+(err?.message||err));});
  for(let i=0;i<format.players;i++)previewSpinVertical($('#track'+i),first);
- for(let i=0;i<format.players;i++)$('#hist'+i).innerHTML=selected.map((_,r)=>battleHistoryPlaceholder(r)).join('');
+ for(let i=0;i<format.players;i++)$('#hist'+i).innerHTML='';
 }
 async function runSelectedBattle(selected,settings){
  const format=battleFormats[settings.format],entry=selected.reduce((sum,key)=>sum+cases[key].price,0);
@@ -2719,25 +2732,24 @@ async function runSelectedBattle(selected,settings){
  if((settings.rule==='jackpot'||settings.rule==='cursedjackpot')&&$('#jackpotPanel'))$('#jackpotPanel').innerHTML=jackpotWaitingHTML(settings);
  const totals=Array(format.players).fill(0);let lastDrops=Array(format.players).fill(null);
  for(let i=0;i<format.players;i++)$('#total'+i).textContent='0.00';
- for(let i=0;i<format.players;i++)$('#hist'+i).innerHTML=selected.map((_,r)=>battleHistoryPlaceholder(r)).join('');
+ for(let i=0;i<format.players;i++)$('#hist'+i).innerHTML='';
  format.teams.forEach((_,i)=>{const el=$('#teamTotal'+i);if(el)el.textContent='0.00';});
  for(let round=0;round<selected.length;round++){
    const caseKey=selected[round],c=cases[caseKey];
    if($('#battleRoundStatus')) $('#battleRoundStatus').textContent=`ROUND ${round+1}/${selected.length} · SPINNING ${c.name.toUpperCase()}...`;
    $('#bannerName').textContent=c.name;$('#bannerPrice').textContent=money(c.price);$('#bannerCounter').textContent=`${round+1}/${selected.length}`;
    const battleCaseBanner=$('#battleCaseBanner');if(battleCaseBanner)battleCaseBanner.dataset.currentKey=caseKey;
-   $('#bannerSelections').innerHTML=selected.map((key,idx)=>battleSelectionThumb(key,idx===round)).join('');
+   $('#bannerSelections').innerHTML=battleSelectionWindowHTML(selected,round);
    const drops=Array.from({length:format.players},()=>drawLoot(caseKey));lastDrops=drops;
-   const seqs=drops.map(drop=>buildSpinSequence(caseKey,drop,24,16));
-   await Promise.allSettled(seqs.map((seq,i)=>Promise.resolve().then(()=>animateSpinVertical($('#track'+i),seq,3450+i*180))));
+   const seqs=drops.map(drop=>buildSpinSequence(caseKey,drop,14,9));
+   await Promise.allSettled(seqs.map((seq,i)=>Promise.resolve().then(()=>animateSpinVertical($('#track'+i),seq,2650+i*70))));
    drops.forEach((drop,idx)=>{
      totals[idx]+=drop.value;$('#total'+idx).textContent=money(totals[idx]);
-     $$('#hist'+idx+' .history-drop')[round].outerHTML=battleHistoryCardHTML(round,drop,caseKey);
+     $('#hist'+idx).insertAdjacentHTML('beforeend',battleHistoryCardHTML(round,drop,caseKey));
    });
    const teamVals=sideTotals(format,totals);
    teamVals.forEach((v,i)=>{const el=$('#teamTotal'+i);if(el)el.textContent=money(v);});
-   const nextKey=selected[round+1];if(nextKey)setTimeout(()=>{for(let i=0;i<format.players;i++)previewSpinVertical($('#track'+i),nextKey);},160);
-   await new Promise(r=>setTimeout(r,220));
+   await new Promise(r=>setTimeout(r,90));
  }
  const resolution=resolveWinningSide(settings,format,totals,lastDrops);
  if(resolution.jackpot)await animateJackpotDraw(format,resolution,settings);
@@ -2775,20 +2787,20 @@ async function runNetworkBattle(selected,settings,seed,localSeat,room,settlement
  const paid=localSeat>=0;
  const totals=Array(format.players).fill(0);let lastDrops=Array(format.players).fill(null);
  for(let i=0;i<format.players;i++)$('#total'+i).textContent='0.00';
- for(let i=0;i<format.players;i++)$('#hist'+i).innerHTML=selected.map((_,r)=>battleHistoryPlaceholder(r)).join('');
+ for(let i=0;i<format.players;i++)$('#hist'+i).innerHTML='';
  format.teams.forEach((_,i)=>{const el=$('#teamTotal'+i);if(el)el.textContent='0.00';});
  for(let round=0;round<selected.length;round++){
    const caseKey=selected[round],c=cases[caseKey];
    if($('#battleRoundStatus')) $('#battleRoundStatus').textContent=`ROUND ${round+1}/${selected.length} · SPINNING ${c.name.toUpperCase()}...`;
    $('#bannerName').textContent=c.name;$('#bannerPrice').textContent=money(c.price);$('#bannerCounter').textContent=`${round+1}/${selected.length}`;
    const battleCaseBanner=$('#battleCaseBanner');if(battleCaseBanner)battleCaseBanner.dataset.currentKey=caseKey;
-   $('#bannerSelections').innerHTML=selected.map((key,idx)=>battleSelectionThumb(key,idx===round)).join('');
+   $('#bannerSelections').innerHTML=battleSelectionWindowHTML(selected,round);
    const drops=Array.from({length:format.players},()=>drawLootWithRng(caseKey,rng));lastDrops=drops;
-   const seqs=drops.map(drop=>buildSpinSequenceWithRng(caseKey,drop,rng,24,16));
-   await Promise.allSettled(seqs.map((seq,i)=>Promise.resolve().then(()=>animateSpinVertical($('#track'+i),seq,3450+i*150))));
-   drops.forEach((drop,idx)=>{totals[idx]+=drop.value;$('#total'+idx).textContent=money(totals[idx]);$$('#hist'+idx+' .history-drop')[round].outerHTML=battleHistoryCardHTML(round,drop,caseKey);});
+   const seqs=drops.map(drop=>buildSpinSequenceWithRng(caseKey,drop,rng,14,9));
+   await Promise.allSettled(seqs.map((seq,i)=>Promise.resolve().then(()=>animateSpinVertical($('#track'+i),seq,2650+i*70))));
+   drops.forEach((drop,idx)=>{totals[idx]+=drop.value;$('#total'+idx).textContent=money(totals[idx]);$('#hist'+idx).insertAdjacentHTML('beforeend',battleHistoryCardHTML(round,drop,caseKey));});
    sideTotals(format,totals).forEach((v,i)=>{const el=$('#teamTotal'+i);if(el)el.textContent=money(v);});
-   await new Promise(r=>setTimeout(r,220));
+   await new Promise(r=>setTimeout(r,90));
  }
  const resolution=resolveWinningSideWithRng(settings,format,totals,lastDrops,rng);
  if(Number.isInteger(settlement.winnerSide))resolution.winner=settlement.winnerSide;

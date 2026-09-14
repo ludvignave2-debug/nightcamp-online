@@ -886,7 +886,7 @@ function setBattlePerformanceFocus(on){
 }
 function battleFastReelCellHTML(item,winner=false){
  if(item?.__coinReveal){
-   return `<div class="reel-cell nc-fast-cell nc-coin-cell rarity-rare ${winner?'winner':''}"><div class="nc-gold-coin-wrap"><div class="nc-gold-coin"></div></div><div class="nc-coin-label">GOLD COIN</div><div class="nc-coin-sub">RARE DROP · REVEAL SPIN</div></div>`;
+   return `<div class="reel-cell nc-fast-cell nc-coin-cell rarity-rare ${winner?'winner':''}"><div class="nc-gold-coin-wrap"><div class="nc-gold-coin"></div></div><div class="nc-coin-label">GOLD COIN</div><div class="nc-coin-sub">500+ SCRAP · REVEAL SPIN</div></div>`;
  }
  return `<div class="reel-cell nc-fast-cell rarity-${item.rarity||'common'} ${winner?'winner':''}">${skinArtHTML(item,'battle')}<div class="nc-fast-name">${item.name}</div><div class="reel-price"><small>⚙</small>${money(item.value)}</div></div>`;
 }
@@ -2820,15 +2820,15 @@ async function animateJackpotDraw(format,resolution,settings){
  await new Promise(r=>setTimeout(r,1100));
 }
 
-const GOLD_COIN_REVEAL_ITEM={name:'GOLD COIN',base:'RARE REVEAL',value:0,rarity:'rare',__coinReveal:true};
-function isRareCoinDrop(item){return String(item?.rarity||'').toLowerCase()==='rare';}
+const GOLD_COIN_REVEAL_ITEM={name:'GOLD COIN',base:'500+ SCRAP REVEAL',value:0,rarity:'legendary',__coinReveal:true};
+function isRareCoinDrop(item){return Number(item?.value||0)>500;}
 function coinMaskSequence(sequence){
  if(!sequence)return sequence;
  const items=sequence.items.slice();items[sequence.stopIndex]=GOLD_COIN_REVEAL_ITEM;
  return {items,stopIndex:sequence.stopIndex};
 }
 function rareRevealSpinDuration(){return isFastSpin()?2300:4200;}
-async function runRareCoinReveal(seqs,drops,statusText='RARE DROP · GOLD COIN REVEAL...'){
+async function runRareCoinReveal(seqs,drops,statusText='500+ SCRAP DROP · GOLD COIN REVEAL...'){
  const rareIndexes=[];
  const firstSeqs=seqs.map((seq,i)=>{if(isRareCoinDrop(drops[i])){rareIndexes.push(i);return coinMaskSequence(seq);}return seq;});
  await Promise.allSettled(firstSeqs.map((seq,i)=>Promise.resolve().then(()=>animateSpinVertical($('#track'+i),seq,battleSpinDuration(i)))));
@@ -2927,7 +2927,7 @@ async function runSelectedBattle(selected,settings){
    $('#bannerSelections').innerHTML=battleSelectionWindowHTML(selected,round);
    const drops=Array.from({length:format.players},()=>drawLoot(caseKey));lastDrops=drops;
    const seqs=drops.map(drop=>buildSpinSequence(caseKey,drop,9,6));
-   await runRareCoinReveal(seqs,drops,`RARE DROP · GOLD COIN · REVEALING ${c.name.toUpperCase()}...`);
+   await runRareCoinReveal(seqs,drops,`500+ SCRAP DROP · GOLD COIN · REVEALING ${c.name.toUpperCase()}...`);
    drops.forEach((drop,idx)=>{
      totals[idx]+=drop.value;$('#total'+idx).textContent=money(totals[idx]);
      fullBattleHistory[idx].push({round,drop,caseKey});
@@ -2985,7 +2985,7 @@ async function runNetworkBattle(selected,settings,seed,localSeat,room,settlement
    $('#bannerSelections').innerHTML=battleSelectionWindowHTML(selected,round);
    const drops=Array.from({length:format.players},()=>drawLootWithRng(caseKey,rng));lastDrops=drops;
    const seqs=drops.map(drop=>buildSpinSequenceWithRng(caseKey,drop,rng,9,6));
-   await runRareCoinReveal(seqs,drops,`RARE DROP · GOLD COIN · REVEALING ${c.name.toUpperCase()}...`);
+   await runRareCoinReveal(seqs,drops,`500+ SCRAP DROP · GOLD COIN · REVEALING ${c.name.toUpperCase()}...`);
    drops.forEach((drop,idx)=>{totals[idx]+=drop.value;$('#total'+idx).textContent=money(totals[idx]);fullBattleHistory[idx].push({round,drop,caseKey});appendBattleHistoryLimited(idx,round,drop,caseKey,6);});
    sideTotals(format,totals).forEach((v,i)=>{const el=$('#teamTotal'+i);if(el)el.textContent=money(v);});
    await new Promise(r=>setTimeout(r,battleRoundPause()));

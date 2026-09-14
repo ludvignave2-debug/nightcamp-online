@@ -707,6 +707,18 @@ body.nc-battle-focus .case-battle-ui .participant-tag,body.nc-battle-focus .case
 body.nc-battle-focus .case-battle-ui .rl-card-atmosphere,body.nc-battle-focus .case-battle-ui .rl-card-glow{display:none!important}
 @media(max-width:980px){body.nc-battle-focus .case-battle-ui .reel-cell.nc-fast-cell{height:154px!important;flex-basis:154px!important}}
 </style>
+
+<style id="case-picker-performance-fix">
+/* NIGHTCAMP — CASE PICKER PERFORMANCE */
+.builder-grid .catalog-case{content-visibility:auto;contain:layout paint style;contain-intrinsic-size:390px 260px;will-change:auto!important}
+.builder-grid .catalog-case:before{display:none!important}
+.builder-grid .catalog-case:hover{transform:translateY(-2px)!important;filter:none!important;box-shadow:0 16px 30px rgba(0,0,0,.28),0 0 14px var(--riskGlow)!important}
+.builder-grid .catalog-thumb,.builder-grid .generated-case-art{contain:layout paint;will-change:auto!important}
+.builder-grid img{loading:lazy}
+.case-load-more{grid-column:1/-1;min-height:52px;border:1px solid #3b4a8e;border-radius:12px;background:linear-gradient(180deg,#20295a,#151c40);color:#e9eeff;font-weight:900;letter-spacing:.08em;cursor:pointer;margin:2px 0 10px;box-shadow:0 8px 18px rgba(0,0,0,.18)}
+.case-load-more:hover{border-color:#6679dc;background:linear-gradient(180deg,#29356f,#1a2350)}
+.selected-more{display:flex;align-items:center;padding:0 10px;color:#8e9ac5;font-size:10px;font-weight:900;letter-spacing:.08em;white-space:nowrap}
+</style>
 </head>
 <body data-build="battle-turbo-v2">
 <div class="noise"></div>
@@ -2463,9 +2475,10 @@ function renderBattle(){
    </div>
    <div class="drops-modal hidden" id="dropsModal"><div class="drops-sheet"><div class="drops-top"><h3 id="dropsTitle">Case Drops</h3><button id="closeDrops">✕</button></div><div id="dropsBody"></div></div></div>
  </div>`;
- const rerender=()=>renderCaseCatalog();
- $('#caseSearch').oninput=rerender; $('#caseSort').onchange=rerender; $('#caseTier').onchange=rerender; $('#caseAccent').onchange=rerender; $('#caseRisk').onchange=rerender;
- $('#clearSelection').onclick=()=>{battleSelection=[];renderCaseCatalog();syncMultiplayerRoom();};
+ const rerender=()=>renderCaseCatalog(true);
+ $('#caseSearch').oninput=()=>{clearTimeout(casePickerSearchTimer);casePickerSearchTimer=setTimeout(rerender,120);};
+ $('#caseSort').onchange=rerender; $('#caseTier').onchange=rerender; $('#caseAccent').onchange=rerender; $('#caseRisk').onchange=rerender;
+ $('#clearSelection').onclick=()=>{const touched=[...new Set(battleSelection)];battleSelection=[];updateSelectedBar();touched.forEach(refreshCaseCardSelection);syncMultiplayerRoom();};
  $('#confirmSelection').onclick=()=>{if(!battleSelection.length)return toast('Vælg mindst én case');showBattleArena([...battleSelection],{...battleSettings});};
  $('#closeSelectorX').onclick=()=>overlay.classList.remove('open');
  $$('.mode-pill').forEach(btn=>btn.onclick=()=>{
@@ -2509,7 +2522,11 @@ function updateFormatInfo(){
  const teamText=f.teams.length===2&&f.teams[0].length>1?`${f.teams[0].length} vs ${f.teams[1].length} teams`:`${f.players}-way free for all`;
  $('#formatInfo').innerHTML=`<b>${f.label}</b><span>${teamText}</span>`;
 }
-function renderCaseCatalog(){
+let casePickerVisibleCount=8;
+let casePickerSignature='';
+let casePickerSearchTimer=null;
+
+function getFilteredCaseEntries(){
  const q=($('#caseSearch')?.value||'').trim().toLowerCase();
  const sort=$('#caseSort')?.value||'desc';
  const tier=$('#caseTier')?.value||'all';
@@ -2531,16 +2548,63 @@ function renderCaseCatalog(){
    return hay.includes(q);
  });
  entries.sort((a,b)=>sort==='asc'?a[1].price-b[1].price:b[1].price-a[1].price);
- $('#builderGrid').innerHTML=entries.map(([key,c])=>renderCaseCard(key,c,battleSelection.filter(x=>x===key).length)).join('');
- $$('.add-case',$('#builderGrid')).forEach(btn=>btn.onclick=()=>{battleSelection.push(btn.dataset.key);updateSelectedBar();renderCaseCatalog();syncMultiplayerRoom();});
- $$('.view-drops',$('#builderGrid')).forEach(btn=>btn.onclick=()=>openDropsModal(btn.dataset.key));
+ return {entries,signature:[q,sort,tier,accent,risk].join('|')};
+}
+function refreshCaseCardSelection(key){
+ const grid=$('#builderGrid'); if(!grid)return;
+ const safeKey=(window.CSS&&CSS.escape)?CSS.escape(key):String(key).replace(/"/g,'\\"');
+ const card=grid.querySelector(`.catalog-case[data-key="${safeKey}"]`);
+ if(!card)return;
+ const count=battleSelection.reduce((n,x)=>n+(x===key),0);
+ card.classList.toggle('chosen',count>0);
+ let badge=card.querySelector('.chosen-count');
+ if(count>0){
+   if(!badge){badge=document.createElement('div');badge.className='chosen-count';card.appendChild(badge);}
+   badge.textContent=count;
+ }else if(badge){badge.remove();}
+}
+function renderCaseCatalog(reset=false){
+ const grid=$('#builderGrid'); if(!grid)return;
+ const {entries,signature}=getFilteredCaseEntries();
+ if(reset||signature!==casePickerSignature){casePickerVisibleCount=8;casePickerSignature=signature;}
+ const visible=entries.slice(0,casePickerVisibleCount);
+ grid.innerHTML=visible.map(([key,c])=>renderCaseCard(key,c,battleSelection.filter(x=>x===key).length)).join('');
+ if(entries.length>casePickerVisibleCount){
+   const left=entries.length-casePickerVisibleCount;
+   const amount=Math.min(8,left);
+   grid.insertAdjacentHTML('beforeend',`<button class="case-load-more" id="caseLoadMore">SHOW ${amount} MORE CASE${amount===1?'':'S'} · ${left} LEFT</button>`);
+   $('#caseLoadMore').onclick=()=>{casePickerVisibleCount+=8;renderCaseCatalog(false);};
+ }
+ $$('.add-case',grid).forEach(btn=>btn.onclick=()=>{
+   const key=btn.dataset.key;
+   battleSelection.push(key);
+   updateSelectedBar();
+   refreshCaseCardSelection(key);
+   syncMultiplayerRoom();
+ });
+ $$('.view-drops',grid).forEach(btn=>btn.onclick=()=>openDropsModal(btn.dataset.key));
  updateSelectedBar();
 }
 function updateSelectedBar(){
- $('#selectedCount').textContent=battleSelection.length;
- $('#selectedTotal').textContent=money(battleSelection.reduce((sum,key)=>sum+cases[key].price,0));
- $('#selectedStrip').innerHTML=battleSelection.length?battleSelection.map((key,idx)=>`<button class="selected-chip" data-idx="${idx}">${caseThumbHTML(cases[key],true)}<span>${cases[key].name}</span><b>✕</b></button>`).join(''):'<div class="selected-empty">No cases selected yet.</div>';
- $$('.selected-chip').forEach(chip=>chip.onclick=()=>{battleSelection.splice(Number(chip.dataset.idx),1);renderCaseCatalog();syncMultiplayerRoom();});
+ const countEl=$('#selectedCount'),totalEl=$('#selectedTotal'),strip=$('#selectedStrip');
+ if(!countEl||!totalEl||!strip)return;
+ countEl.textContent=battleSelection.length;
+ totalEl.textContent=money(battleSelection.reduce((sum,key)=>sum+(cases[key]?.price||0),0));
+ if(!battleSelection.length){strip.innerHTML='<div class="selected-empty">No cases selected yet.</div>';return;}
+ const maxChips=18;
+ const start=Math.max(0,battleSelection.length-maxChips);
+ const shown=battleSelection.slice(start);
+ strip.innerHTML=(start?`<div class="selected-more">+${start} EARLIER</div>`:'')+shown.map((key,offset)=>{
+   const idx=start+offset,c=cases[key];
+   return `<button class="selected-chip" data-idx="${idx}">${caseThumbHTML(c,true)}<span>${c.name}</span><b>✕</b></button>`;
+ }).join('');
+ $$('.selected-chip',strip).forEach(chip=>chip.onclick=()=>{
+   const idx=Number(chip.dataset.idx),key=battleSelection[idx];
+   battleSelection.splice(idx,1);
+   updateSelectedBar();
+   refreshCaseCardSelection(key);
+   syncMultiplayerRoom();
+ });
 }
 function openDropsModal(caseKey){
  $('#dropsTitle').textContent=cases[caseKey].name+' · Drops';

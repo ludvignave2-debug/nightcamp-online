@@ -529,6 +529,12 @@ button,input,select{font:inherit}button{cursor:pointer}.noise{position:fixed;ins
 .builder-filters{padding:13px!important;border:1px solid #303b76!important;border-radius:14px!important;background:linear-gradient(180deg,#182047,#121831)!important;box-shadow:0 14px 32px rgba(0,0,0,.20)!important}.builder-search input,.builder-filters select,.builder-close{background:#111831!important;border-color:#36427f!important}.builder-bottom{border-radius:14px 14px 0 0!important;padding:14px!important;box-shadow:0 -14px 35px rgba(0,0,0,.22)!important}.selected-chip{border-radius:10px!important;background:linear-gradient(180deg,#222b5a,#182047)!important;border-color:#3b4789!important}
 @media(max-width:1250px){.builder-grid{grid-template-columns:repeat(3,minmax(210px,1fr))!important}}@media(max-width:900px){.builder-grid{grid-template-columns:repeat(2,minmax(190px,1fr))!important}}@media(max-width:560px){.builder-grid{grid-template-columns:1fr!important;gap:13px!important}.catalog-case{min-height:360px!important}.catalog-actions{grid-template-columns:1fr 1.25fr!important}}
 
+
+/* NIGHTCAMP SCROLL PERFORMANCE */
+.catalog-case{content-visibility:auto!important;contain:layout paint style!important;contain-intrinsic-size:390px 260px!important;}
+.catalog-thumb img{content-visibility:auto;}
+.builder-grid{overscroll-behavior:contain;scrollbar-gutter:stable;}
+@media (prefers-reduced-motion:reduce){.catalog-case,.catalog-case *{transition-duration:.01ms!important;animation-duration:.01ms!important;}}
 </style>
 
 </head>
@@ -1500,6 +1506,11 @@ let cases={
 
 // LIVE_CASES_FROM_SERVER_V1
 // Keep visual assets embedded in this file, but load case prices/weights/items from the server.
+
+/* NIGHTCAMP LITE CASE SET: fewer cards = smoother scrolling */
+const NIGHTCAMP_LITE_CASE_KEYS=new Set(["pocket","scrapstarter","miniraid","cheapthrills","roadside","budgetraid","military","tempered","arctic","blackout","akfever","highroll","bigsmile","crowncase","frozenstart","smgparty","frostfire","riflesonly","facemaskelite","redking","safe_start","steady_rifle","safe_armor","legend_guard","vaulted_value","moonshot","redline_risk","alien_hunt","grin_hunt","punishment_hunt","max_volatility","redline_mega","full_armory","premium_spread","ultimate_collection","two_k_takedown","black_card","punisher_deluxe","mask_monopoly","whale_2500","diamond_vault","three_k_dream","final_boss","punishment_royale"]);
+cases=Object.fromEntries(Object.entries(cases).filter(([key])=>NIGHTCAMP_LITE_CASE_KEYS.has(key)));
+
 const CASE_VISUALS = Object.fromEntries(Object.entries(cases).map(([key,c])=>[
   key,
   {

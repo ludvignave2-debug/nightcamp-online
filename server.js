@@ -15,6 +15,39 @@ const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, 'data');
 const USERS_FILE = path.join(DATA_DIR, 'users.json');
 const cases = JSON.parse(fs.readFileSync(path.join(__dirname, 'cases.json'), 'utf8'));
 
+// Private admin authentication. Keep the secret only in Render -> Environment as ADMIN_SECRET.
+const ADMIN_SECRET = String(process.env.ADMIN_SECRET || '').trim();
+const ADMIN_SESSION_TTL_MS = 12 * 60 * 60 * 1000;
+const adminSessions = new Map();
+
+app.use(express.json({ limit: '32kb' }));
+
+function safeSecretEqual(input) {
+  const a = Buffer.from(String(input || '').trim());
+  const b = Buffer.from(ADMIN_SECRET);
+  return !!ADMIN_SECRET && a.length === b.length && crypto.timingSafeEqual(a, b);
+}
+function newAdminSession() {
+  const token = crypto.randomBytes(32).toString('hex');
+  adminSessions.set(token, Date.now() + ADMIN_SESSION_TTL_MS);
+  return token;
+}
+function getBearer(req) {
+  const value = String(req.headers.authorization || '');
+  return value.startsWith('Bearer ') ? value.slice(7).trim() : '';
+}
+function requireAdmin(req, res, next) {
+  const token = getBearer(req);
+  const expires = adminSessions.get(token);
+  if (!token || !expires || expires <= Date.now()) {
+    if (token) adminSessions.delete(token);
+    return res.status(401).json({ ok: false, error: 'Admin-session udløbet.' });
+  }
+  // Sliding expiry while actively used.
+  adminSessions.set(token, Date.now() + ADMIN_SESSION_TTL_MS);
+  next();
+}
+
 fs.mkdirSync(DATA_DIR, { recursive: true });
 let users = {};
 try { users = JSON.parse(fs.readFileSync(USERS_FILE, 'utf8')); } catch { users = {}; }
@@ -24,18 +57,9 @@ function saveUsers() {
   fs.renameSync(tmp, USERS_FILE);
 }
 function newToken() { return crypto.randomBytes(24).toString('hex'); }
-function cleanDeviceId(value) {
-  const v = String(value || '').trim();
-  return /^[A-Za-z0-9._:-]{16,128}$/.test(v) ? v : '';
-}
-function accountFromDevice(deviceId) {
-  const id = cleanDeviceId(deviceId);
-  if (!id) return null;
-  return Object.values(users).find(u => u.deviceId === id) || null;
-}
-function newUser(name='Player', deviceId='') {
+function newUser(name='Player') {
   const token = newToken();
-  users[token] = { token, deviceId: cleanDeviceId(deviceId), name: cleanName(name), balance: STARTING_BALANCE, createdAt: Date.now(), games: 0, wins: 0 };
+  users[token] = { token, name: cleanName(name), balance: STARTING_BALANCE, createdAt: Date.now(), games: 0, wins: 0 };
   saveUsers();
   return users[token];
 }
@@ -48,20 +72,40 @@ function accountPayload(user) {
   return { token: user.token, name: user.name, balance: Number(user.balance.toFixed(2)), games: user.games || 0, wins: user.wins || 0 };
 }
 
-const PUBLIC_DIR = path.join(__dirname, 'public');
-const INDEX_FILE = path.join(PUBLIC_DIR, 'index.html');
-app.use(express.json({ limit: '32kb' }));
-
-// Serve the frontend explicitly. This prevents Render from returning "Cannot GET /"
-// when the app is otherwise healthy.
-app.get('/', (req, res) => {
-  if (!fs.existsSync(INDEX_FILE)) {
-    return res.status(500).type('text').send('NIGHTCAMP frontend missing: public/index.html');
-  }
-  res.sendFile(INDEX_FILE);
+app.post('/api/admin/login', (req, res) => {
+  if (!ADMIN_SECRET) return res.status(503).json({ ok: false, error: 'ADMIN_SECRET mangler på Render.' });
+  if (!safeSecretEqual(req.body?.secret)) return res.status(403).json({ ok: false, error: 'Forkert admin-kode.' });
+  res.set('Cache-Control', 'no-store');
+  return res.json({ ok: true, session: newAdminSession() });
 });
-app.use(express.static(PUBLIC_DIR));
 
+app.get('/api/admin/status', requireAdmin, (req, res) => {
+  res.set('Cache-Control', 'no-store');
+  res.json({ ok: true });
+});
+
+app.post('/api/admin/scrap', requireAdmin, (req, res) => {
+  const targetToken = String(req.body?.targetToken || '').trim();
+  const user = accountFromToken(targetToken);
+  if (!user) return res.status(404).json({ ok: false, error: 'Spillerkonto blev ikke fundet.' });
+
+  const mode = String(req.body?.mode || '');
+  const amount = Number(req.body?.amount);
+  if (!Number.isFinite(amount) || amount < 0) return res.status(400).json({ ok: false, error: 'Ugyldigt Scrap-beløb.' });
+
+  if (mode === 'add') user.balance = Number(user.balance || 0) + amount;
+  else if (mode === 'set') user.balance = amount;
+  else return res.status(400).json({ ok: false, error: 'Ugyldig admin-handling.' });
+
+  // No maximum balance cap; only prevent negative/non-finite balances.
+  if (!Number.isFinite(user.balance)) return res.status(400).json({ ok: false, error: 'Ugyldig balance.' });
+  user.balance = Math.max(0, user.balance);
+  saveUsers();
+  res.set('Cache-Control', 'no-store');
+  res.json({ ok: true, account: accountPayload(user) });
+});
+
+app.use(express.static(path.join(__dirname, 'public')));
 app.get('/api/cases', (_, res) => {
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   res.set('Pragma', 'no-cache');
@@ -69,51 +113,6 @@ app.get('/api/cases', (_, res) => {
   res.json(cases);
 });
 app.get('/health', (_, res) => res.json({ ok: true, users: Object.keys(users).length, cases: Object.keys(cases).length }));
-
-// Private admin API. Never hard-code ADMIN_SECRET in the public repository.
-const ADMIN_SECRET = String(process.env.ADMIN_SECRET || '');
-const adminSessions = new Map();
-function secretMatches(candidate){
-  if(!ADMIN_SECRET) return false;
-  const a=Buffer.from(String(candidate||''));
-  const b=Buffer.from(ADMIN_SECRET);
-  return a.length===b.length && crypto.timingSafeEqual(a,b);
-}
-function newAdminSession(){
-  const token=crypto.randomBytes(32).toString('hex');
-  adminSessions.set(token,Date.now()+12*60*60*1000);
-  return token;
-}
-function requireAdmin(req,res,next){
-  const auth=String(req.headers.authorization||'');
-  const token=auth.startsWith('Bearer ')?auth.slice(7):'';
-  const expires=adminSessions.get(token)||0;
-  if(!token||expires<Date.now()){if(token)adminSessions.delete(token);return res.status(403).json({ok:false,error:'Admin session invalid or expired.'});}
-  next();
-}
-app.post('/api/admin/login',(req,res)=>{
-  if(!ADMIN_SECRET) return res.status(503).json({ok:false,error:'ADMIN_SECRET is not configured on Render.'});
-  if(!secretMatches(req.body?.secret)) return res.status(403).json({ok:false,error:'Wrong admin code.'});
-  res.json({ok:true,session:newAdminSession()});
-});
-app.get('/api/admin/status',requireAdmin,(_,res)=>res.json({ok:true}));
-app.post('/api/admin/scrap',requireAdmin,(req,res)=>{
-  const targetToken=String(req.body?.targetToken||'');
-  const user=accountFromToken(targetToken);
-  if(!user) return res.status(404).json({ok:false,error:'Player account not found.'});
-  const mode=req.body?.mode==='set'?'set':'add';
-  const amount=Number(req.body?.amount);
-  if(!Number.isFinite(amount)||amount<0||amount>1000000) return res.status(400).json({ok:false,error:'Amount must be between 0 and 1,000,000 Scrap.'});
-  user.balance=mode==='set'?amount:user.balance+amount;
-  user.balance=Math.max(0,Number(user.balance));
-  saveUsers();
-  // Update the same account live on any connected browser using it.
-  for(const s of io.sockets.sockets.values()){
-    if(s.data.accountToken===user.token) s.emit('account:update',accountPayload(user));
-  }
-  res.json({ok:true,account:accountPayload(user)});
-});
-
 
 const rooms = new Map();
 const formats = {
@@ -214,19 +213,11 @@ function simulateBattle(room, seed) {
 
 io.on('connection', socket => {
   socket.on('account:init', (payload = {}, ack = () => {}) => {
-    const deviceId = cleanDeviceId(payload.deviceId);
     let user = accountFromToken(String(payload.token || ''));
-    if (!user && deviceId) user = accountFromDevice(deviceId);
-    if (!user) user = newUser(payload.name, deviceId);
-
-    // Bind this browser/device to the same account. A normal refresh therefore
-    // cannot create another 100-Scrap starter account.
-    if (deviceId && !user.deviceId) user.deviceId = deviceId;
-    if (payload.name) user.name = cleanName(payload.name);
-    saveUsers();
-
+    if (!user) user = newUser(payload.name);
+    if (payload.name) { user.name = cleanName(payload.name); saveUsers(); }
     socket.data.accountToken = user.token;
-    ack({ ok: true, account: accountPayload(user), startingBalance: STARTING_BALANCE, reused: !!(payload.token || deviceId) });
+    ack({ ok: true, account: accountPayload(user), startingBalance: STARTING_BALANCE });
   });
 
   socket.on('room:create', (payload = {}, ack = () => {}) => {

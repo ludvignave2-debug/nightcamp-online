@@ -1888,6 +1888,97 @@ document.addEventListener('keydown',e=>{if(e.shiftKey&&e.key.toLowerCase()==='a'
 $('#clearHistory').onclick=()=>{ state.history=[]; update(); };
 document.querySelector('.mini-grid').innerHTML='<i></i>'.repeat(25);
 
+// NIGHTCAMP LEGENDARY CONFETTI — lightweight, no external library
+let legendaryConfettiCanvas=null;
+let legendaryConfettiCtx=null;
+let legendaryConfettiParticles=[];
+let legendaryConfettiRaf=0;
+const LEGENDARY_CONFETTI_COLORS=['#ffb21f','#ff6a2a','#ffe16b','#b55cff','#46d9ff','#83ff5b','#ff4778'];
+
+function ensureLegendaryConfettiCanvas(){
+ if(legendaryConfettiCanvas) return legendaryConfettiCanvas;
+ const canvas=document.createElement('canvas');
+ canvas.id='legendaryConfettiCanvas';
+ canvas.setAttribute('aria-hidden','true');
+ Object.assign(canvas.style,{
+  position:'fixed',inset:'0',width:'100vw',height:'100vh',
+  pointerEvents:'none',zIndex:'999999',display:'block'
+ });
+ document.body.appendChild(canvas);
+ legendaryConfettiCanvas=canvas;
+ legendaryConfettiCtx=canvas.getContext('2d');
+ const resize=()=>{
+  // Keep it at CSS-pixel resolution on purpose: crisp enough and much lighter during battles.
+  canvas.width=Math.max(1,window.innerWidth);
+  canvas.height=Math.max(1,window.innerHeight);
+ };
+ resize();
+ window.addEventListener('resize',resize,{passive:true});
+ return canvas;
+}
+
+function fireLegendaryConfetti(cardEl){
+ const canvas=ensureLegendaryConfettiCanvas();
+ if(!canvas||!legendaryConfettiCtx) return;
+ let x=window.innerWidth/2, y=window.innerHeight/2;
+ if(cardEl){
+  const r=cardEl.getBoundingClientRect();
+  x=r.left+r.width/2;
+  y=r.top+r.height/2;
+ }
+ const count=58; // deliberately modest so 4-player battles stay smooth
+ for(let i=0;i<count;i++){
+  const angle=(-Math.PI/2)+((Math.random()-.5)*1.75);
+  const speed=4.8+Math.random()*7.2;
+  legendaryConfettiParticles.push({
+   x:x+(Math.random()-.5)*24,
+   y:y+(Math.random()-.5)*16,
+   vx:Math.cos(angle)*speed+(Math.random()-.5)*2.4,
+   vy:Math.sin(angle)*speed,
+   gravity:.12+Math.random()*.08,
+   drag:.986,
+   size:4+Math.random()*5,
+   rot:Math.random()*Math.PI,
+   spin:(Math.random()-.5)*.28,
+   life:72+Math.floor(Math.random()*44),
+   maxLife:116,
+   color:LEGENDARY_CONFETTI_COLORS[(Math.random()*LEGENDARY_CONFETTI_COLORS.length)|0],
+   shape:Math.random()>.28?'rect':'dot'
+  });
+ }
+ if(!legendaryConfettiRaf) legendaryConfettiLoop();
+}
+
+function legendaryConfettiLoop(){
+ const ctx=legendaryConfettiCtx, canvas=legendaryConfettiCanvas;
+ if(!ctx||!canvas){ legendaryConfettiRaf=0; return; }
+ ctx.clearRect(0,0,canvas.width,canvas.height);
+ for(let i=legendaryConfettiParticles.length-1;i>=0;i--){
+  const p=legendaryConfettiParticles[i];
+  p.vx*=p.drag; p.vy=p.vy*p.drag+p.gravity;
+  p.x+=p.vx; p.y+=p.vy; p.rot+=p.spin; p.life--;
+  if(p.life<=0||p.y>canvas.height+30){ legendaryConfettiParticles.splice(i,1); continue; }
+  const alpha=Math.min(1,p.life/22);
+  ctx.save();
+  ctx.globalAlpha=alpha;
+  ctx.translate(p.x,p.y);
+  ctx.rotate(p.rot);
+  ctx.fillStyle=p.color;
+  if(p.shape==='dot'){
+   ctx.beginPath(); ctx.arc(0,0,p.size*.55,0,Math.PI*2); ctx.fill();
+  }else{
+   ctx.fillRect(-p.size/2,-p.size*.32,p.size,p.size*.64);
+  }
+  ctx.restore();
+ }
+ if(legendaryConfettiParticles.length){
+  legendaryConfettiRaf=requestAnimationFrame(legendaryConfettiLoop);
+ }else{
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  legendaryConfettiRaf=0;
+ }
+}
+
 function buildSpinSequence(caseKey,winner,total=56,stopIndex=44){
  const pool=cases[caseKey].items; const seq=[];
  for(let i=0;i<total;i++) seq.push(pool[Math.floor(rand()*pool.length)]);
@@ -2005,8 +2096,12 @@ function animateSpinVertical(trackEl,sequence,duration=3800){
        viewport?.classList.remove('reel-spinning','reel-tick');
        viewport?.classList.add('reel-landed');
        const win=trackEl.children?.[sequence.stopIndex];
+       const landedItem=sequence.items?.[sequence.stopIndex];
        if(win){
          win.classList.add('winner-reveal');
+         if(String(landedItem?.rarity||'').toLowerCase()==='legendary'){
+           fireLegendaryConfetti(win);
+         }
          setTimeout(()=>win.classList.remove('winner-reveal'),1500);
        }
        setTimeout(()=>viewport?.classList.remove('reel-landed'),1600);
@@ -2959,6 +3054,9 @@ function renderUnbox(){
   const btn=$('#openCrate'); btn.disabled=true; const drop=drawLoot(caseKey), seq=buildSpinSequence(caseKey,drop,56,44);
   $('#lootResult').innerHTML='<span>Spinning…</span>';
   await animateSpin($('#unboxTrack'),seq,4200);
+  if(String(drop?.rarity||'').toLowerCase()==='legendary'){
+    fireLegendaryConfetti($('#unboxTrack')?.children?.[seq.stopIndex]);
+  }
   const value=drop.value; state.balance+=value; const delta=value-cost;
   $('#lootResult').innerHTML=`${skinArtHTML(drop,'drop')}<small class="rarity-${drop.rarity}">${drop.rarity.toUpperCase()} · ${drop.base}</small><h3>${drop.name}</h3><b>${money(value)} SCRAP</b><div class="message ${delta>=0?'win':'loss'}">${delta>=0?'+':''}${money(delta)} net</div>`;
   record('Case Opening',`${c.name} · ${drop.name}`,delta,delta>0);
@@ -2984,45 +3082,6 @@ checkAdminAccess().then(()=>{
 // The old whole-page MutationObserver was redundant and caused expensive DOM rescans during every battle roll.
 // It has intentionally been removed so battles stay smooth.
 
-</script><script>
-  function fireLegendaryConfetti(cardEl) {
-    if (typeof confetti !== 'function') return;
-
-    let x = 0.5;
-    let y = 0.5;
-
-    if (cardEl) {
-      const rect = cardEl.getBoundingClientRect();
-      x = (rect.left + rect.width / 2) / window.innerWidth;
-      y = (rect.top + rect.height / 2) / window.innerHeight;
-    }
-
-    confetti({
-      particleCount: 120,
-      spread: 80,
-      startVelocity: 45,
-      origin: { x, y },
-      scalar: 1.1
-    });
-
-    setTimeout(() => {
-      confetti({
-        particleCount: 80,
-        spread: 100,
-        startVelocity: 35,
-        origin: { x: Math.max(0, x - 0.08), y }
-      });
-    }, 150);
-
-    setTimeout(() => {
-      confetti({
-        particleCount: 80,
-        spread: 100,
-        startVelocity: 35,
-        origin: { x: Math.min(1, x + 0.08), y }
-      });
-    }, 300);
-  }
 </script>
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script></body>
+</body>
 </html>

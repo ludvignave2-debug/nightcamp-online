@@ -460,6 +460,18 @@ io.on('connection', socket => {
     });
   });
 
+  socket.on('account:sync-balance', (payload = {}, ack = () => {}) => {
+    const user = requireAccount(socket, payload.token);
+    if (!user) return ack({ ok:false, error:'Account not ready.' });
+    const balance = Number(payload.balance);
+    if (!Number.isFinite(balance) || balance < 0) return ack({ ok:false, error:'Invalid balance.' });
+    user.balance = Math.round(balance * 100) / 100;
+    saveUsers();
+    const account = accountPayload(user);
+    socket.emit('account:update', account);
+    ack({ ok:true, account });
+  });
+
   socket.on('room:create', (payload = {}, ack = () => {}) => {
     const user = requireAccount(socket, payload.token);
     if (!user) return ack({ ok:false, error:'Account not ready. Refresh the page.' });

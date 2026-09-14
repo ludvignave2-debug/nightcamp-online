@@ -375,6 +375,11 @@ button,input,select{font:inherit}button{cursor:pointer}.noise{position:fixed;ins
 @keyframes ncLegendRing{0%{opacity:1;transform:translate(-50%,-50%) scale(.1)}55%{opacity:.8}100%{opacity:0;transform:translate(-50%,-50%) scale(3.15)}}
 @keyframes ncFxFlash{0%{opacity:0}15%{opacity:1}100%{opacity:0}}
 
+
+/* NIGHTCAMP Fast Spin toggle */
+.fast-spin-toggle{min-width:112px;border:1px solid #34447a!important;background:#111a34!important;color:#9aa9d4!important;font-weight:900!important;letter-spacing:.08em!important;transition:.18s ease!important}
+.fast-spin-toggle.on{border-color:#ff8a3d!important;background:linear-gradient(180deg,#ff8b45,#e95b25)!important;color:#fff!important;box-shadow:0 0 20px rgba(255,111,45,.28)!important}
+.fast-spin-toggle:hover{transform:translateY(-1px)}
 </style>
 
 <style id="nightcamp-risk-cases">
@@ -2167,9 +2172,9 @@ function animateSpinVertical(trackEl,sequence,duration=3800){
          if(landedRarity==='epic'||landedRarity==='legendary'){
            fireRarityPullFX(win,landedRarity);
          }
-         setTimeout(()=>win.classList.remove('winner-reveal'),950);
+         setTimeout(()=>win.classList.remove('winner-reveal'),isFastSpin()?360:1250);
        }
-       setTimeout(()=>viewport?.classList.remove('reel-landed'),1050);
+       setTimeout(()=>viewport?.classList.remove('reel-landed'),isFastSpin()?420:1350);
      }catch{}
      resolve();
    },duration+220);
@@ -2789,6 +2794,25 @@ async function animateJackpotDraw(format,resolution,settings){
  if(winnerCard){winnerCard.scrollIntoView({block:'nearest',behavior:'smooth'});}
  await new Promise(r=>setTimeout(r,1100));
 }
+
+const NC_FAST_SPIN_KEY='nightcamp_fast_spin';
+function isFastSpin(){
+  try{return localStorage.getItem(NC_FAST_SPIN_KEY)==='1';}catch{return false;}
+}
+function setFastSpin(on){
+  try{localStorage.setItem(NC_FAST_SPIN_KEY,on?'1':'0');}catch{}
+  const btn=document.getElementById('fastSpinToggle');
+  if(btn){
+    btn.classList.toggle('on',!!on);
+    btn.textContent=on?'⚡ FAST SPIN ON':'⚡ FAST SPIN OFF';
+    btn.setAttribute('aria-pressed',on?'true':'false');
+  }
+}
+function battleSpinDuration(playerIndex=0){
+  return isFastSpin()?3500:7000;
+}
+function battleRoundPause(){return isFastSpin()?120:260;}
+
 function showBattleArena(selected,settings){
  setBattlePerformanceFocus(true);
  const format=battleFormats[settings.format],first=selected[0],entry=selected.reduce((sum,key)=>sum+cases[key].price,0),pot=entry*format.players;
@@ -2797,7 +2821,7 @@ function showBattleArena(selected,settings){
    <div class="battle-headline">
      <button class="back-linkish" id="backToSelector">← BACK TO CASES</button>
      <h3>${format.label} Battle ${ruleBadge(settings)}</h3>
-     <div class="headline-actions"><button>SHARE</button><button>🔊</button></div>
+     <div class="headline-actions"><button id="fastSpinToggle" class="fast-spin-toggle" type="button">⚡ FAST SPIN OFF</button><button>SHARE</button><button>🔊</button></div>
    </div>
    <div class="battle-topmeta">
       <div class="battle-totalbox"><span>TOTAL POT</span><b id="battlePot" data-final-pot="${pot}">HIDDEN</b><small id="battlePotHint">Reveals after final roll</small></div>
@@ -2820,6 +2844,12 @@ function showBattleArena(selected,settings){
    <div class="drops-modal hidden" id="dropsModal"><div class="drops-sheet"><div class="drops-top"><h3 id="dropsTitle">Case Drops</h3><button id="closeDrops">✕</button></div><div id="dropsBody"></div></div></div>
  </div>`;
  $('#backToSelector').onclick=()=>{if(activeBattleRunning){closeArenaWithBattleReturn();return;}clearCompletedBattleReturnView();renderBattle();};
+ const fastSpinBtn=$('#fastSpinToggle');
+ if(fastSpinBtn){
+   setFastSpin(isFastSpin());
+   fastSpinBtn.onclick=()=>setFastSpin(!isFastSpin());
+ }
+
  const battleCaseBanner=$('#battleCaseBanner');
  if(battleCaseBanner){
    battleCaseBanner.oncontextmenu=e=>{
@@ -2853,7 +2883,7 @@ async function runSelectedBattle(selected,settings){
    $('#bannerSelections').innerHTML=battleSelectionWindowHTML(selected,round);
    const drops=Array.from({length:format.players},()=>drawLoot(caseKey));lastDrops=drops;
    const seqs=drops.map(drop=>buildSpinSequence(caseKey,drop,9,6));
-   await Promise.allSettled(seqs.map((seq,i)=>Promise.resolve().then(()=>animateSpinVertical($('#track'+i),seq,1900+i*35))));
+   await Promise.allSettled(seqs.map((seq,i)=>Promise.resolve().then(()=>animateSpinVertical($('#track'+i),seq,battleSpinDuration(i)))));
    drops.forEach((drop,idx)=>{
      totals[idx]+=drop.value;$('#total'+idx).textContent=money(totals[idx]);
      fullBattleHistory[idx].push({round,drop,caseKey});
@@ -2861,7 +2891,7 @@ async function runSelectedBattle(selected,settings){
    });
    const teamVals=sideTotals(format,totals);
    teamVals.forEach((v,i)=>{const el=$('#teamTotal'+i);if(el)el.textContent=money(v);});
-   await new Promise(r=>setTimeout(r,90));
+   await new Promise(r=>setTimeout(r,battleRoundPause()));
  }
  const resolution=resolveWinningSide(settings,format,totals,lastDrops);
  if(resolution.jackpot)await animateJackpotDraw(format,resolution,settings);
@@ -2911,10 +2941,10 @@ async function runNetworkBattle(selected,settings,seed,localSeat,room,settlement
    $('#bannerSelections').innerHTML=battleSelectionWindowHTML(selected,round);
    const drops=Array.from({length:format.players},()=>drawLootWithRng(caseKey,rng));lastDrops=drops;
    const seqs=drops.map(drop=>buildSpinSequenceWithRng(caseKey,drop,rng,9,6));
-   await Promise.allSettled(seqs.map((seq,i)=>Promise.resolve().then(()=>animateSpinVertical($('#track'+i),seq,1900+i*35))));
+   await Promise.allSettled(seqs.map((seq,i)=>Promise.resolve().then(()=>animateSpinVertical($('#track'+i),seq,battleSpinDuration(i)))));
    drops.forEach((drop,idx)=>{totals[idx]+=drop.value;$('#total'+idx).textContent=money(totals[idx]);fullBattleHistory[idx].push({round,drop,caseKey});appendBattleHistoryLimited(idx,round,drop,caseKey,6);});
    sideTotals(format,totals).forEach((v,i)=>{const el=$('#teamTotal'+i);if(el)el.textContent=money(v);});
-   await new Promise(r=>setTimeout(r,90));
+   await new Promise(r=>setTimeout(r,battleRoundPause()));
  }
  const resolution=resolveWinningSideWithRng(settings,format,totals,lastDrops,rng);
  if(Number.isInteger(settlement.winnerSide))resolution.winner=settlement.winnerSide;

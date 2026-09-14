@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#0c0f0f">
-  <title>NIGHTCAMP — Rust Skin Battles v2</title>
+  <title>NIGHTCAMP · CINEMATIC — Rust Skin Battles v2</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -290,6 +290,113 @@ button,input,select{font:inherit}button{cursor:pointer}.noise{position:fixed;ins
 .catalog-case.risk-high{box-shadow:inset 0 3px 0 rgba(255,91,91,.65),0 14px 30px rgba(0,0,0,.18)}
 @media(max-width:1150px){.builder-filters{grid-template-columns:repeat(3,minmax(0,1fr))!important}.builder-close{grid-column:auto!important}}
 @media(max-width:720px){.builder-filters{grid-template-columns:1fr 1fr!important}}
+
+/* ============================================================
+   NIGHTCAMP CINEMATIC BATTLE THEME
+   Original NIGHTCAMP UI inspired by modern Rust skin battle UX.
+   ============================================================ */
+:root{
+ --rl-bg:#0a0d1d;--rl-panel:#111630;--rl-panel2:#171d40;--rl-line:#2a3567;
+ --rl-gold:#ffbd45;--rl-orange:#ff7a38;--rl-text:#f2f5ff;--rl-muted:#8f9ac8;
+ --rl-green:#9be34f;--rl-blue:#54c7ff;--rl-purple:#b676ff;--rl-red:#ff5b70;
+}
+.battle-ui,.battle-builder{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.mimic-ui.case-battle-ui{
+ background:
+  radial-gradient(circle at 50% -15%,rgba(81,65,189,.24),transparent 34%),
+  radial-gradient(circle at 8% 18%,rgba(35,151,255,.09),transparent 27%),
+  linear-gradient(180deg,#0e1228 0%,#080b17 72%,#050710 100%)!important;
+ border:1px solid #26305c!important;border-radius:18px!important;padding:20px!important;
+ box-shadow:0 28px 75px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.035)!important;
+}
+.mimic-ui:before{background:linear-gradient(180deg,rgba(255,255,255,.014),transparent 20%),repeating-linear-gradient(90deg,transparent 0 79px,rgba(255,255,255,.008) 80px)!important}
+.battle-headline{padding:3px 3px 15px;border-bottom:1px solid rgba(91,105,173,.24);margin-bottom:14px!important}
+.battle-headline h3{font-size:30px!important;font-weight:900!important;letter-spacing:.025em!important;color:#fff;text-shadow:0 3px 20px rgba(121,111,255,.17)}
+.back-linkish,.headline-actions button{border:1px solid #303a70!important;background:#161c3d!important;color:#b8c3ef!important;border-radius:9px!important;transition:.18s ease!important}
+.back-linkish{padding:10px 13px!important}.back-linkish:hover,.headline-actions button:hover{transform:translateY(-1px);border-color:#5866ad!important;color:#fff!important}
+
+.battle-topmeta{grid-template-columns:175px minmax(430px,1fr) 175px!important;gap:14px!important;margin:12px 0 14px!important}
+.battle-totalbox{background:linear-gradient(145deg,#171d3d,#11162e);border:1px solid #303a6d;border-radius:13px;padding:13px 15px;box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+.battle-totalbox span{font-size:9px!important;letter-spacing:.18em!important;color:#8995c3!important}.battle-totalbox b{font:900 29px/1 "Barlow Condensed",sans-serif!important;color:#fff!important}.battle-totalbox small{color:#6877aa!important}
+.sequence-banner{min-width:0!important;background:linear-gradient(135deg,#f2f3f6,#cfd2dc)!important;border:0!important;border-radius:12px!important;color:#131725!important;padding:10px 14px!important;box-shadow:0 14px 32px rgba(0,0,0,.26)!important}
+.sequence-banner>div:first-child strong{font-weight:900;font-size:16px!important}.sequence-banner>div:first-child span{font-weight:800;color:#4a4e5e!important}.sequence-banner>b{font-size:31px!important}.selection-thumb img{border-radius:7px!important;border:1px solid rgba(38,44,79,.22)!important}.selection-thumb.active img{box-shadow:0 0 0 2px var(--rl-gold),0 8px 20px rgba(255,189,69,.25)!important}
+.battle-start{border:1px solid #ff9b4c!important;border-radius:9px!important;background:linear-gradient(180deg,#ff8c42,#db592c)!important;box-shadow:0 9px 24px rgba(242,105,49,.25),inset 0 1px rgba(255,255,255,.25)!important;color:#fff!important;font-weight:900!important;letter-spacing:.06em!important}
+.rule-explainer{background:linear-gradient(90deg,#161d40,#111731,#161d40)!important;border:1px solid #303b78!important;border-radius:8px!important;color:#9eabd9!important;font-size:11px!important;letter-spacing:.035em!important;padding:10px 16px!important}
+
+/* Arena */
+.mimic-stage.simple-vertical-stage{min-height:455px!important;border:1px solid #20294d!important;border-radius:14px!important;padding:22px 12px 14px!important;overflow:hidden!important;background:#070a15!important;box-shadow:inset 0 0 65px rgba(0,0,0,.55)!important}
+.scene-room{background:
+ radial-gradient(circle at 50% 47%,rgba(79,74,170,.15),transparent 34%),
+ linear-gradient(180deg,rgba(12,16,34,.80),rgba(5,8,17,.97)),
+ repeating-linear-gradient(90deg,transparent 0 115px,rgba(104,125,198,.025) 116px 117px)!important}
+.scene-room:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.34),transparent 8%,transparent 92%,rgba(0,0,0,.34));pointer-events:none}
+.scene-room:before{top:50%!important;height:1px!important;background:linear-gradient(90deg,transparent,#ff713b 10%,#ff713b 90%,transparent)!important;box-shadow:0 0 9px rgba(255,101,48,.48)!important}
+.scene-lanes.dynamic-lanes{gap:8px!important}
+.scene-lane{min-width:0;position:relative}
+
+/* Reel viewport */
+.simple-vertical-stage .mimic-reel,.mimic-reel{
+ height:330px!important;min-height:330px!important;max-height:330px!important;
+ border:1px solid rgba(70,82,139,.26)!important;border-radius:12px!important;
+ background:linear-gradient(180deg,rgba(13,18,38,.74),rgba(5,8,17,.78))!important;
+ box-shadow:inset 0 12px 34px rgba(0,0,0,.38),inset 0 -12px 34px rgba(0,0,0,.38)!important;
+ isolation:isolate;
+}
+.mimic-reel:before,.mimic-reel:after{display:block!important;content:""!important;position:absolute!important;left:0!important;right:0!important;height:27%!important;z-index:12!important;pointer-events:none!important}
+.mimic-reel:before{top:0!important;background:linear-gradient(180deg,#070a15 4%,rgba(7,10,21,.9) 28%,transparent 100%)!important}
+.mimic-reel:after{bottom:0!important;background:linear-gradient(0deg,#070a15 4%,rgba(7,10,21,.9) 28%,transparent 100%)!important}
+.mimic-reel .reel-marker{z-index:15!important;height:2px!important;top:50%!important;background:linear-gradient(90deg,transparent 0,#ff6e38 12%,#ff6e38 88%,transparent 100%)!important;box-shadow:0 0 8px rgba(255,106,54,.72),0 0 22px rgba(255,106,54,.24)!important}
+.mimic-reel .reel-marker:before{left:-1px!important;border-left-color:#ff824b!important;filter:drop-shadow(0 0 6px #ff8148)}
+.mimic-reel .reel-marker:after{right:-1px!important;border-right-color:#ff824b!important;filter:drop-shadow(0 0 6px #ff8148)}
+.mimic-reel.reel-tick .reel-marker{animation:rlTick .14s ease-out}
+@keyframes rlTick{0%{filter:brightness(1)}45%{filter:brightness(2);transform:scaleY(2.2)}100%{filter:brightness(1);transform:scaleY(1)}}
+
+/* Cards */
+.mimic-reel .reel-track{gap:18px!important;padding:78px 0!important;will-change:transform,filter!important;backface-visibility:hidden!important}
+.mimic-reel.reel-spinning .reel-track{filter:saturate(.9) contrast(1.04);animation:rlReelBreath .55s ease-in-out infinite alternate}
+@keyframes rlReelBreath{from{opacity:.90}to{opacity:1}}
+.mimic-reel .reel-cell.rl-card{
+ width:88%!important;min-width:88%!important;height:184px!important;flex:0 0 184px!important;
+ display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;
+ border:1px solid rgba(95,105,161,.28)!important;border-radius:11px!important;padding:7px 8px 27px!important;
+ background:linear-gradient(145deg,rgba(31,37,72,.90),rgba(14,18,37,.94))!important;
+ box-shadow:0 12px 28px rgba(0,0,0,.26),inset 0 1px 0 rgba(255,255,255,.035)!important;
+ overflow:hidden!important;transform:translateZ(0);transition:filter .22s ease,box-shadow .22s ease,transform .22s ease!important;
+}
+.rl-card-glow{position:absolute;inset:0;opacity:.28;pointer-events:none;background:radial-gradient(circle at 50% 48%,currentColor 0,transparent 55%);filter:blur(18px)}
+.rl-rarity-line{position:absolute;top:0;left:12%;right:12%;height:2px;border-radius:4px;background:currentColor;box-shadow:0 0 11px currentColor;z-index:4}
+.rl-card.rarity-common{color:#93a2bd}.rl-card.rarity-uncommon{color:#8fd258}.rl-card.rarity-rare{color:#55b8ff}.rl-card.rarity-epic{color:#a76dff}.rl-card.rarity-legendary{color:#ffb64a}
+.mimic-reel .rl-card .skin-art.battle{height:112px!important;width:min(178px,92%)!important;border-radius:10px!important;z-index:3!important;filter:none!important}
+.mimic-reel .rl-card .skin-art img{max-height:108px!important;filter:drop-shadow(0 13px 13px rgba(0,0,0,.55))!important}
+.rl-item-copy{position:absolute;left:9px;right:9px;bottom:28px;z-index:6;text-align:center;line-height:1.05}.mimic-reel .rl-item-copy small{display:block!important;color:#7f89af!important;font-size:7px!important;text-transform:uppercase!important;letter-spacing:.08em!important}.mimic-reel .rl-item-copy b{display:block!important;color:#f2f4ff!important;font-size:10px!important;margin-top:2px!important;text-shadow:0 2px 7px rgba(0,0,0,.8)!important}
+.mimic-reel .reel-price{bottom:5px!important;min-width:84px!important;padding:4px 8px!important;border-radius:999px!important;background:#0a0e1d!important;border:1px solid rgba(255,188,69,.56)!important;font-size:15px!important;color:#ffc65d!important;box-shadow:0 3px 12px rgba(0,0,0,.55),0 0 12px rgba(255,190,73,.08)!important}
+.mimic-reel .reel-price small{font-size:9px!important;color:#ffcf74!important}
+.mimic-reel.reel-spinning .rl-card{filter:blur(.35px) brightness(.82)!important}
+.mimic-reel.reel-landed .winner{filter:brightness(1.2) saturate(1.18)!important;box-shadow:0 0 0 1px currentColor,0 0 18px currentColor,0 18px 35px rgba(0,0,0,.48)!important;transform:scale(1.035)!important}
+.winner-reveal{animation:rlWinner 1.35s cubic-bezier(.17,.84,.28,1)!important}
+@keyframes rlWinner{0%{transform:scale(.94);filter:brightness(.8)}25%{transform:scale(1.075);filter:brightness(1.65) saturate(1.4)}55%{transform:scale(1.025);filter:brightness(1.25)}100%{transform:scale(1.035);filter:brightness(1.12)}}
+.mimic-reel.reel-landed:after{animation:rlLandingFlash .6s ease-out}
+@keyframes rlLandingFlash{0%{background:rgba(255,192,81,.20)}100%{background:linear-gradient(0deg,#070a15 4%,rgba(7,10,21,.9) 28%,transparent 100%)}}
+
+/* Player tags and totals */
+.participant-tag{width:92%!important;margin:9px auto 0!important;background:linear-gradient(180deg,#eeeff2,#c9cbd0)!important;color:#191d2b!important;border-radius:7px 7px 3px 3px!important;padding:7px 9px!important;box-shadow:0 7px 18px rgba(0,0,0,.24)!important}
+.tag-avatar{width:43px!important;height:43px!important;border-radius:5px!important;background:#202634!important;color:#fff!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)!important}.tag-name{color:#fff!important;background:#6d6e74!important;margin:-7px -9px -7px 0!important;padding:14px 11px!important;flex:1!important;border-radius:0 7px 3px 0!important}.tag-name small{color:#d6d7d9!important}
+.lane-total{width:92%!important;margin:0 auto!important;border-radius:3px 3px 8px 8px!important;background:linear-gradient(180deg,#12182b,#0d1121)!important;border:1px solid #242e55!important;padding:8px 12px!important}.lane-total span{font-size:8px!important;letter-spacing:.16em!important;color:#68749f!important}.lane-total b{font-size:27px!important;color:#f6f7ff!important}
+
+/* History */
+.history-grid-wrap{margin-top:12px!important;gap:8px!important}.history-column{gap:7px!important}.history-drop{min-height:164px!important;border-radius:10px!important;border:1px solid #252e59!important;background:linear-gradient(145deg,#141a35,#0d1226)!important;box-shadow:0 10px 22px rgba(0,0,0,.18)!important;overflow:hidden}.history-drop .slot-num{font-size:20px!important;color:#8c99c5!important}.history-drop .skin-art.battle{height:92px!important}.history-copy b{color:#eef1ff!important;font-size:11px!important}.history-copy small{color:#ffc55e!important;font-size:13px!important;font-weight:900!important}.history-drop.placeholder{background:linear-gradient(145deg,#12172d,#0d1122)!important;color:#59658e!important}.history-empty{font-size:18px!important}
+
+/* Jackpot polish */
+.jackpot-panel{border-radius:13px!important;border:1px solid rgba(255,189,69,.35)!important;background:radial-gradient(circle at 15% 50%,rgba(255,179,57,.14),transparent 25%),linear-gradient(90deg,#111831,#17182d,#111831)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 10px 28px rgba(0,0,0,.18)!important}
+.jackpot-panel:before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(255,190,69,.045),transparent);animation:rlSweep 2.4s linear infinite}@keyframes rlSweep{from{transform:translateX(-40%)}to{transform:translateX(40%)}}
+
+/* Builder/catalog gets the same premium dark UI */
+.battle-builder{background:radial-gradient(circle at 50% -20%,rgba(91,75,199,.22),transparent 34%),linear-gradient(180deg,#111630,#0a0d1d)!important;border:1px solid #26315f!important;border-radius:16px!important}
+.builder-filters{background:#111630;padding:12px;border:1px solid #293466;border-radius:12px}.builder-search input,.builder-filters select{background:#191f46!important;border-color:#303c75!important}.catalog-case{border-radius:12px!important;background:linear-gradient(180deg,#171d41,#11162f)!important;border-color:#2b3569!important;transition:.2s ease!important}.catalog-case:hover{transform:translateY(-3px);border-color:#46579d!important;box-shadow:0 18px 35px rgba(0,0,0,.28)!important}.catalog-thumb{border-color:#313c78!important}.catalog-actions .add-case{background:linear-gradient(180deg,#2b315c,#20264d)!important;color:#ffc75d!important;border-color:#444f8b!important}.catalog-actions .add-case:hover{border-color:#ffb84c!important;box-shadow:0 0 18px rgba(255,185,71,.12)!important}
+
+@media(max-width:980px){.battle-topmeta{grid-template-columns:1fr!important}.mimic-stage.simple-vertical-stage{min-height:400px!important}.mimic-reel,.simple-vertical-stage .mimic-reel{height:300px!important;min-height:300px!important;max-height:300px!important}}
+@media(max-width:640px){.mimic-reel .reel-cell.rl-card{height:170px!important;flex-basis:170px!important}.mimic-reel .rl-card .skin-art.battle{height:102px!important}.lane-total b{font-size:23px!important}}
+
 </style>
 </head>
 <body data-build="light-v2">
@@ -1390,7 +1497,13 @@ function drawLoot(caseKey='military'){
  return pool[pool.length-1];
 }
 function reelCellHTML(item,winner=false){
- return `<div class="reel-cell rarity-bg-${item.rarity} ${winner?'winner':''}">${skinArtHTML(item,'battle')}<small>${item.base}</small><b>${item.name}</b><div class="reel-price"><small>⚙</small>${money(item.value)}</div></div>`;
+ return `<div class="reel-cell rl-card rarity-bg-${item.rarity} rarity-${item.rarity} ${winner?'winner':''}">
+   <div class="rl-rarity-line"></div>
+   <div class="rl-card-glow"></div>
+   ${skinArtHTML(item,'battle')}
+   <div class="rl-item-copy"><small>${item.base}</small><b>${item.name}</b></div>
+   <div class="reel-price"><small>⚙</small>${money(item.value)}</div>
+ </div>`;
 }
 function mountSpin(trackEl,sequence){
  trackEl.style.transition='none';
@@ -1437,31 +1550,57 @@ function previewSpinVertical(trackEl,caseKey){
 function animateSpinVertical(trackEl,sequence,duration=3800){
  return new Promise(resolve=>{
   if(!trackEl){resolve();return;}
+  const viewport=trackEl.parentElement;
+  let tickTimer=null;
   try{
    mountSpinVertical(trackEl,sequence,false);
-   // Force Safari to calculate reel geometry immediately.
    void trackEl.offsetHeight;
    const distance=verticalSpinDistance(trackEl,sequence.stopIndex);
-   const finalTransform=`translateY(-${distance}px)`;
+   const finalTransform=`translate3d(0,-${distance}px,0)`;
    trackEl.style.transition='none';
-   trackEl.style.transform='translateY(0px)';
+   trackEl.style.transform='translate3d(0,0,0)';
+   trackEl.classList.remove('spin-landed');
+   viewport?.classList.remove('reel-landed');
+   viewport?.classList.add('reel-spinning');
    void trackEl.offsetHeight;
-   // Start transition on a timer instead of relying on requestAnimationFrame/animation.finished.
+
+   // Visual tick pulse while cards pass the center marker.
+   let tick=0;
+   tickTimer=setInterval(()=>{
+     tick++;
+     if(viewport){
+       viewport.classList.remove('reel-tick');
+       void viewport.offsetWidth;
+       viewport.classList.add('reel-tick');
+     }
+   }, Math.max(90, Math.min(185, duration/24)));
+
    setTimeout(()=>{
      try{
-       trackEl.style.transition=`transform ${duration}ms cubic-bezier(.12,.74,.08,1)`;
+       trackEl.style.transition=`transform ${duration}ms cubic-bezier(.08,.72,.06,1)`;
        trackEl.style.transform=finalTransform;
      }catch{}
-   },35);
-   // Battle progression NEVER waits on a browser animation event.
+   },45);
+
    setTimeout(()=>{
+     if(tickTimer)clearInterval(tickTimer);
      try{
        trackEl.style.transition='none';
        trackEl.style.transform=finalTransform;
+       trackEl.classList.add('spin-landed');
+       viewport?.classList.remove('reel-spinning','reel-tick');
+       viewport?.classList.add('reel-landed');
+       const win=trackEl.children?.[sequence.stopIndex];
+       if(win){
+         win.classList.add('winner-reveal');
+         setTimeout(()=>win.classList.remove('winner-reveal'),1500);
+       }
+       setTimeout(()=>viewport?.classList.remove('reel-landed'),1600);
      }catch{}
      resolve();
-   },duration+180);
+   },duration+220);
   }catch(err){
+   if(tickTimer)clearInterval(tickTimer);
    console.error('[NIGHTCAMP] Reel failed:',err);
    try{mountSpinVertical(trackEl,sequence,true);}catch{}
    resolve();
@@ -2000,7 +2139,7 @@ async function runSelectedBattle(selected,settings){
    $('#bannerSelections').innerHTML=selected.map((key,idx)=>battleSelectionThumb(key,idx===round)).join('');
    const drops=Array.from({length:format.players},()=>drawLoot(caseKey));lastDrops=drops;
    const seqs=drops.map(drop=>buildSpinSequence(caseKey,drop,24,16));
-   await Promise.allSettled(seqs.map((seq,i)=>Promise.resolve().then(()=>animateSpinVertical($('#track'+i),seq,2350+i*160))));
+   await Promise.allSettled(seqs.map((seq,i)=>Promise.resolve().then(()=>animateSpinVertical($('#track'+i),seq,3450+i*180))));
    drops.forEach((drop,idx)=>{
      totals[idx]+=drop.value;$('#total'+idx).textContent=money(totals[idx]);
      $$('#hist'+idx+' .history-drop')[round].outerHTML=battleHistoryCardHTML(round,drop);
@@ -2049,7 +2188,7 @@ async function runNetworkBattle(selected,settings,seed,localSeat,room,settlement
    $('#bannerSelections').innerHTML=selected.map((key,idx)=>battleSelectionThumb(key,idx===round)).join('');
    const drops=Array.from({length:format.players},()=>drawLootWithRng(caseKey,rng));lastDrops=drops;
    const seqs=drops.map(drop=>buildSpinSequenceWithRng(caseKey,drop,rng,24,16));
-   await Promise.allSettled(seqs.map((seq,i)=>Promise.resolve().then(()=>animateSpinVertical($('#track'+i),seq,2350+i*130))));
+   await Promise.allSettled(seqs.map((seq,i)=>Promise.resolve().then(()=>animateSpinVertical($('#track'+i),seq,3450+i*150))));
    drops.forEach((drop,idx)=>{totals[idx]+=drop.value;$('#total'+idx).textContent=money(totals[idx]);$$('#hist'+idx+' .history-drop')[round].outerHTML=battleHistoryCardHTML(round,drop);});
    sideTotals(format,totals).forEach((v,i)=>{const el=$('#teamTotal'+i);if(el)el.textContent=money(v);});
    await new Promise(r=>setTimeout(r,220));
